@@ -118,6 +118,19 @@
   #mAtk{right:140px;bottom:48px;width:84px;height:84px;background:#9f2f2fcc;font-size:34px;}
   #mChat{right:36px;bottom:34px;width:72px;height:72px;background:#2f8f3fcc;font-size:26px;}
   body.mobile #actBtn{right:150px;bottom:150px;}
+  /* mobile minigame controls */
+  #mgctrl{position:fixed;inset:0;z-index:10;pointer-events:none;}
+  #mgpad{position:fixed;left:24px;bottom:40px;width:174px;height:174px;}
+  .mgbtn{position:absolute;width:56px;height:56px;border-radius:13px;background:#1b2b1bcc;
+    border:2px solid #ffffff66;color:#fff;font-size:26px;font-family:inherit;pointer-events:auto;
+    touch-action:none;box-shadow:0 3px 10px #0008;}
+  .mgbtn:active{background:#2f6f3fcc;}
+  #mgUp{left:59px;top:0;} #mgLeft{left:0;top:59px;} #mgDown{left:59px;top:118px;} #mgRight{left:118px;top:59px;}
+  .mgbtn2{position:fixed;right:24px;top:64px;pointer-events:auto;background:#3a1b1bdd;
+    border:2px solid #ffffff77;color:#fff;font-size:16px;font-family:inherit;border-radius:10px;
+    padding:9px 16px;touch-action:none;box-shadow:0 3px 10px #0008;}
+  .mgbtn2:active{background:#7a2f2fdd;}
+  body.mobile .kbd{display:none;}
   .hidden{display:none!important;}
 </style>
 </head>
