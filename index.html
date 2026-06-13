@@ -1383,6 +1383,9 @@ function update(){
   // boss enrage: faster as it weakens; shadow bolts in phase 2 (night only)
   const boss=objects.find(o=>o.type==='boss');
   if(boss && boss.alive){
+    // at the 10th minute the God of the End leaves the final city and hunts you anywhere, day or night
+    if(time>=36000 && !boss.left){ boss.left=true; boss.aggro=true;
+      flash("⚠ THE GOD OF THE END HAS LEFT THE FINAL CITY — IT HUNTS YOU NOW!"); SFX.boss(); }
     boss.spd=0.05+(1-boss.hp/boss.maxHp)*0.085;
     // slowly regenerates unless you keep the pressure on
     if(boss.flash<=0 && boss.hp<boss.maxHp) boss.hp=Math.min(boss.maxHp, boss.hp+0.05);
