@@ -3365,6 +3365,7 @@ function start(mode, size){
 
 function leaveToLobby(){
   if(state==='menu' || state==='over') return;
+  endCoop();
   state='menu';
   if(document.pointerLockElement) document.exitPointerLock();
   ['inv','trade','buy','admin'].forEach(id=>document.getElementById(id).classList.add('hidden'));
