@@ -3072,7 +3072,8 @@ function openChat(){ const c=document.getElementById('chat'); c.classList.remove
 function closeChat(){ document.getElementById('chat').classList.add('hidden'); }
 function sendChat(){ const c=document.getElementById('chat'), raw=c.value.trim(), v=raw.toLowerCase(); closeChat();
   if(v==='bebenceta'){ enterHub(); return; }
-  if(raw){ pushChat(account.name, raw); }   // your message shows in the feed for everyone
+  if(raw){ pushChat(account.name, raw);     // your message shows in the feed for everyone
+    if(coop){ _myLastChat={text:raw, t:Date.now()}; netPresenceWrite(); } }   // and reaches your co-op friend
 }
 function enterHub(){ scene='hub'; housePos={x:W/2,y:H*0.74}; cam.flyTime=0;
   if(document.pointerLockElement) document.exitPointerLock();
