@@ -897,20 +897,31 @@ function attack(){
 function grantChest(o, who){
   o.opened=true; burst(o.x,o.z,'#ffe070',16); SFX.chest();
   const by = who ? (who+" opened a chest — ") : "";
-  if(o.rako){
-    SFX.rako();
-    if(!cam.hasPet){ cam.hasPet=true; cam.flyCd=0;
-      flash(""+by+"RAKO CHEST! Skyling pet — press F to FLY (10s, once a minute)!"); }
-    else if(!cam.hasCrystal){ cam.hasCrystal=true; cam.crystalCd=0;
-      flash(""+by+"RAKO CHEST! A Time Crystal — press T to FREEZE every enemy (5s)!"); }
-    else { cam.maxHp+=25; cam.hp=cam.maxHp; cam.dmg+=6;
-      flash(""+by+"Rako Chest! Power grows (+25 max HP, +6 damage)!"); }
+  let code='sharp';
+  if(!o.rako){ const roll=Math.random(); code = roll<0.4?'feast':(roll<0.7?'vitality':'sharp'); }
+  applyChestReward(o.rako, code, by);
+  if(coop && !who) broadcastChestEvent(o, code);   // co-op: your friend wins the loot too
+}
+function applyChestReward(rako, code, by){
+  if(rako){ SFX.rako();
+    if(!cam.hasPet){ cam.hasPet=true; cam.flyCd=0; flash(""+by+"RAKO CHEST! Skyling pet unlocked — you can FLY!"); }
+    else if(!cam.hasCrystal){ cam.hasCrystal=true; cam.crystalCd=0; flash(""+by+"RAKO CHEST! Time Crystal — FREEZE every enemy!"); }
+    else { cam.maxHp+=25; cam.hp=cam.maxHp; cam.dmg+=6; flash(""+by+"Rako Chest! Power grows (+25 max HP, +6 damage)!"); }
   } else {
-    const roll=Math.random();
-    if(roll<0.4){ cam.hunger=cam.maxHunger; cam.hp=Math.min(cam.maxHp,cam.hp+30); flash(""+by+"a feast! (+hunger, +30 HP)"); }
-    else if(roll<0.7){ cam.maxHp+=15; cam.hp+=15; flash(""+by+"vitality charm (+15 max HP)"); }
+    if(code==='feast'){ cam.hunger=cam.maxHunger; cam.hp=Math.min(cam.maxHp,cam.hp+30); flash(""+by+"a feast! (+hunger, +30 HP)"); }
+    else if(code==='vitality'){ cam.maxHp+=15; cam.hp+=15; flash(""+by+"vitality charm (+15 max HP)"); }
     else { cam.dmg+=4; flash(""+by+"sharpening stone (+4 damage)"); }
   }
+}
+function broadcastChestEvent(o, code){
+  _myEvt={ code:'chest|'+(o.rako?1:0)+'|'+code+'|'+o.x.toFixed(1)+'|'+o.z.toFixed(1), t:Date.now() };
+  netPresenceWrite();
+}
+function applyFriendEvent(code){
+  const p=String(code).split('|');
+  if(p[0]==='chest'){ const rako=p[1]==='1', rcode=p[2], x=+p[3], z=+p[4];
+    for(const o of objects){ if(o.type==='chest' && !o.opened && Math.abs(o.x-x)<0.6 && Math.abs(o.z-z)<0.6){ o.opened=true; burst(o.x,o.z,'#ffe070',16); break; } }
+    applyChestReward(rako, rcode, (coop?coop.friendName:'Your friend')+" opened a chest — "); }
 }
 function openNearbyChest(){
   for(const o of objects){
