@@ -3347,6 +3347,7 @@ function loop(){
 }
 function start(mode, size){
   endCoop();   // clear any previous co-op session (startCoop re-establishes it right after)
+  coopSeed = (pendingCoopSeed!=null) ? pendingCoopSeed : null; pendingCoopSeed=null;   // seed the shared world (null = normal random world)
   difficulty=mode||difficulty;
   if(size!==undefined) partySize=size;
   initAudio(); if(settings.music) startMusic();
