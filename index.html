@@ -2736,8 +2736,9 @@ async function onlineSendRequest(name){
 async function onlineIncoming(){ if(!NET.ready) return [];
   try{ return await netGet('/rako_friend_requests?to_id=eq.'+NET.uid+'&status=eq.pending&select=id,from:rako_players!from_id(name)'); }catch(e){ return []; } }
 async function onlineFriends(){ if(!NET.ready) return [];
-  try{ const rows=await netGet('/rako_friend_requests?or=(from_id.eq.'+NET.uid+',to_id.eq.'+NET.uid+')&status=eq.accepted&select=id,from_id,to_id,a:rako_players!from_id(name),b:rako_players!to_id(name)');
-    return rows.map(r=>({reqId:r.id, id: r.from_id===NET.uid? r.to_id : r.from_id, name: r.from_id===NET.uid ? (r.b&&r.b.name) : (r.a&&r.a.name)})).filter(x=>x.name); }catch(e){ return []; } }
+  try{ const rows=await netGet('/rako_friend_requests?or=(from_id.eq.'+NET.uid+',to_id.eq.'+NET.uid+')&status=eq.accepted&select=id,from_id,to_id,a:rako_players!from_id(name,last_seen),b:rako_players!to_id(name,last_seen)');
+    return rows.map(r=>{ const mine=r.from_id===NET.uid, other=mine?r.b:r.a;
+      return {reqId:r.id, id: mine? r.to_id : r.from_id, name: other&&other.name, online: other&&isOnline(other.last_seen)}; }).filter(x=>x.name); }catch(e){ return []; } }
 async function onlineRespond(id,accept){ try{ await netPatch('/rako_friend_requests?id=eq.'+id,{status:accept?'accepted':'declined'}); }catch(e){} }
 async function onlineUnfriend(reqId){ try{ await netDelete('/rako_friend_requests?id=eq.'+reqId); }catch(e){} }
 async function onlineLeaderboard(){ if(!NET.ready) return null;
