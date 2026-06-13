@@ -3460,6 +3460,7 @@ settings._chosen=true; saveSettings();
 ensurePlayer().then(()=>{ pollRequests(); pollInvites(); });
 setInterval(pollRequests, 20000);
 setInterval(pollInvites, 4000);
+setInterval(netTouch, 30000);   // heartbeat so friends see you as online (green dot)
 loop();
 </script>
 </body>
