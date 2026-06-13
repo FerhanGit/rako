@@ -3342,9 +3342,10 @@ document.getElementById('playBack').onclick=()=>showScreen('lobby');
 document.getElementById('setBack').onclick=()=>showScreen('lobby');
 // Play flow: choose mode -> choose party size -> start
 let pendingMode='normal';
-document.querySelectorAll('button.mode').forEach(b=> b.onclick=()=>{ pendingMode=b.dataset.mode; showScreen('party'); });
-document.querySelectorAll('button.party').forEach(b=> b.onclick=()=>start(pendingMode, +b.dataset.n));
-document.getElementById('partyBack').onclick=()=>showScreen('play');
+document.querySelectorAll('button.mode').forEach(b=> b.onclick=()=>{ pendingMode=b.dataset.mode; resetInviteUI(); showScreen('party'); });
+document.querySelectorAll('button.party[data-n]').forEach(b=> b.onclick=()=>start(pendingMode, +b.dataset.n));
+document.getElementById('btnInvite').onclick=openInvitePicker;
+document.getElementById('partyBack').onclick=()=>{ resetInviteUI(); showScreen('play'); };
 // leaderboards & friends
 document.getElementById('btnLeader').onclick=()=>{ renderLeaderboard(); showScreen('leader'); };
 document.getElementById('leaderBack').onclick=()=>showScreen('lobby');
