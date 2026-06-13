@@ -1359,7 +1359,7 @@ function update(){
 
   // home heal + feed
   const safe=inHome();
-  if(safe){ cam.hp=Math.min(cam.maxHp,cam.hp+0.6); cam.hunger=Math.min(cam.maxHunger,cam.hunger+0.8); }
+  if(safe){ cam.hp=Math.min(cam.maxHp,cam.hp+0.12); cam.hunger=Math.min(cam.maxHunger,cam.hunger+0.8); }   // heal slowly, only at home
 
   // hunger drain (sprinting burns more)
   cam.hunger -= moved?(sprinting?0.06:0.03):0.018;
