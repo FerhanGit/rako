@@ -2704,6 +2704,9 @@ async function netGet(path){ const r=await fetch(NET.url+path,{headers:netHeader
 async function netPost(path,body){ const r=await fetch(NET.url+path,{method:'POST',headers:netHeaders({Prefer:'return=representation'}),body:JSON.stringify(body)}); if(!r.ok) throw new Error('net '+r.status); return r.json(); }
 async function netPatch(path,body){ const r=await fetch(NET.url+path,{method:'PATCH',headers:netHeaders({Prefer:'return=representation'}),body:JSON.stringify(body)}); if(!r.ok) throw new Error('net '+r.status); return r.json(); }
 async function netDelete(path){ const r=await fetch(NET.url+path,{method:'DELETE',headers:netHeaders()}); if(!r.ok) throw new Error('net '+r.status); }
+const ONLINE_MS=75000;   // a player counts as "online" if seen in the last 75 seconds
+function isOnline(lastSeen){ return !!lastSeen && (Date.now()-new Date(lastSeen).getTime() < ONLINE_MS); }
+async function netTouch(){ if(!NET.ready) return; try{ await netPatch('/rako_players?id=eq.'+NET.uid,{last_seen:new Date().toISOString()}); }catch(e){} }
 // create or recover this device's online player (name = your account name)
 async function ensurePlayer(){
   try{
