@@ -2974,9 +2974,10 @@ function updateHub(){
 }
 function hubInteract(){
   for(const pt of HUB_PORTALS) if(Math.hypot(housePos.x-pt.x,housePos.y-(pt.y+60))<58){ startGame(pt.game); return; }
-  if(housePos.y>H*0.86){ scene='forest';
-    if(outsidePos){ cam.x=outsidePos.x; cam.z=outsidePos.z; cam.yaw=outsidePos.yaw; } cam.eyeH=0.55; flash('Back to the forest.'); }
+  if(housePos.y>H*0.86) leaveHub();
 }
+function leaveHub(){ scene='forest';
+  if(outsidePos){ cam.x=outsidePos.x; cam.z=outsidePos.z; cam.yaw=outsidePos.yaw; } cam.eyeH=0.55; flash('Back to the forest.'); }
 function drawHub(){
   ctx.fillStyle='#0a0618'; ctx.fillRect(0,0,W,H);
   ctx.fillStyle='#160a2a'; for(let i=0;i<14;i++){ const bx=i*W/14, bh=80+((i*53)%130); ctx.fillRect(bx, H*0.5-bh, W/14-6, bh+H); }
