@@ -2777,10 +2777,14 @@ async function onlineIncomingInvite(){ if(!NET.ready) return null;
     if(!r.length) return null; const iv=r[0];
     if(Date.now()-new Date(iv.created_at).getTime() > 120000){ onlineMarkInvite(iv.id,'declined'); return null; }   // ignore stale (>2 min)
     return iv; }catch(e){ return null; } }
-function startCoop(mode, friendName){
-  account.friends=[friendName].concat((account.friends||[]).filter(n=>n!==friendName)).slice(0,6); saveAccount();
+function startCoop(mode, friendName, friendId, sessionId){
+  start(mode, 0);   // no AI bot — your friend is a real remote player
+  coop={ sessionId:sessionId, friendId:friendId, friendName:friendName };
+  coopFriendObj={ type:'remote', x:cam.x, z:cam.z, yaw:0, name:friendName, color:'#40c0ff',
+    height:1.7, width:1.4, hp:100, maxHp:100, msg:'', msgT:0, msgShow:0, stale:false };
+  objects.push(coopFriendObj); _presW=_presR=0;
   const ib=document.getElementById('inviteBanner'); if(ib) ib.classList.add('hidden');
-  start(mode, 1);   // launch the match with your friend as a named teammate
+  flash('Co-op with '+friendName+' — you can see each other move and chat!');
 }
 function showInviteBanner(iv){
   const b=document.getElementById('inviteBanner'); if(!b) return;
