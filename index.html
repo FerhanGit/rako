@@ -1238,6 +1238,7 @@ function hudTimers(){
       ab.textContent=label; ab.classList.remove('hidden');
     } else ab.classList.add('hidden');
   }
+  if(mobileOn) updateWeaponButtons();
 }
 function updateClock(){
   const n=isNight();
