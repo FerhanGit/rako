@@ -2784,7 +2784,7 @@ async function pollRequests(){ if(!NET.ready || (state!=='menu'&&state!=='over')
 // ----- "Play with a friend": invite -> accept -> both auto-start a match -----
 let waitingInvite=null, pendingIncomingInvite=null;
 // real-time co-op: see your friend move + their chat (no AI bot)
-let coop=null, coopFriendObj=null, _presW=0, _presR=0, _myLastChat={text:'',t:0};
+let coop=null, coopFriendObj=null, _presW=0, _presR=0, _myLastChat={text:'',t:0}, _myEvt=null;
 async function netPresenceWrite(){ if(!coop||!NET.ready) return;
   // send position RELATIVE TO HOME so it maps correctly into your friend's world (each world's home is placed differently)
   try{ await fetch(NET.url+'/rako_presence?on_conflict=session_id,player_id',{method:'POST',
