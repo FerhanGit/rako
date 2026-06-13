@@ -2803,12 +2803,21 @@ function getGlobalRoster(){
     try{ localStorage.setItem('rakoGlobal',JSON.stringify(r)); }catch(e){} }
   window._roster=r; return r;
 }
-function renderLeaderboard(){
+async function renderLeaderboard(){
+  const body=document.getElementById('leaderBody');
+  body.innerHTML='<div class="hint" style="font-size:16px;color:#c0c8c0">Loading worldwide ranking…</div>';
+  if(!NET.ready) await ensurePlayer();
+  if(NET.ready){ await netSyncStats(); const online=await onlineLeaderboard();
+    if(online && online.length){ const me=(account.name||'').toLowerCase();
+      let h='<div style="font-weight:bold;color:#8fe070;margin:2px 0 6px">🌍 MOST WINS — worldwide</div>';
+      online.forEach((e,i)=>{ const you=e.name&&e.name.toLowerCase()===me;
+        h+='<div class="lbRow'+(you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+esc(e.name)+'</span><span>'+(e.wins||0)+' wins</span></div>'; });
+      h+='<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Live players from around the world.</div>';
+      body.innerHTML=h; return; } }
+  // offline fallback: local ranking
   const list=allRecords();
-  document.getElementById('leaderBody').innerHTML =
-    boardRows(list,'wins')+'<div style="height:16px"></div>'+boardRows(list,'time')+
-    '<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Ranked against other players. '+
-    'Note: a single offline file can\'t fetch live worldwide players — true global play needs an online server.</div>';
+  body.innerHTML = boardRows(list,'wins')+'<div style="height:16px"></div>'+boardRows(list,'time')+
+    '<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Offline — showing local ranking. Connect to the internet for the worldwide board.</div>';
 }
 function boardRows(list, metric){
   const sorted=list.slice().sort((a,b)=> (metric==='wins'? b.wins-a.wins : b.time-a.time));
