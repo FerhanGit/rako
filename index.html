@@ -2756,7 +2756,7 @@ async function onlineSendInvite(friend){ if(!NET.ready) return null;
 async function onlineInviteStatus(id){ try{ const r=await netGet('/rako_invites?id=eq.'+id+'&select=status'); return r[0]&&r[0].status; }catch(e){ return null; } }
 async function onlineMarkInvite(id,status){ try{ await netPatch('/rako_invites?id=eq.'+id,{status:status}); }catch(e){} }
 async function onlineIncomingInvite(){ if(!NET.ready) return null;
-  try{ const r=await netGet('/rako_invites?to_id=eq.'+NET.uid+'&status=eq.pending&order=created_at.desc&limit=1&select=id,from_name,difficulty,created_at');
+  try{ const r=await netGet('/rako_invites?to_id=eq.'+NET.uid+'&status=eq.pending&order=created_at.desc&limit=1&select=id,from_id,from_name,difficulty,created_at');
     if(!r.length) return null; const iv=r[0];
     if(Date.now()-new Date(iv.created_at).getTime() > 120000){ onlineMarkInvite(iv.id,'declined'); return null; }   // ignore stale (>2 min)
     return iv; }catch(e){ return null; } }
