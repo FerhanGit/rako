@@ -729,6 +729,7 @@ function reset(){
   // reset fog-of-war (start blind; reveal around home)
   explored=new Uint8Array(MAP*MAP); markExplored(cam.x,cam.z); markExplored(HOME.x,HOME.z);
 
+  } finally { Math.random=_savedRandom; }   // restore real randomness after the world is built
   state='play';
 }
 
