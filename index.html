@@ -2485,6 +2485,9 @@ function skinCSS(name){
   if(name==='zebra') return 'repeating-linear-gradient(90deg,#141414 0 6px,#f2f2f2 6px 12px)';
   if(name==='rainbowzebra') return 'repeating-linear-gradient(90deg,#141414 0 2px,#ff3030 2px 5px,#ff9020 5px 8px,#ffe020 8px 11px,#40c040 11px 14px,#3090ff 14px 17px,#a040e0 17px 20px)';
   return SKIN_HEX[name]||'#3a8a3a'; }
+// a flat canvas-safe colour for a skin (gradients/patterns collapse to a representative solid)
+function skinSolid(name){ const m={ghost:'#dceeff',gold:'#ffd24a',silver:'#dcdce6',rainbow:'#ff6090',chess:'#aaaaaa',zebra:'#cccccc',rainbowzebra:'#ff6090'};
+  return m[name]||SKIN_HEX[name]||'#3a8a3a'; }
 function drawBoss(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const headY=base-h*0.82, frozen=cam.freeze>0;
