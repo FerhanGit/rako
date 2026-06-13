@@ -744,7 +744,8 @@ document.addEventListener('mousemove',e=>{
 
 // ---------- mobile touch controls (Roblox-style) ----------
 let mobileOn=false;
-function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl'); if(m) m.classList.toggle('hidden', !on); }
+function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl'); if(m) m.classList.toggle('hidden', !on);
+  _lastMScene=null; if(typeof updateMobileScene==='function') updateMobileScene(); }
 (function(){
   const joy=document.getElementById('mJoy'), knob=document.getElementById('mKnob');
   if(!joy) return;
