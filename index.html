@@ -828,6 +828,16 @@ function updateMobileScene(){
   ['mJump','mAtk','mChat'].forEach(id=>{ const b=document.getElementById(id); if(b) b.style.display=inMg?'none':''; });
   const city=document.getElementById('mCity'); if(city) city.style.display=(scene==='forest')?'':'none';   // City button: forest only
 }
+function updateWeaponButtons(){
+  if(!mobileOn) return;
+  const inForest = state==='play' && scene==='forest' && cam;
+  const set=(id,owned)=>{ const b=document.getElementById(id); if(b) b.classList.toggle('hidden', !(inForest&&owned)); };
+  set('wPistol',  inForest&&cam.hasPistol);
+  set('wPoison',  inForest&&cam.hasPoison);
+  set('wCrystal', inForest&&cam.hasCrystal);
+  set('wIce',     inForest&&cam.hasIce);
+  set('wRPG',     inForest&&cam.rpg>0);
+}
 
 // ---------- actions ----------
 function attack(){
