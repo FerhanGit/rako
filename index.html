@@ -2829,16 +2829,47 @@ function boardRows(list, metric){
     h+='<div class="lbRow'+(e.you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+e.name+'</span><span>'+val+'</span></div>'; });
   return h;
 }
-function renderFriends(){
+async function renderFriends(){
   const L=document.getElementById('friendList');
-  if(!account.friends.length){ L.innerHTML='<div class="hint" style="font-size:16px;color:#c0c8c0">you have no friends yet :(</div>'; return; }
-  L.innerHTML=account.friends.map((f,i)=>'<div class="friendRow"><span>'+f+'</span><button data-i="'+i+'">Remove</button></div>').join('');
-  L.querySelectorAll('button[data-i]').forEach(b=> b.onclick=()=>{ account.friends.splice(+b.dataset.i,1); saveAccount(); renderFriends(); });
+  L.innerHTML='<div class="hint" style="font-size:16px;color:#c0c8c0">Loading…</div>';
+  if(!NET.ready) await ensurePlayer();
+  if(!NET.ready){   // offline fallback to the old local list
+    if(!account.friends.length){ L.innerHTML='<div class="hint" style="font-size:16px;color:#c0c8c0">Offline — connect to the internet to add real friends.</div>'; return; }
+    L.innerHTML=account.friends.map((f,i)=>'<div class="friendRow"><span>'+esc(f)+'</span><button data-i="'+i+'">Remove</button></div>').join('');
+    L.querySelectorAll('button[data-i]').forEach(b=> b.onclick=()=>{ account.friends.splice(+b.dataset.i,1); saveAccount(); renderFriends(); });
+    return;
+  }
+  const [incoming,friends]=await Promise.all([onlineIncoming(),onlineFriends()]);
+  let h='';
+  if(incoming.length){
+    h+='<div style="font-weight:bold;color:#ffd070;margin:4px 0 4px">Friend requests</div>';
+    h+=incoming.map(r=>'<div class="friendRow"><span>'+esc((r.from&&r.from.name)||'?')+'</span>'+
+      '<span><button class="acc" data-id="'+r.id+'" style="background:#2a5a2a">Accept</button> '+
+      '<button class="dec" data-id="'+r.id+'">Decline</button></span></div>').join('');
+  }
+  h+='<div style="font-weight:bold;color:#8fe070;margin:10px 0 4px">Your friends</div>';
+  if(!friends.length) h+='<div class="hint" style="font-size:15px;color:#c0c8c0">No friends yet — type a name above and press Add.</div>';
+  else h+=friends.map(f=>'<div class="friendRow"><span>'+esc(f.name)+'</span><button class="rm" data-rid="'+f.reqId+'">Remove</button></div>').join('');
+  L.innerHTML=h;
+  L.querySelectorAll('button.acc').forEach(b=> b.onclick=async()=>{ await onlineRespond(b.dataset.id,true); renderFriends(); pollRequests(); });
+  L.querySelectorAll('button.dec').forEach(b=> b.onclick=async()=>{ await onlineRespond(b.dataset.id,false); renderFriends(); pollRequests(); });
+  L.querySelectorAll('button.rm').forEach(b=> b.onclick=async()=>{ await onlineUnfriend(b.dataset.rid); renderFriends(); });
+  // mirror accepted friends into the local list so they still spawn as named teammates
+  account.friends=friends.map(f=>f.name).slice(0,6); saveAccount();
 }
-function addFriend(){
-  const inp=document.getElementById('friendInput'), v=inp.value.trim();
-  if(v && account.friends.length<6 && !account.friends.includes(v)){ account.friends.push(v); saveAccount(); }
-  inp.value=''; renderFriends();
+function friendNote(msg,good){ const L=document.getElementById('friendList'); if(!L) return;
+  const d=document.createElement('div'); d.className='hint';
+  d.style.cssText='font-size:14px;margin:0 0 8px;color:'+(good?'#8fe070':'#e0a060'); d.textContent=msg; L.prepend(d); }
+async function addFriend(){
+  const inp=document.getElementById('friendInput'), v=inp.value.trim(); inp.value='';
+  if(!v) return;
+  if(!NET.ready) await ensurePlayer();
+  if(!NET.ready){   // offline fallback
+    if(account.friends.length<6 && !account.friends.includes(v)){ account.friends.push(v); saveAccount(); }
+    await renderFriends(); return;
+  }
+  const res=await onlineSendRequest(v);
+  await renderFriends(); friendNote(res.msg,res.ok);
 }
 
 // ---------- music (file: music.mp3, with procedural fallback) ----------
