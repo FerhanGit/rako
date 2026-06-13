@@ -1848,6 +1848,11 @@ function drawMap(){
   for(const o of objects){ if((o.type==='chest'&&!o.opened)) dot(o.x,o.z,o.rako?'#ffe070':'#caa020'); }
   for(const al of allies){ if(al.down) continue; if(!seen(al.x,al.z)) continue;
     const px=ox+(al.x/WORLD)*S, py=oy+(al.z/WORLD)*S; ctx.fillStyle=al.color; ctx.fillRect(px-2,py-2,4,4); }
+  // co-op friend — always shown so you always know where they are
+  if(coop && coopFriendObj){ const fpx=ox+(coopFriendObj.x/WORLD)*S, fpy=oy+(coopFriendObj.z/WORLD)*S;
+    ctx.fillStyle=coopFriendObj.color||'#40c0ff'; ctx.beginPath(); ctx.arc(fpx,fpy,5,0,7); ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.fillStyle='#fff'; ctx.font='11px sans-serif'; ctx.textAlign='center'; ctx.fillText(coop.friendName, fpx, fpy-9); }
   // player arrow (always visible)
   const px=ox+(cam.x/WORLD)*S, py=oy+(cam.z/WORLD)*S;
   ctx.save(); ctx.translate(px,py); ctx.rotate(cam.yaw);
