@@ -2876,13 +2876,21 @@ async function renderLeaderboard(){
   const body=document.getElementById('leaderBody');
   body.innerHTML='<div class="hint" style="font-size:16px;color:#c0c8c0">Loading worldwide ranking…</div>';
   if(!NET.ready) await ensurePlayer();
-  if(NET.ready){ await netSyncStats(); const online=await onlineLeaderboard();
-    if(online && online.length){ const me=(account.name||'').toLowerCase();
-      let h='<div style="font-weight:bold;color:#8fe070;margin:2px 0 6px">🌍 MOST WINS — worldwide</div>';
-      online.forEach((e,i)=>{ const you=e.name&&e.name.toLowerCase()===me;
-        h+='<div class="lbRow'+(you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+esc(e.name)+'</span><span>'+(e.wins||0)+' wins</span></div>'; });
-      h+='<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Live players from around the world.</div>';
-      body.innerHTML=h; return; } }
+  if(NET.ready){ await netSyncStats();
+    const [byWins,byTime]=await Promise.all([
+      onlineLeaderboard(),
+      netGet('/rako_players?select=name,wins,best_score&order=best_score.desc,wins.desc&limit=20').catch(()=>null)
+    ]);
+    if((byWins&&byWins.length)||(byTime&&byTime.length)){ const me=(account.name||'').toLowerCase();
+      const board=(title,rows,fmt)=>{ let h='<div style="font-weight:bold;color:#8fe070;margin:8px 0 6px">'+title+'</div>';
+        (rows||[]).forEach((e,i)=>{ const you=e.name&&e.name.toLowerCase()===me;
+          h+='<div class="lbRow'+(you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+esc(e.name)+'</span><span>'+fmt(e)+'</span></div>'; });
+        return h; };
+      body.innerHTML = board('🌍 MOST WINS — worldwide', byWins, e=>(e.wins||0)+' wins')
+        + '<div style="height:14px"></div>'
+        + board('⏱ MOST TIME PLAYED — worldwide', byTime, e=>fmtTime(e.best_score||0))
+        + '<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Live players from around the world.</div>';
+      return; } }
   // offline fallback: local ranking
   const list=allRecords();
   body.innerHTML = boardRows(list,'wins')+'<div style="height:16px"></div>'+boardRows(list,'time')+
