@@ -3337,6 +3337,9 @@ state='menu';
 // first launch (no language chosen yet) opens the start screen; otherwise go to the lobby
 showScreen(settings._chosen ? 'lobby' : 'start');
 settings._chosen=true; saveSettings();
+// register this player online, then poll for incoming friend requests
+ensurePlayer().then(pollRequests);
+setInterval(pollRequests, 20000);
 loop();
 </script>
 </body>
