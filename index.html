@@ -808,6 +808,7 @@ function updateMobileScene(){
   const pad=document.getElementById('mgpad'); if(pad) pad.style.display=useDpad?'block':'none';
   const joy=document.getElementById('mJoy'); if(joy) joy.style.display=(inMg&&useDpad)?'none':'';  // joystick stays for brawl / among us
   ['mJump','mAtk','mChat'].forEach(id=>{ const b=document.getElementById(id); if(b) b.style.display=inMg?'none':''; });
+  const city=document.getElementById('mCity'); if(city) city.style.display=(scene==='forest')?'':'none';   // City button: forest only
 }
 
 // ---------- actions ----------
