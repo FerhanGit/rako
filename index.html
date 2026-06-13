@@ -2811,16 +2811,19 @@ async function openInvitePicker(){
   if(!NET.ready) await ensurePlayer();
   const friends=await onlineFriends();
   if(!friends.length){ pick.innerHTML='<div class="hint" style="color:#e0a060;font-size:14px">No friends yet — add one in the FRIENDS menu first, then invite them here.</div>'; return; }
-  pick.innerHTML=friends.map((f,i)=>'<button class="party invf" data-i="'+i+'" style="min-width:120px">'+esc(f.name)+'</button>').join('');
+  pick.innerHTML=friends.map((f,i)=>'<button class="party invf" data-i="'+i+'" style="min-width:120px">'+esc(f.name)+' '+(f.online?'🟢':'🔴')+'</button>').join('');
   pick.querySelectorAll('.invf').forEach(b=> b.onclick=()=>sendInviteTo(friends[+b.dataset.i]));
 }
 async function sendInviteTo(friend){
   const pick=document.getElementById('invitePick'), status=document.getElementById('inviteStatus');
-  pick.classList.add('hidden'); status.classList.remove('hidden'); status.style.color='#ffd040';
+  pick.classList.add('hidden'); status.classList.remove('hidden');
+  if(!friend.online){ status.style.color='#e08080';
+    status.textContent=friend.name+' — this connection is not online. They must have RAKO open to join.'; return; }
+  status.style.color='#ffd040';
   status.innerHTML='Inviting '+esc(friend.name)+'… waiting for them to accept. <button id="invCancel">Cancel</button>';
   const id=await onlineSendInvite(friend);
   if(!id){ status.style.color='#e08080'; status.textContent='Could not send the invite (are you offline?).'; return; }
-  waitingInvite={id:id, friendName:friend.name};
+  waitingInvite={id:id, friendName:friend.name, friendId:friend.id};
   const c=document.getElementById('invCancel'); if(c) c.onclick=()=>{ if(waitingInvite){ onlineMarkInvite(waitingInvite.id,'declined'); waitingInvite=null; } status.classList.add('hidden'); };
 }
 function resetInviteUI(){ waitingInvite=null;
