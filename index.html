@@ -2799,7 +2799,7 @@ async function pollInvites(){
   if(!NET.ready || (state!=='menu'&&state!=='over')) return;
   if(waitingInvite){
     const st=await onlineInviteStatus(waitingInvite.id);
-    if(st==='accepted'){ const fn=waitingInvite.friendName; onlineMarkInvite(waitingInvite.id,'done'); waitingInvite=null; startCoop(pendingMode, fn); return; }
+    if(st==='accepted'){ const w=waitingInvite; onlineMarkInvite(w.id,'done'); waitingInvite=null; startCoop(pendingMode, w.friendName, w.friendId, w.id); return; }
     if(st==='declined'){ const s=document.getElementById('inviteStatus'); if(s){ s.style.color='#e08080'; s.textContent=waitingInvite.friendName+' declined the invite.'; } waitingInvite=null; }
     return;
   }
