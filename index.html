@@ -2725,12 +2725,13 @@ async function onlineSendRequest(name){
   if(!NET.ready) await ensurePlayer();
   if(!NET.ready) return {ok:false,msg:'You appear to be offline — friends need an internet connection.'};
   try{
-    const rows=await netGet('/rako_players?name=ilike.'+encodeURIComponent(name)+'&select=id,name&limit=5');
+    const rows=await netGet('/rako_players?name=ilike.'+encodeURIComponent(name)+'&select=id,name,last_seen&limit=5');
     const target=rows.find(r=>r.name.toLowerCase()===name.toLowerCase());
     if(!target) return {ok:false,msg:'No player named "'+name+'" found online yet. They must open RAKO at least once.'};
     if(target.id===NET.uid) return {ok:false,msg:"You can't add yourself!"};
     await netPost('/rako_friend_requests',{from_id:NET.uid,to_id:target.id,status:'pending'});
-    return {ok:true,msg:'Friend request sent to '+target.name+'! They can accept it next time they open RAKO.'};
+    if(!isOnline(target.last_seen)) return {ok:true,msg:'Request sent to '+target.name+', but this connection is not online right now — they will get it when they next open RAKO.'};
+    return {ok:true,msg:'Friend request sent to '+target.name+'! They can accept it from their Friends menu.'};
   }catch(e){ return {ok:false,msg:'Request already sent, or could not reach the server.'}; }
 }
 async function onlineIncoming(){ if(!NET.ready) return [];
