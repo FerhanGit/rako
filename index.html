@@ -120,6 +120,11 @@
   body.mobile #actBtn{right:150px;bottom:150px;}
   body.mobile #chat, body.mobile #mChat{display:none!important;}   /* no chat box on mobile */
   #mCity{right:36px;bottom:34px;width:72px;height:72px;background:#6f4fbfcc;font-size:26px;}
+  /* mobile weapon buttons (only the ones you own) */
+  #mWeapons{position:fixed;right:18px;bottom:250px;display:flex;flex-direction:column-reverse;gap:10px;pointer-events:none;}
+  .wbtn{width:60px;height:60px;border-radius:50%;border:2px solid #ffffffaa;background:#243a4ecc;
+    color:#fff;font-size:26px;font-family:inherit;pointer-events:auto;touch-action:none;box-shadow:0 3px 10px #0008;}
+  .wbtn:active{transform:scale(0.94);}
   /* mobile minigame controls */
   #mgctrl{position:fixed;inset:0;z-index:10;pointer-events:none;}
   #mgpad{position:fixed;left:24px;bottom:40px;width:174px;height:174px;}
