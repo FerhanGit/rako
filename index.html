@@ -1597,8 +1597,8 @@ function updateInterior(){
   // slide along furniture (try both axes separately)
   if(!hitsFurniture(nx,ny,pr)){ housePos.x=nx; housePos.y=ny; }
   else { if(!hitsFurniture(nx,housePos.y,pr)) housePos.x=nx; if(!hitsFurniture(housePos.x,ny,pr)) housePos.y=ny; }
-  // safe haven: heal + feed
-  cam.hp=Math.min(cam.maxHp, cam.hp+0.8);
+  // safe haven inside the cabin: heal slowly + feed
+  cam.hp=Math.min(cam.maxHp, cam.hp+0.12);
   cam.hunger=Math.min(cam.maxHunger, cam.hunger+1.0);
   // exit prompt
   const atDoor = Math.abs(housePos.x-(R.x+R.w/2))<48 && housePos.y>R.y+R.h-50;
