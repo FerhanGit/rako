@@ -2744,6 +2744,62 @@ async function pollRequests(){ if(!NET.ready || (state!=='menu'&&state!=='over')
   try{ const inc=await onlineIncoming(); const n=inc.length; _reqCount=n;
     const btn=document.getElementById('btnFriends'); if(btn){ const base=t('friends')||'FRIENDS'; btn.textContent=n>0?base+' ('+n+')':base; } }catch(e){} }
 
+// ----- "Play with a friend": invite -> accept -> both auto-start a match -----
+let waitingInvite=null, pendingIncomingInvite=null;
+async function onlineSendInvite(friend){ if(!NET.ready) return null;
+  try{ const made=await netPost('/rako_invites',{from_id:NET.uid,to_id:friend.id,from_name:account.name,difficulty:pendingMode}); return made[0].id; }catch(e){ return null; } }
+async function onlineInviteStatus(id){ try{ const r=await netGet('/rako_invites?id=eq.'+id+'&select=status'); return r[0]&&r[0].status; }catch(e){ return null; } }
+async function onlineMarkInvite(id,status){ try{ await netPatch('/rako_invites?id=eq.'+id,{status:status}); }catch(e){} }
+async function onlineIncomingInvite(){ if(!NET.ready) return null;
+  try{ const r=await netGet('/rako_invites?to_id=eq.'+NET.uid+'&status=eq.pending&order=created_at.desc&limit=1&select=id,from_name,difficulty,created_at');
+    if(!r.length) return null; const iv=r[0];
+    if(Date.now()-new Date(iv.created_at).getTime() > 120000){ onlineMarkInvite(iv.id,'declined'); return null; }   // ignore stale (>2 min)
+    return iv; }catch(e){ return null; } }
+function startCoop(mode, friendName){
+  account.friends=[friendName].concat((account.friends||[]).filter(n=>n!==friendName)).slice(0,6); saveAccount();
+  const ib=document.getElementById('inviteBanner'); if(ib) ib.classList.add('hidden');
+  start(mode, 1);   // launch the match with your friend as a named teammate
+}
+function showInviteBanner(iv){
+  const b=document.getElementById('inviteBanner'); if(!b) return;
+  b.innerHTML='🎮 <b>'+esc(iv.from_name)+'</b> invited you to play <b>'+esc((iv.difficulty||'normal').toUpperCase())+'</b>!<br>'+
+    '<button id="invAcc" style="background:#2a6a2a;color:#fff">Accept &amp; Join</button>'+
+    '<button id="invDec" style="background:#6a2a2a;color:#fff">Decline</button>';
+  b.classList.remove('hidden');
+  document.getElementById('invAcc').onclick=async()=>{ b.classList.add('hidden'); await onlineMarkInvite(iv.id,'accepted'); pendingIncomingInvite=null; startCoop(iv.difficulty||'normal', iv.from_name); };
+  document.getElementById('invDec').onclick=async()=>{ b.classList.add('hidden'); await onlineMarkInvite(iv.id,'declined'); pendingIncomingInvite=null; };
+}
+async function pollInvites(){
+  if(!NET.ready || (state!=='menu'&&state!=='over')) return;
+  if(waitingInvite){
+    const st=await onlineInviteStatus(waitingInvite.id);
+    if(st==='accepted'){ const fn=waitingInvite.friendName; onlineMarkInvite(waitingInvite.id,'done'); waitingInvite=null; startCoop(pendingMode, fn); return; }
+    if(st==='declined'){ const s=document.getElementById('inviteStatus'); if(s){ s.style.color='#e08080'; s.textContent=waitingInvite.friendName+' declined the invite.'; } waitingInvite=null; }
+    return;
+  }
+  if(!pendingIncomingInvite){ const iv=await onlineIncomingInvite(); if(iv){ pendingIncomingInvite=iv; showInviteBanner(iv); } }
+}
+async function openInvitePicker(){
+  const pick=document.getElementById('invitePick'), status=document.getElementById('inviteStatus');
+  status.classList.add('hidden'); pick.classList.remove('hidden'); pick.innerHTML='Loading friends…';
+  if(!NET.ready) await ensurePlayer();
+  const friends=await onlineFriends();
+  if(!friends.length){ pick.innerHTML='<div class="hint" style="color:#e0a060;font-size:14px">No friends yet — add one in the FRIENDS menu first, then invite them here.</div>'; return; }
+  pick.innerHTML=friends.map((f,i)=>'<button class="party invf" data-i="'+i+'" style="min-width:120px">'+esc(f.name)+'</button>').join('');
+  pick.querySelectorAll('.invf').forEach(b=> b.onclick=()=>sendInviteTo(friends[+b.dataset.i]));
+}
+async function sendInviteTo(friend){
+  const pick=document.getElementById('invitePick'), status=document.getElementById('inviteStatus');
+  pick.classList.add('hidden'); status.classList.remove('hidden'); status.style.color='#ffd040';
+  status.innerHTML='Inviting '+esc(friend.name)+'… waiting for them to accept. <button id="invCancel">Cancel</button>';
+  const id=await onlineSendInvite(friend);
+  if(!id){ status.style.color='#e08080'; status.textContent='Could not send the invite (are you offline?).'; return; }
+  waitingInvite={id:id, friendName:friend.name};
+  const c=document.getElementById('invCancel'); if(c) c.onclick=()=>{ if(waitingInvite){ onlineMarkInvite(waitingInvite.id,'declined'); waitingInvite=null; } status.classList.add('hidden'); };
+}
+function resetInviteUI(){ waitingInvite=null;
+  ['invitePick','inviteStatus'].forEach(id=>{ const e=document.getElementById(id); if(e){ e.classList.add('hidden'); e.innerHTML=''; } }); }
+
 // ---------- lobby screens ----------
 function showScreen(name){
   ['Start','Lobby','Account','Play','Settings','Result','Code','Party','Leader','Friends','Skin'].forEach(s=>
