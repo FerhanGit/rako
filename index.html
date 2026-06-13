@@ -439,6 +439,15 @@ function translatePrompt(s){
     'Press E to leave the secret city':'p_leavecity'};
   return MAP[s] ? t(MAP[s]) : s;
 }
+// on mobile, strip keyboard hints ("Press E to", "(M)", "press F" ...) — there's no keyboard
+function stripKeys(s){ if(!s) return s; s=String(s);
+  s=s.replace(/\bpress enter to\b/gi,'tap to');
+  s=s.replace(/\bpress [a-z] to\b/gi,'tap to');
+  s=s.replace(/\bpress [a-z]:/gi,'tap:');
+  s=s.replace(/\s*\band press [a-z]\b/gi,'');
+  s=s.replace(/\s*\([a-z]\)\s*/gi,' ');
+  s=s.replace(/\s{2,}/g,' ').trim();
+  return s.charAt(0).toUpperCase()+s.slice(1); }
 function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); const v=t(k); if(v) el.textContent=v; });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); const v=t(k); if(v) el.placeholder=v; });
