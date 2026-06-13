@@ -2764,7 +2764,7 @@ async function netPresenceWrite(){ if(!coop||!NET.ready) return;
 async function netPresenceRead(){ if(!coop||!NET.ready||!coopFriendObj) return;
   try{ const r=await netGet('/rako_presence?session_id=eq.'+coop.sessionId+'&player_id=eq.'+coop.friendId+'&select=x,z,yaw,skin,msg,msg_t,updated_at');
     if(r.length){ const f=r[0]; coopFriendObj.x=HOME.x+(+f.x); coopFriendObj.z=HOME.z+(+f.z); coopFriendObj.yaw=+f.yaw;
-      coopFriendObj.skin=f.skin||'green'; coopFriendObj.color=skinCSS(coopFriendObj.skin);
+      coopFriendObj.skin=f.skin||'green'; coopFriendObj.color=skinSolid(coopFriendObj.skin);
       coopFriendObj.stale = Date.now()-new Date(f.updated_at).getTime() > 10000;
       if(f.msg && f.msg_t && f.msg_t!==coopFriendObj.msgT){ coopFriendObj.msgT=f.msg_t; coopFriendObj.msg=f.msg; coopFriendObj.msgShow=320; pushChat(coop.friendName, f.msg); } } }catch(e){} }
 function coopTick(){ if(!coop||!NET.ready||state!=='play'||scene!=='forest') return;
