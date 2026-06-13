@@ -3346,6 +3346,7 @@ function loop(){
   requestAnimationFrame(loop);
 }
 function start(mode, size){
+  endCoop();   // clear any previous co-op session (startCoop re-establishes it right after)
   difficulty=mode||difficulty;
   if(size!==undefined) partySize=size;
   initAudio(); if(settings.music) startMusic();
