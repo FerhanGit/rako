@@ -609,6 +609,11 @@ function reset(){
   stars=[]; for(let i=0;i<70;i++) stars.push({x:Math.random()*W, y:Math.random()*(H*0.42),
      r:Math.random()*1.3+0.3, ph:Math.random()*6.28});
 
+  // === SHARED WORLD: in co-op both players seed the RNG from the same session id -> the SAME map ===
+  const _savedRandom=Math.random;
+  if(coopSeed!=null){ const _r=mulberry32(coopSeed); Math.random=function(){ return _r(); }; }
+  try {
+
   // ---- randomize every building's location this run ----
   HOME.x=24+Math.random()*(WORLD-48); HOME.z=24+Math.random()*(WORLD-48);
   // city/boss: far from home
