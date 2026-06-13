@@ -2770,7 +2770,7 @@ function renderAvatars(){
 }
 function closeAccount(){
   const v=document.getElementById('nameInput').value.trim();
-  account.name=v||'Hunter'; saveAccount(); refreshChip(); showScreen('lobby');
+  account.name=v||'Hunter'; saveAccount(); refreshChip(); netSyncStats(); showScreen('lobby');
 }
 function openSettings(){ refreshSettingsUI(); showScreen('settings'); }
 function refreshSettingsUI(){
