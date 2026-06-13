@@ -2751,6 +2751,23 @@ async function pollRequests(){ if(!NET.ready || (state!=='menu'&&state!=='over')
 
 // ----- "Play with a friend": invite -> accept -> both auto-start a match -----
 let waitingInvite=null, pendingIncomingInvite=null;
+// real-time co-op: see your friend move + their chat (no AI bot)
+let coop=null, coopFriendObj=null, _presW=0, _presR=0, _myLastChat={text:'',t:0};
+async function netPresenceWrite(){ if(!coop||!NET.ready) return;
+  try{ await fetch(NET.url+'/rako_presence?on_conflict=session_id,player_id',{method:'POST',
+    headers:netHeaders({Prefer:'resolution=merge-duplicates'}),
+    body:JSON.stringify({session_id:coop.sessionId,player_id:NET.uid,name:account.name,
+      x:cam.x,z:cam.z,yaw:cam.yaw,msg:_myLastChat.text||'',msg_t:_myLastChat.t,updated_at:new Date().toISOString()})}); }catch(e){} }
+async function netPresenceRead(){ if(!coop||!NET.ready||!coopFriendObj) return;
+  try{ const r=await netGet('/rako_presence?session_id=eq.'+coop.sessionId+'&player_id=eq.'+coop.friendId+'&select=x,z,yaw,msg,msg_t,updated_at');
+    if(r.length){ const f=r[0]; coopFriendObj.x=+f.x; coopFriendObj.z=+f.z; coopFriendObj.yaw=+f.yaw;
+      coopFriendObj.stale = Date.now()-new Date(f.updated_at).getTime() > 10000;
+      if(f.msg && f.msg_t && f.msg_t!==coopFriendObj.msgT){ coopFriendObj.msgT=f.msg_t; coopFriendObj.msg=f.msg; coopFriendObj.msgShow=320; pushChat(coop.friendName, f.msg); } } }catch(e){} }
+function coopTick(){ if(!coop||!NET.ready||state!=='play'||scene!=='forest') return;
+  if(++_presW>=10){ _presW=0; netPresenceWrite(); }     // share my position ~6x/sec
+  if(++_presR>=16){ _presR=0; netPresenceRead(); } }     // read friend ~4x/sec
+function endCoop(){ if(coop && NET.ready){ try{ netDelete('/rako_presence?session_id=eq.'+coop.sessionId+'&player_id=eq.'+NET.uid); }catch(e){} }
+  coop=null; coopFriendObj=null; }
 async function onlineSendInvite(friend){ if(!NET.ready) return null;
   try{ const made=await netPost('/rako_invites',{from_id:NET.uid,to_id:friend.id,from_name:account.name,difficulty:pendingMode}); return made[0].id; }catch(e){ return null; } }
 async function onlineInviteStatus(id){ try{ const r=await netGet('/rako_invites?id=eq.'+id+'&select=status'); return r[0]&&r[0].status; }catch(e){ return null; } }
