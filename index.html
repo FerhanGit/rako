@@ -2138,51 +2138,30 @@ function drawGiant(o,p){
 }
 function drawCabin(p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
-  const left=x-w*0.5, top=base-h, wallTop=base-h*0.62;
-  // ---- log/plank walls (warm wood) ----
+  const left=x-w*0.5, wallTop=base-h*0.92;
+  // ---- flat wooden wall (no 3D roof) ----
   const wood=ctx.createLinearGradient(0,wallTop,0,base);
   wood.addColorStop(0,'#7a4f2a'); wood.addColorStop(1,'#4a2f18');
   ctx.fillStyle=wood; ctx.fillRect(left, wallTop, w, base-wallTop);
-  // horizontal log lines
+  // plank lines
   ctx.strokeStyle="#3a2410"; ctx.lineWidth=Math.max(1,h*0.006);
-  for(let yy=wallTop; yy<base; yy+=Math.max(4,h*0.05)){
-    ctx.beginPath(); ctx.moveTo(left,yy); ctx.lineTo(left+w,yy); ctx.stroke();
-  }
-  // ---- gable (upper triangle wall) ----
-  ctx.fillStyle='#6a4424';
-  ctx.beginPath();
-  ctx.moveTo(x, top); ctx.lineTo(left+w*0.12, wallTop); ctx.lineTo(left+w*0.88, wallTop);
-  ctx.closePath(); ctx.fill();
-  // ---- dark steep hipped roof ----
-  ctx.fillStyle='#2a2e33';
-  ctx.beginPath();
-  ctx.moveTo(x, top-h*0.04);
-  ctx.lineTo(left-w*0.06, wallTop+h*0.02);
-  ctx.lineTo(left+w*1.06, wallTop+h*0.02);
-  ctx.closePath(); ctx.fill();
-  // roof shingle lines
-  ctx.strokeStyle="#1c2024"; ctx.lineWidth=Math.max(1,h*0.005);
-  for(let i=1;i<5;i++){ const yy=top-h*0.04 + (wallTop-top)*i/5;
-    const t=i/5; ctx.beginPath();
-    ctx.moveTo(x-(x-(left-w*0.06))*t, yy); ctx.lineTo(x+((left+w*1.06)-x)*t, yy); ctx.stroke(); }
-  // ---- two glowing gable windows ----
+  for(let yy=wallTop; yy<base; yy+=Math.max(4,h*0.07)){
+    ctx.beginPath(); ctx.moveTo(left,yy); ctx.lineTo(left+w,yy); ctx.stroke(); }
+  ctx.lineWidth=Math.max(1,h*0.012); ctx.strokeRect(left, wallTop, w, base-wallTop);
+  // ---- two windows ----
   ctx.fillStyle='#ffe28a';
-  const ww=w*0.14, wh=h*0.12, wy=wallTop+h*0.04;
-  ctx.fillRect(x-w*0.22-ww/2, wy, ww, wh);
-  ctx.fillRect(x+w*0.22-ww/2, wy, ww, wh);
+  const ww=w*0.16, wh=h*0.18, wy=wallTop+h*0.12;
+  ctx.fillRect(x-w*0.26-ww/2, wy, ww, wh);
+  ctx.fillRect(x+w*0.26-ww/2, wy, ww, wh);
   ctx.strokeStyle="#3a2410"; ctx.lineWidth=Math.max(1,h*0.008);
-  ctx.strokeRect(x-w*0.22-ww/2, wy, ww, wh);
-  ctx.strokeRect(x+w*0.22-ww/2, wy, ww, wh);
+  ctx.strokeRect(x-w*0.26-ww/2, wy, ww, wh);
+  ctx.strokeRect(x+w*0.26-ww/2, wy, ww, wh);
   // ---- door ----
   ctx.fillStyle='#2a1a0e';
-  ctx.fillRect(x-w*0.09, base-h*0.34, w*0.18, h*0.34);
-  // ---- porch railing ----
-  ctx.fillStyle='#5a3a1e'; ctx.fillRect(left, base-h*0.16, w, h*0.03); // top rail
-  for(let i=0;i<=14;i++){ const bx=left + w*i/14;
-    ctx.fillRect(bx, base-h*0.16, Math.max(1,w*0.012), h*0.16); }      // balusters
-  // little "HOME" sign glow
-  ctx.fillStyle="#cfe8d0"; ctx.font=`${Math.max(8,h*0.05)}px sans-serif`;
-  ctx.textAlign="center"; ctx.fillText("HOME", x, top-h*0.06);
+  ctx.fillRect(x-w*0.11, base-h*0.42, w*0.22, h*0.42);
+  // little "HOME" sign
+  ctx.fillStyle="#cfe8d0"; ctx.font=`${Math.max(8,h*0.06)}px sans-serif`;
+  ctx.textAlign="center"; ctx.fillText("HOME", x, wallTop-h*0.04); ctx.textAlign="left";
 }
 function drawHole(o,p){
   const x=p.sx, base=p.groundY, rx=Math.max(7,p.wPx*0.5), ry=Math.max(5,p.wPx*0.28);
