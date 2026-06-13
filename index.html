@@ -2343,6 +2343,19 @@ function drawAlly(o,p){
   const bw=w*0.9; ctx.fillStyle='#000'; ctx.fillRect(x-bw, base-h-5, bw*2, 4);
   ctx.fillStyle='#5fd05f'; ctx.fillRect(x-bw, base-h-5, bw*2*(o.hp/o.maxHp), 4);
 }
+function drawRemoteFriend(o,p){
+  const sa=ctx.globalAlpha; if(o.stale) ctx.globalAlpha*=0.45;   // dim if their connection went quiet
+  drawAlly(o,p);                                                  // body + name + bar (reuses ally art)
+  ctx.globalAlpha=sa;
+  const x=p.sx, base=p.groundY, h=p.hPx;
+  ctx.fillStyle='#40c0ff'; ctx.font='bold '+Math.max(8,h*0.12)+'px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('● online', x, base-h-20);
+  if(o.msgShow>0 && o.msg){ o.msgShow--;
+    ctx.font='bold 13px sans-serif'; const tw=ctx.measureText(o.msg).width+16;
+    ctx.fillStyle='#0c1810ee'; ctx.fillRect(x-tw/2, base-h-44, tw, 20);
+    ctx.fillStyle='#8fe070'; ctx.fillText(o.msg, x, base-h-30); }
+  ctx.textAlign='left';
+}
 function drawBunny(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const hopY=Math.abs(Math.sin(time*0.18+o.bob))*h*0.25;
