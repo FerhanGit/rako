@@ -779,7 +779,31 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
         cam.pitch=Math.max(-200,Math.min(200,(cam.pitch||0)-(t.clientY-ly)*1.6)); }
       lx=t.clientX; ly=t.clientY; } },{passive:false});
   cvs.addEventListener('touchend',e=>{ for(const t of e.changedTouches) if(t.identifier===lid) lid=null; },{passive:false});
+  // ----- mobile minigame pad + back-to-city -----
+  const bindMg=(id,fn)=>{ const b=document.getElementById(id); if(b) b.addEventListener('touchstart',e=>{ e.preventDefault(); fn(); },{passive:false}); };
+  bindMg('mgUp',   ()=>mgDirInput(0,-1));
+  bindMg('mgDown', ()=>mgDirInput(0, 1));
+  bindMg('mgLeft', ()=>mgDirInput(-1,0));
+  bindMg('mgRight',()=>mgDirInput(1, 0));
+  bindMg('mgBack', ()=>{ if(isMinigameScene()) scene='hub'; });
 })();
+function isMinigameScene(){ return scene==='snake'||scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='mine'||scene==='amongus'; }
+function mgDirInput(dx,dy){ if(scene==='snake') snakeDir(dx,dy); else if(scene==='mine') mineMove(dx,dy); }
+function mineTapDig(){ const m=mg; if(!m||m.dead||m.win) return;
+  const gx=Math.floor((mgMouse.x-m.ox)/m.cell), gy=Math.floor((mgMouse.y-m.oy)/m.cell);
+  const dx=gx-m.px, dy=gy-m.py;
+  if(Math.abs(dx)+Math.abs(dy)===1) mineMove(dx,dy); }   // tap an adjacent block to dig/move into it
+let _lastMScene=null;
+function updateMobileScene(){
+  const mc=document.getElementById('mgctrl'); if(!mc) return;
+  if(!mobileOn){ mc.classList.add('hidden'); return; }
+  const inMg=isMinigameScene();
+  mc.classList.toggle('hidden', !inMg);
+  const useDpad=(scene==='snake'||scene==='mine');           // discrete-direction games need the arrow pad
+  const pad=document.getElementById('mgpad'); if(pad) pad.style.display=useDpad?'block':'none';
+  const joy=document.getElementById('mJoy'); if(joy) joy.style.display=(inMg&&useDpad)?'none':'';  // joystick stays for brawl / among us
+  ['mJump','mAtk','mChat'].forEach(id=>{ const b=document.getElementById(id); if(b) b.style.display=inMg?'none':''; });
+}
 
 // ---------- actions ----------
 function attack(){
