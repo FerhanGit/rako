@@ -2792,7 +2792,7 @@ function showInviteBanner(iv){
     '<button id="invAcc" style="background:#2a6a2a;color:#fff">Accept &amp; Join</button>'+
     '<button id="invDec" style="background:#6a2a2a;color:#fff">Decline</button>';
   b.classList.remove('hidden');
-  document.getElementById('invAcc').onclick=async()=>{ b.classList.add('hidden'); await onlineMarkInvite(iv.id,'accepted'); pendingIncomingInvite=null; startCoop(iv.difficulty||'normal', iv.from_name); };
+  document.getElementById('invAcc').onclick=async()=>{ b.classList.add('hidden'); await onlineMarkInvite(iv.id,'accepted'); pendingIncomingInvite=null; startCoop(iv.difficulty||'normal', iv.from_name, iv.from_id, iv.id); };
   document.getElementById('invDec').onclick=async()=>{ b.classList.add('hidden'); await onlineMarkInvite(iv.id,'declined'); pendingIncomingInvite=null; };
 }
 async function pollInvites(){
