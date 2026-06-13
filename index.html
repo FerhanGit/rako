@@ -766,7 +766,13 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
   // look by dragging the canvas (forest only)
   let lid=null, lx=0, ly=0;
   cvs.addEventListener('touchstart',e=>{ if(!mobileOn) return; const t=e.changedTouches[0]; lid=t.identifier; lx=t.clientX; ly=t.clientY;
-    if(state==='play' && (scene==='gdash'||scene==='blast'||scene==='brawl')) mgClick(); },{passive:false});
+    // minigame taps: aim where you touch (brawl shoots there, mine digs there, etc.)
+    if(state==='play' && isMinigameScene()){
+      const r=cvs.getBoundingClientRect();
+      mgMouse.x=(t.clientX-r.left)*(W/r.width); mgMouse.y=(t.clientY-r.top)*(H/r.height);
+      if(scene==='gdash'||scene==='blast'||scene==='brawl') mgClick();
+      else if(scene==='mine') mineTapDig();
+    } },{passive:false});
   cvs.addEventListener('touchmove',e=>{ if(!mobileOn||lid===null) return; e.preventDefault();
     for(const t of e.changedTouches) if(t.identifier===lid){
       if(state==='play'&&scene==='forest'){ cam.yaw+=(t.clientX-lx)*0.006;
