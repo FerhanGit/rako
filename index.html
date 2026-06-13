@@ -767,6 +767,7 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
   bind('mJump',()=>{ if(state==='play') jump(); });
   bind('mAtk', ()=>{ if(state!=='play') return; if(scene==='interior') houseAttack(); else if(scene==='forest') attack(); else mgClick(); });
   bind('mChat',()=>{ if(state==='play') openChat(); });
+  bind('mCity',()=>{ if(state==='play' && scene==='forest') enterHub(); });   // mobile entry to the Secret City
   // look by dragging the canvas (forest only)
   let lid=null, lx=0, ly=0;
   cvs.addEventListener('touchstart',e=>{ if(!mobileOn) return; const t=e.changedTouches[0]; lid=t.identifier; lx=t.clientX; ly=t.clientY;
