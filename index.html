@@ -1239,7 +1239,7 @@ function inHome(){ return Math.hypot(cam.x-HOME.x,cam.z-HOME.z)<HOME.r; }
 function burst(x,z,col,n){ for(let i=0;i<n;i++) particles.push({x,z,
    vx:(Math.random()-.5)*0.3,vz:(Math.random()-.5)*0.3,life:22+Math.random()*14,col}); }
 function flash(t){ msgTimer=160; promptTxt=''; const m=document.getElementById('msg');
-   m.textContent=t; m.classList.remove('hidden'); }
+   m.textContent=mobileOn?stripKeys(t):t; m.classList.remove('hidden'); }
 
 // ---------- update ----------
 function juiceDecay(){
