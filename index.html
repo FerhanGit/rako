@@ -3094,7 +3094,8 @@ function auDraw(){
 
 // ---------- loop / start ----------
 function loop(){
-  try{ update(); draw(); }
+  try{ update(); draw();
+    if(mobileOn && scene!==_lastMScene){ _lastMScene=scene; updateMobileScene(); } }
   catch(err){ console.error(err); const m=document.getElementById('msg');
     if(m){ m.textContent=''+err.message; m.classList.remove('hidden'); } }
   requestAnimationFrame(loop);
