@@ -2790,7 +2790,8 @@ async function netPresenceWrite(){ if(!coop||!NET.ready) return;
   try{ await fetch(NET.url+'/rako_presence?on_conflict=session_id,player_id',{method:'POST',
     headers:netHeaders({Prefer:'resolution=merge-duplicates'}),
     body:JSON.stringify({session_id:coop.sessionId,player_id:NET.uid,name:account.name,skin:account.skin||'green',
-      x:cam.x-HOME.x,z:cam.z-HOME.z,yaw:cam.yaw,msg:_myLastChat.text||'',msg_t:_myLastChat.t,updated_at:new Date().toISOString()})}); }catch(e){} }
+      x:cam.x-HOME.x,z:cam.z-HOME.z,yaw:cam.yaw,msg:_myLastChat.text||'',msg_t:_myLastChat.t,
+      evt:_myEvt?_myEvt.code:'',evt_t:_myEvt?_myEvt.t:0,updated_at:new Date().toISOString()})}); }catch(e){} }
 async function netPresenceRead(){ if(!coop||!NET.ready||!coopFriendObj) return;
   try{ const r=await netGet('/rako_presence?session_id=eq.'+coop.sessionId+'&player_id=eq.'+coop.friendId+'&select=x,z,yaw,skin,msg,msg_t,updated_at');
     if(r.length){ const f=r[0]; coopFriendObj.x=HOME.x+(+f.x); coopFriendObj.z=HOME.z+(+f.z); coopFriendObj.yaw=+f.yaw;
