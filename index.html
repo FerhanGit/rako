@@ -942,10 +942,7 @@ function openNearbyChest(){
 // E = context action: open chest / enter cabin / leave cabin
 function interact(){
   if(state!=='play') return;
-  if(scene==='interior'){
-    if(Math.hypot(housePos.x-ARCADE.x, housePos.y-ARCADE.y)<48){ enterArcade(); return; }
-    tryExitCabin(); return;
-  }
+  if(scene==='interior'){ tryExitCabin(); return; }
   if(scene==='cave'){ caveInteract(); return; }
   if(scene==='hub'){ hubInteract(); return; }
   // collect a nearby coin into your inventory
