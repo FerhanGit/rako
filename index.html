@@ -747,7 +747,7 @@ const keys={};
 addEventListener('keydown',e=>{
   if(e.target && e.target.tagName==='INPUT') return;   // don't hijack typing fields
   const k=e.key.toLowerCase(); keys[k]=true;
-  if(state==='play' && (scene==='snake'||scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='mine'||scene==='amongus')){
+  if(state==='play' && (scene==='snake'||scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='mine'||scene==='amongus'||scene==='darkroom')){
     if(k===' '||k==='arrowup'||k==='arrowdown'||k==='arrowleft'||k==='arrowright') e.preventDefault(); mgKey(k); return; }
   if(state==='play' && k==='enter'){ openChat(); return; }   // chat anywhere
   if(k==='i'){ toggleInventory(); return; }
