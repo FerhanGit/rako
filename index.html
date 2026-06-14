@@ -3110,7 +3110,7 @@ function enterArcade(){ outsidePos={x:cam.x,z:cam.z,yaw:cam.yaw}; enterHub();
 function spawnHubFriends(){
   hubFriends=[];
   // your real co-op friend (if online) plus your friends-list names hang out here
-  const names=[]; if(coop && coopFriendName) names.push(coopFriendName);
+  const names=[]; if(coop && coop.friendName) names.push(coop.friendName);
   for(const f of account.friends) if(names.length<4 && !names.includes(f)) names.push(f);
   while(names.length<3){ const n=NAMES[Math.floor(Math.random()*NAMES.length)]; if(!names.includes(n)) names.push(n); }
   for(let i=0;i<names.length;i++){
