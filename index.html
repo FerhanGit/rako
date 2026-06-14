@@ -3431,6 +3431,7 @@ function start(mode, size){
 
 function leaveToLobby(){
   if(state==='menu' || state==='over') return;
+  if(scene==='darkroom' && (!mg || !mg.done)) return;   // no escape from the dark room until the jumpscare passes
   endCoop();
   state='menu';
   if(document.pointerLockElement) document.exitPointerLock();
