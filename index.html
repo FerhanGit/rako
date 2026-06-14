@@ -436,7 +436,8 @@ function translatePrompt(s){
     'Press E to step back outside':'p_exitcabin','Press Enter to chat':'p_chat',
     'TRAPPED! Click the monsters to fight them off!':'p_trapped','The way is clear — reach the EXIT and press E':'p_clear',
     'Press E to open the LEGENDARY chest':'p_legendary','Press E to leave the cave':'p_leavecave',
-    'Press E to leave the secret city':'p_leavecity'};
+    'Press E to leave the secret city':'p_leavecity',
+    'Press E to play minigames with friends':'p_arcade'};
   return MAP[s] ? t(MAP[s]) : s;
 }
 // on mobile, strip keyboard hints ("Press E to", "(M)", "press F" ...) — there's no keyboard
