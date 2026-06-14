@@ -3104,21 +3104,21 @@ function openChat(){ const c=document.getElementById('chat'); c.classList.remove
   if(document.pointerLockElement) document.exitPointerLock(); }
 function closeChat(){ document.getElementById('chat').classList.add('hidden'); }
 function sendChat(){ const c=document.getElementById('chat'), raw=c.value.trim(), v=raw.toLowerCase(); closeChat();
-  if(v==='bebenceta'){ enterHub(); return; }
+  if(v==='bebenceta'){
+    // the secret city is co-op only — a REAL friend must have joined your game
+    if(coop && coop.friendName){ enterHub(); }
+    else { flash('BEBENCETA — invite a REAL friend to join your game first, then you can play the minigames together!'); }
+    return;
+  }
   if(raw){ pushChat(account.name, raw);     // your message shows in the feed for everyone
     if(coop){ _myLastChat={text:raw, t:Date.now()}; netPresenceWrite(); } }   // and reaches your co-op friend
 }
-function enterArcade(){ outsidePos={x:cam.x,z:cam.z,yaw:cam.yaw}; enterHub();
-  flash('🕹 Arcade — play minigames with your friends! Walk to a portal and press E.'); }
 function spawnHubFriends(){
   hubFriends=[];
-  // your real co-op friend (if online) plus your friends-list names hang out here
-  const names=[]; if(coop && coop.friendName) names.push(coop.friendName);
-  for(const f of account.friends) if(names.length<4 && !names.includes(f)) names.push(f);
-  while(names.length<3){ const n=NAMES[Math.floor(Math.random()*NAMES.length)]; if(!names.includes(n)) names.push(n); }
-  for(let i=0;i<names.length;i++){
-    hubFriends.push({ name:names[i], x:W*(0.25+0.16*i), y:H*0.66+(i%2)*30,
-      tx:W*(0.25+0.16*i), ty:H*0.66, t:Math.random()*200, col:'hsl('+(i*70+20)+',60%,58%)' });
+  // only your REAL co-op friend appears here
+  if(coop && coop.friendName){
+    hubFriends.push({ name:coop.friendName, x:W*0.42, y:H*0.66,
+      tx:W*0.42, ty:H*0.66, t:Math.random()*200, col:skinSolid((coopFriendObj&&coopFriendObj.skin)||'green') });
   }
 }
 function enterHub(){ scene='hub'; housePos={x:W/2,y:H*0.74}; cam.flyTime=0;
