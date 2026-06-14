@@ -3131,6 +3131,10 @@ function updateHub(){
   housePos.x=Math.max(20,Math.min(W-20,housePos.x)); housePos.y=Math.max(70,Math.min(H-26,housePos.y));
   let pr=null; for(const pt of HUB_PORTALS) if(Math.hypot(housePos.x-pt.x,housePos.y-(pt.y+60))<58){ pr=pt; break; }
   promptTxt = pr ? ('Press E to play '+pr.label) : (housePos.y>H*0.86 ? 'Press E to leave the secret city' : '');
+  // friends wander around the arcade
+  for(const f of hubFriends){ f.t++;
+    if(f.t%140===0){ f.tx=W*(0.2+Math.random()*0.6); f.ty=H*(0.55+Math.random()*0.28); }
+    f.x+=(f.tx-f.x)*0.02; f.y+=(f.ty-f.y)*0.02; }
 }
 function hubInteract(){
   for(const pt of HUB_PORTALS) if(Math.hypot(housePos.x-pt.x,housePos.y-(pt.y+60))<58){ startGame(pt.game); return; }
