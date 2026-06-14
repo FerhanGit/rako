@@ -3137,6 +3137,7 @@ function drawHub(){
 }
 function startGame(g){ scene=g; if(g==='snake')snakeInit(); else if(g==='gdash')gdashInit(); else if(g==='blast')blastInit(); else if(g==='brawl')brawlInit(); else if(g==='mine')mineInit(); else if(g==='amongus')auInit(); }
 function mgKey(k){
+  if(scene==='darkroom'){ if(mg && mg.done && (k==='q'||k==='escape'||k==='e'||k===' ')){ scene='hub'; } return; }  // can't quit until the jumpscare passes
   if(k==='q'||k==='escape'){ scene='hub'; return; }
   if(mg && mg.dead && k==='e'){ startGame(scene); return; }
   if(scene==='snake'){ if(k==='w'||k==='arrowup')snakeDir(0,-1); else if(k==='s'||k==='arrowdown')snakeDir(0,1);
