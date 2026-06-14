@@ -1638,9 +1638,11 @@ function updateInterior(){
   cam.hunger=Math.min(cam.maxHunger, cam.hunger+1.0);
   // exit prompt
   const atDoor = Math.abs(housePos.x-(R.x+R.w/2))<48 && housePos.y>R.y+R.h-50;
+  const nearArcade = Math.hypot(housePos.x-ARCADE.x, housePos.y-ARCADE.y)<48;
   promptTxt = houseBreached
             ? (houseMobs.length ? "TRAPPED! Click the monsters to fight them off!" : "The way is clear — reach the EXIT and press E")
-            : (atDoor ? "Press E to step back outside" : "Press Enter to chat");
+            : (nearArcade ? "Press E to play minigames with friends"
+            : (atDoor ? "Press E to step back outside" : "Press Enter to chat"));
   // breach: monsters break in after 1 minute and trap you inside
   houseTimer++;
   if(houseTimer===HOUSE_BREACH_FRAMES-30*60) flash("Something is clawing at the cabin walls... 30 seconds!");
