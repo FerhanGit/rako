@@ -1305,6 +1305,7 @@ function update(){
   if(scene==='brawl'){ brawlUpdate(); return; }
   if(scene==='mine'){ mineUpdate(); return; }
   if(scene==='amongus'){ auUpdate(); return; }
+  if(scene==='darkroom'){ darkUpdate(); return; }
   matchFrames++;
   // lifetime "time played" (seconds)
   if(++ptAccum>=60){ ptAccum=0; account.timePlayed=(account.timePlayed||0)+1; if(account.timePlayed%10===0) saveAccount(); }
