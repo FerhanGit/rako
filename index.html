@@ -481,6 +481,8 @@ const DAY_LEN=120*60, NIGHT_LEN=90*60, CYCLE=DAY_LEN+NIGHT_LEN;   // frames @60f
 const ROOM={x0:0, z0:0, x1:10, z1:8, h:3.2, doorX:5, doorW:2};    // (legacy)
 // 2D top-down cabin interior
 const houseRect={x:230, y:96, w:500, h:420};
+const ARCADE={x:230+70, y:96+62};        // arcade machine inside the cabin → minigames
+let hubFriends=[];                        // friend avatars hanging out in the secret city
 let housePos={x:0,y:0}, houseTimer=0;
 let houseMobs=[], houseBreached=false;       // monsters that break into the cabin after 1 min
 let houseWave=0, houseWaveTimer=0;           // escalating waves the longer you linger
