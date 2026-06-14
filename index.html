@@ -1952,6 +1952,15 @@ function drawInterior(){
   ctx.fillStyle='#1a0f06'; ctx.fillRect(dx-34, R.y+R.h-14, 68, 14);
   ctx.fillStyle='#ffd86a'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
   ctx.fillText('EXIT', dx, R.y+R.h-3);
+  // arcade machine
+  (function(){ const ax=ARCADE.x, ay=ARCADE.y;
+    ctx.fillStyle='#1a1030'; ctx.fillRect(ax-20,ay-26,40,52);                 // cabinet
+    ctx.fillStyle='#3a2a6a'; ctx.fillRect(ax-16,ay-22,32,20);                 // screen bezel
+    const g=0.5+0.4*Math.sin(time*0.12);
+    ctx.fillStyle='rgba(80,200,255,'+g+')'; ctx.fillRect(ax-13,ay-19,26,14);  // glowing screen
+    ctx.fillStyle='#e0c040'; ctx.fillRect(ax-12,ay+2,24,4);                    // controls
+    ctx.fillStyle='#ff4ed0'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.fillText('ARCADE', ax, ay-30); ctx.textAlign='left';
+  })();
   // breached-in monsters (top-down)
   for(const m of houseMobs){
     ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(m.x,m.y+12,12,5,0,0,7); ctx.fill();
