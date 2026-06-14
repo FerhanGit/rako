@@ -421,6 +421,12 @@ Object.assign(I18N.ar,{ mg_score:'النقاط',mg_kills:'القتلى',mg_tasks
   p_openchest:'اضغط E لفتح الصندوق',p_rakochest:'صندوق RAKO — اضغط E للفتح',p_stonechest:'اضغط E لفتح الصندوق الحجري (مرة واحدة)',p_tradetable:'اضغط E لفتح طاولة المقايضة',p_buytable:'اضغط E لفتح المتجر (%n عملة)',p_coin:'اضغط E لالتقاط العملة',p_shguards:'صندوق القلعة — اهزم كل الحراس',p_shclaim:'اضغط E للحصول على السيف الحجري',p_entercabin:'اضغط E لدخول كوخك',p_tame:'اضغط P لإطعام اللحم وترويض الذئب',p_wolf:'ذئب بري! اقتل الأرانب للحصول على لحم لترويضه',p_exitcabin:'اضغط E للخروج',p_chat:'اضغط Enter للدردشة',p_trapped:'محاصر! انقر على الوحوش لقتالها!',p_clear:'الطريق آمن — اصل إلى المخرج واضغط E',p_legendary:'اضغط E لفتح الصندوق الأسطوري',p_leavecave:'اضغط E لمغادرة الكهف',p_play:'اضغط E للعب %s',p_leavecity:'اضغط E لمغادرة المدينة السرية' });
 Object.assign(I18N.zh,{ mg_score:'分数',mg_kills:'击杀',mg_tasks:'任务',mg_diamonds:'剩余钻石',mg_jump:'空格/点击跳跃',mg_blasttip:'点击2个以上同色方块',mg_brawltip:'WASD移动，点击射击',mg_minetip:'WASD挖掘 · 躲避苦力怕',mg_amongtip:'WASD — 完成任务，躲避内鬼',mg_minewin:'所有钻石已挖完！',mg_amongwin:'胜利 — 任务完成！',mg_again:'E = 再玩一次',mg_hub:'Q = 大厅',mg_back:'Q = 返回大厅',mg_gameover:'游戏结束',
   p_openchest:'按 E 打开宝箱',p_rakochest:'RAKO 宝箱 — 按 E 打开',p_stonechest:'按 E 打开石头宝箱（一次）',p_tradetable:'按 E 打开交易台',p_buytable:'按 E 打开商店（%n 金币）',p_coin:'按 E 拾取金币',p_shguards:'要塞宝箱 — 击败所有守卫',p_shclaim:'按 E 领取石剑',p_entercabin:'按 E 进入小屋',p_tame:'按 P 喂肉驯服狼',p_wolf:'野狼！击杀兔子获得肉来驯服它',p_exitcabin:'按 E 回到外面',p_chat:'按 Enter 聊天',p_trapped:'被困了！点击怪物进行战斗！',p_clear:'道路畅通 — 到达出口并按 E',p_legendary:'按 E 打开传奇宝箱',p_leavecave:'按 E 离开洞穴',p_play:'按 E 玩 %s',p_leavecity:'按 E 离开秘密城市' });
+I18N.en.p_arcade='Press E to play minigames with friends';
+I18N.es.p_arcade='Pulsa E para jugar minijuegos con amigos';
+I18N.tr.p_arcade='Arkadaşlarınla mini oyunlar oynamak için E';
+I18N.bg.p_arcade='Натисни E за да играеш миниигри с приятели';
+I18N.ar.p_arcade='اضغط E للعب الألعاب المصغرة مع الأصدقاء';
+I18N.zh.p_arcade='按 E 与好友一起玩小游戏';
 function t(key){ const L=I18N[settings.lang]||I18N.en; return L[key]||I18N.en[key]||key; }
 // translate a (possibly dynamic) English promptTxt for display, without disturbing action-button detection
 function translatePrompt(s){
