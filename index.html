@@ -3104,12 +3104,7 @@ function openChat(){ const c=document.getElementById('chat'); c.classList.remove
   if(document.pointerLockElement) document.exitPointerLock(); }
 function closeChat(){ document.getElementById('chat').classList.add('hidden'); }
 function sendChat(){ const c=document.getElementById('chat'), raw=c.value.trim(), v=raw.toLowerCase(); closeChat();
-  if(v==='bebenceta'){
-    // the secret city is co-op only — a REAL friend must have joined your game
-    if(coop && coop.friendName){ enterHub(); }
-    else { flash('BEBENCETA — invite a REAL friend to join your game first, then you can play the minigames together!'); }
-    return;
-  }
+  if(v==='bebenceta'){ enterHub(); return; }   // play solo — and your REAL friend joins you here if they're in your game
   if(raw){ pushChat(account.name, raw);     // your message shows in the feed for everyone
     if(coop){ _myLastChat={text:raw, t:Date.now()}; netPresenceWrite(); } }   // and reaches your co-op friend
 }
