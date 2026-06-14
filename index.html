@@ -3183,7 +3183,47 @@ function gdashUpdate(){ if(mg.dead)return; mg.score++; mg.speed=5+mg.score*0.003
   if(--mg.spawn<=0){ mg.spawn=38+Math.floor(Math.random()*46); mg.spikes.push({x:W+20, n:1+Math.floor(Math.random()*2)}); }
   for(const s of mg.spikes) s.x-=mg.speed; mg.spikes=mg.spikes.filter(s=>s.x>-50);
   const px=W*0.25;
-  for(const s of mg.spikes){ const sw=s.n*22; if(px+12>s.x-sw*0.5 && px-12<s.x+sw*0.5 && mg.py>-28){ mg.dead=true; SFX.die(); } }
+  for(const s of mg.spikes){ const sw=s.n*22; if(px+12>s.x-sw*0.5 && px-12<s.x+sw*0.5 && mg.py>-28){ mg.dead=true; SFX.die();
+    if(Math.floor(mg.score/10)===100){ enterDarkRoom(); return; } } }
+}
+// ---- THE DARK ROOM (secret: die at exactly 100 in Geometry Dash) ----
+function enterDarkRoom(){
+  scene='darkroom'; mg={mode:'dark', t:0, scared:false, done:false};
+  if(document.pointerLockElement) document.exitPointerLock();
+}
+function darkUpdate(){
+  const m=mg; if(!m) return; m.t++;
+  if(m.t===10*60){ m.scared=true; shake=36; hurtFlash=1; SFX.boss&&SFX.boss(); SFX.die&&SFX.die(); SFX.hit&&SFX.hit(); }
+  if(m.t>=10*60+70){ m.scared=false; m.done=true; }
+}
+function darkDraw(){
+  const m=mg; ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  if(m.scared){ drawJumpscare(m); return; }
+  if(!m.done){
+    // first-person pitch black — only the faintest hint of a room, and breathing text
+    const a=0.03+0.025*Math.sin(m.t*0.05);
+    ctx.fillStyle='rgba(24,24,32,'+a+')'; ctx.fillRect(W*0.2,H*0.15,W*0.6,H*0.7);
+    if(m.t>90){ ctx.fillStyle='rgba(140,140,160,'+(0.12+0.1*Math.sin(m.t*0.08))+')';
+      ctx.textAlign='center'; ctx.font='16px sans-serif'; ctx.fillText('...where are you?...', W/2, H/2);
+      ctx.font='12px sans-serif'; ctx.fillStyle='rgba(120,30,30,0.5)'; ctx.fillText('you cannot leave', W/2, H/2+26); ctx.textAlign='left'; }
+  } else {
+    ctx.fillStyle='#b03030'; ctx.textAlign='center'; ctx.font='bold 22px sans-serif';
+    ctx.fillText('Press Q to leave...', W/2, H/2); ctx.textAlign='left';
+  }
+}
+function drawJumpscare(m){
+  const jx=(Math.random()-0.5)*24, jy=(Math.random()-0.5)*24;
+  ctx.save(); ctx.translate(jx,jy);
+  ctx.fillStyle='#160000'; ctx.fillRect(-30,-30,W+60,H+60);
+  const cx=W/2, cy=H/2, s=Math.min(W,H)*0.42;
+  ctx.fillStyle='#d8d0c2'; ctx.beginPath(); ctx.ellipse(cx,cy,s*0.72,s,0,0,7); ctx.fill();          // pale face
+  ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(cx-s*0.32,cy-s*0.22,s*0.17,0,7); ctx.arc(cx+s*0.32,cy-s*0.22,s*0.17,0,7); ctx.fill();
+  ctx.fillStyle='#e00000'; ctx.beginPath(); ctx.arc(cx-s*0.32,cy-s*0.22,s*0.06,0,7); ctx.arc(cx+s*0.32,cy-s*0.22,s*0.06,0,7); ctx.fill();
+  ctx.strokeStyle='#600'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(cx-s*0.3,cy+s*0.05); ctx.lineTo(cx-s*0.3,cy+s); ctx.moveTo(cx+s*0.3,cy+s*0.05); ctx.lineTo(cx+s*0.3,cy+s); ctx.stroke();
+  ctx.fillStyle='#100'; ctx.beginPath(); ctx.ellipse(cx,cy+s*0.5,s*0.3,s*0.42,0,0,7); ctx.fill();    // gaping mouth
+  ctx.fillStyle='#fff'; for(let i=-3;i<=3;i++) ctx.fillRect(cx+i*s*0.085-3, cy+s*0.22, 6, 12);
+  ctx.restore();
+  if(Math.floor(m.t)%2===0){ ctx.fillStyle='rgba(180,0,0,0.28)'; ctx.fillRect(0,0,W,H); }            // red flicker
 }
 function gdashDraw(){ const m=mg;
   ctx.fillStyle='#0f1428'; ctx.fillRect(0,0,W,H);
