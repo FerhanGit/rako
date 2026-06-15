@@ -3269,7 +3269,7 @@ function gdashDraw(){ const m=mg;
   ctx.fillStyle=skinBody(px,m.gy+m.py,18).fill; ctx.fillRect(-13,-26,26,26); ctx.restore();
   ctx.fillStyle='#ff5060'; for(const s of m.spikes) for(let i=0;i<s.n;i++){ const sx=s.x-(s.n-1)*11+i*22;
     ctx.beginPath(); ctx.moveTo(sx-11,m.gy+24); ctx.lineTo(sx,m.gy-8); ctx.lineTo(sx+11,m.gy+24); ctx.closePath(); ctx.fill(); }
-  mgHud(t('mg_gdash'),t('mg_score')+' '+Math.floor(m.score/10)+'   ('+t('mg_jump')+')', m.dead);
+  mgHud(t('mg_gdash'),t('mg_score')+' '+Math.floor(m.score/20)+'   ('+t('mg_jump')+')', m.dead);
 }
 // ---- BLOCK BLAST ----
 function blastInit(){ const cols=10, rows=12, cs=Math.min((W-60)/cols,(H-150)/rows);
