@@ -3262,7 +3262,11 @@ function drawHub(){
   const x=housePos.x,y=housePos.y; ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(x,y+12,12,5,0,0,7); ctx.fill();
   drawCharacter(ctx, x, y, 13, account.charSkin, skinSolid(account.skin), cam.hface||1);
 }
-function startGame(g){ scene=g; if(g==='snake')snakeInit(); else if(g==='gdash')gdashInit(); else if(g==='blast')blastInit(); else if(g==='brawl')brawlInit(); else if(g==='mine')mineInit(); else if(g==='amongus')auInit(); }
+function startGame(g){ scene=g;
+  promptTxt='';   // clear the hub "Press E to play X" prompt so it doesn't linger over the minigame
+  const pe=document.getElementById('prompt'); if(pe) pe.classList.add('hidden');
+  const ab=document.getElementById('actBtn'); if(ab) ab.classList.add('hidden');
+  if(g==='snake')snakeInit(); else if(g==='gdash')gdashInit(); else if(g==='blast')blastInit(); else if(g==='brawl')brawlInit(); else if(g==='mine')mineInit(); else if(g==='amongus')auInit(); }
 function mgKey(k){
   if(scene==='darkroom'){ if(mg && mg.done && (k==='q'||k==='escape'||k==='e'||k===' ')){ scene='hub'; } return; }  // can't quit until the jumpscare passes
   if(k==='q'||k==='escape'){ scene='hub'; return; }
