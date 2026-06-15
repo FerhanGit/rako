@@ -3708,6 +3708,49 @@ document.getElementById('admin').addEventListener('mousedown',e=>{ if(e.target.i
 // honor autoplay policy: kick off music on the first user gesture
 addEventListener('pointerdown',()=>{ if(settings.music && !musicMode) startMusic(); });
 
+// ---------- cinematic loading / searching screen ----------
+function drawCineBg(g,t){
+  const cv=g.canvas, W2=cv.width, H2=cv.height, cx=W2/2, hor=H2*0.80;
+  let sky=g.createLinearGradient(0,0,0,H2); sky.addColorStop(0,'#0c0a12'); sky.addColorStop(0.55,'#0a0810'); sky.addColorStop(1,'#070608');
+  g.fillStyle=sky; g.fillRect(0,0,W2,H2);
+  const fl=0.6+0.25*Math.sin(t*0.04);
+  const gl=g.createRadialGradient(cx,H2*0.13,8,cx,H2*0.13,H2*0.52);   // eclipse halo
+  gl.addColorStop(0,'rgba(244,224,196,'+(0.55*fl)+')'); gl.addColorStop(0.22,'rgba(150,90,60,'+(0.32*fl)+')'); gl.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=gl; g.fillRect(0,0,W2,H2*0.62);
+  g.fillStyle='rgba(8,6,10,0.5)'; for(let i=0;i<6;i++){ g.beginPath(); g.ellipse((i*W2/5+t*0.2)%(W2+220)-110,H2*0.12+Math.sin(i)*18,170,42,0,0,7); g.fill(); }
+  function spire(x,base,w,h,c){ g.fillStyle=c; g.beginPath(); g.moveTo(x-w,base); g.lineTo(x,base-h); g.lineTo(x+w,base); g.closePath(); g.fill(); g.fillRect(x-w*0.6,base-h*0.5,w*1.2,h*0.5); }
+  for(let i=0;i<14;i++){ spire(i*W2/13,hor,W2*0.04,H2*(0.24+0.2*Math.abs(Math.sin(i*1.7))),'#0e0c14'); }
+  g.fillStyle='#100d16'; g.beginPath(); g.moveTo(cx-W2*0.16,hor); g.lineTo(cx,H2*0.18); g.lineTo(cx+W2*0.16,hor); g.closePath(); g.fill();
+  g.fillRect(cx-W2*0.13,H2*0.42,W2*0.26,hor-H2*0.42);
+  for(let k=-2;k<=2;k++) spire(cx+k*W2*0.06,H2*0.5,W2*0.018,H2*0.18,'#0c0a12');
+  // looming god above the cathedral
+  const gy=H2*0.2; g.fillStyle='rgba(6,4,8,0.92)'; g.beginPath(); g.ellipse(cx,gy,W2*0.045,H2*0.12,0,0,7); g.fill();
+  g.strokeStyle='rgba(6,4,8,0.85)'; g.lineWidth=5;
+  for(let a=0;a<8;a++){ const ang=Math.PI+(a/7)*Math.PI; g.beginPath(); g.moveTo(cx,gy);
+    g.quadraticCurveTo(cx+Math.cos(ang)*W2*0.12,gy+Math.sin(ang)*H2*0.1,cx+Math.cos(ang)*W2*0.18,gy+H2*0.16); g.stroke(); }
+  g.fillStyle='rgba(6,4,8,0.95)'; for(let s=-3;s<=3;s++){ g.beginPath(); g.moveTo(cx+s*8,gy-H2*0.1); g.lineTo(cx+s*8+4,gy-H2*0.16); g.lineTo(cx+s*8+8,gy-H2*0.1); g.fill(); }
+  function wing(x,y,s,d){ g.fillStyle='rgba(10,7,12,0.8)'; g.beginPath(); g.moveTo(x,y); g.lineTo(x+d*s,y-s*0.5); g.lineTo(x+d*s*0.8,y+s*0.3); g.lineTo(x,y+s*0.4); g.closePath(); g.fill(); }
+  wing(W2*0.16,H2*0.22,W2*0.07,-1); wing(W2*0.84,H2*0.20,W2*0.07,1);
+  g.fillStyle='#0a0809'; g.fillRect(0,hor,W2,H2-hor);
+  const rg=g.createLinearGradient(cx,hor,cx,H2); rg.addColorStop(0,'rgba(180,120,80,'+(0.12*fl)+')'); rg.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=rg; g.fillRect(cx-W2*0.2,hor,W2*0.4,H2-hor);
+  g.fillStyle='#05040a'; for(let i=0;i<6;i++){ const fx=cx+(i-2.5)*W2*0.05,fy=hor+H2*0.05; g.fillRect(fx-3,fy-22,6,22); g.beginPath(); g.arc(fx,fy-26,4,0,7); g.fill(); }
+  g.fillStyle='rgba(255,140,60,0.5)'; for(let i=0;i<30;i++){ const ex=(i*97+t*1.5)%W2, ey=hor-((i*53+t*2)%hor); g.fillRect(ex,ey,1.5,1.5); }
+}
+let _cineRAF=0,_cineT=0;
+function resizeCine(){ const cv=document.getElementById('cineCv'); cv.width=Math.min(1280,window.innerWidth); cv.height=Math.min(800,window.innerHeight); }
+function cineFrame(){ const cv=document.getElementById('cineCv'); if(!cv){ _cineRAF=0; return; } _cineT++; drawCineBg(cv.getContext('2d'),_cineT); _cineRAF=requestAnimationFrame(cineFrame); }
+function hideCine(){ document.getElementById('cine').classList.add('hidden'); if(_cineRAF){ cancelAnimationFrame(_cineRAF); _cineRAF=0; } }
+function showCine(label,durMs,then){
+  const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; if(!_cineRAF) cineFrame();
+  document.getElementById('cineLabel').textContent=label;
+  const fill=document.getElementById('cineFill'), pct=document.getElementById('cinePct'), t0=performance.now();
+  (function step(){ const e=Math.min(1,(performance.now()-t0)/durMs); fill.style.width=(e*100).toFixed(0)+'%'; pct.textContent=Math.round(e*100)+'%';
+    if(e<1) requestAnimationFrame(step); else { hideCine(); if(then) then(); } })();
+}
+function searchThenStart(mode,n){ showCine('Searching for players…', 5000, ()=> start(mode,n)); }
+window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
+
 // ---------- boot ----------
 loadData(); refreshChip(); applyQuality(quality);
 applyLang(); renderLangGrid(); refreshPlatform();
@@ -3715,6 +3758,7 @@ state='menu';
 // first launch (no language chosen yet) opens the start screen; otherwise go to the lobby
 showScreen(settings._chosen ? 'lobby' : 'start');
 settings._chosen=true; saveSettings();
+showCine('Entering the cursed forest…', 2600, null);   // loading screen with progress bar
 // register this player online, then poll for incoming friend requests + game invites
 ensurePlayer().then(()=>{ pollRequests(); pollInvites(); });
 setInterval(pollRequests, 20000);
@@ -3724,3 +3768,4 @@ loop();
 </script>
 </body>
 </html>
+<html><niggggger>messege<brbrpatapim</niggggger></html>
