@@ -2907,6 +2907,9 @@ function renderAvatars(){
   html+=AVATARS.map(e=>cell(e,e,account.avatar===e)).join('');
   G.innerHTML=html;
   G.querySelectorAll('button[data-av]').forEach(b=> b.onclick=()=>{ account.avatar=b.dataset.av; saveAccount(); refreshChip(); renderAvatars(); });
+  const cur=document.getElementById('avatarCur'); if(cur) cur.textContent=account.avatar||'🎨';
+  const btn=document.getElementById('avatarBtn');
+  if(btn) btn.onclick=()=>{ G.classList.toggle('hidden'); };
 }
 function closeAccount(){
   const v=document.getElementById('nameInput').value.trim();
