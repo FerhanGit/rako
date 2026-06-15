@@ -379,6 +379,17 @@
   <button id="secretBtn">codes</button>
 </div>
 
+<!-- cinematic loading / searching screen -->
+<div id="cine" class="hidden">
+  <canvas id="cineCv"></canvas>
+  <div id="cineUI">
+    <div id="cineTitle">RAKO</div>
+    <div id="cineLabel">Loading…</div>
+    <div id="cineBar"><i id="cineFill"></i></div>
+    <div id="cinePct">0%</div>
+  </div>
+</div>
+
 <script>
 const cvs=document.getElementById('game'), ctx=cvs.getContext('2d');
 const W=cvs.width, H=cvs.height;
