@@ -256,8 +256,8 @@
     <div class="card">
       <label data-i18n="yourname">Your name</label>
       <input id="nameInput" maxlength="16" placeholder="Hunter">
-      <label style="margin-top:10px" data-i18n="profilepic">Profile picture</label>
-      <div id="avatarGrid" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:340px"></div>
+      <button id="avatarBtn" style="margin-top:10px;width:100%"><span data-i18n="profilepic">Profile picture</span>: <span id="avatarCur">🎨</span> ▼</button>
+      <div id="avatarGrid" class="hidden" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:340px;margin-top:8px"></div>
       <div class="stat"><span data-i18n="wins">Wins</span>: <b id="statWins">0</b></div>
       <div class="stat"><span data-i18n="playingsince">Playing since</span> <b id="statSince">—</b></div>
     </div>
