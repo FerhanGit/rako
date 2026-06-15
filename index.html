@@ -1305,6 +1305,7 @@ function update(){
   if(state==='inv'||state==='trade'||state==='admin'||state==='map'||state==='buy'){ time++; juiceDecay(); hudTimers(); return; }
   if(state!=='play') return;
   time++;
+  updateTopbarButtons();
   // secret-city hub + minigames
   if(scene==='hub'){ updateHub(); juiceDecay(); hudTimers(); return; }
   if(scene==='snake'){ snakeUpdate(); return; }
