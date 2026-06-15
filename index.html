@@ -3121,7 +3121,8 @@ const HUB_PORTALS=[
   {game:'mine',    label:'MINECRAFT',     color:'#7bbf5c', x:W*0.50, y:H*0.50},
   {game:'amongus', label:'AMONG US',      color:'#ff3030', x:W*0.80, y:H*0.50},
 ];
-function openChat(){ const c=document.getElementById('chat'); c.classList.remove('hidden'); c.value=''; c.focus();
+function openChat(){ if(scene==='darkroom') return;   // no escape from the dark room via chat
+  const c=document.getElementById('chat'); c.classList.remove('hidden'); c.value=''; c.focus();
   if(document.pointerLockElement) document.exitPointerLock(); }
 function closeChat(){ document.getElementById('chat').classList.add('hidden'); }
 function sendChat(){ const c=document.getElementById('chat'), raw=c.value.trim(), v=raw.toLowerCase(); closeChat();
