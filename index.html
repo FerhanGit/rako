@@ -3614,6 +3614,8 @@ document.getElementById('btnFriends').onclick=()=>{ renderFriends(); showScreen(
 document.getElementById('friendsBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnSkin').onclick=()=>{ renderSkins(); showScreen('skin'); };
 document.getElementById('skinBack').onclick=()=>showScreen('lobby');
+document.getElementById('btnShop').onclick=()=>openShop();
+document.getElementById('shopBack').onclick=()=>showScreen('lobby');
 document.getElementById('friendAdd').onclick=addFriend;
 document.getElementById('friendInput').addEventListener('keydown',e=>{ if(e.key==='Enter') addFriend(); });
 document.getElementById('musicToggle').onclick=()=>{
