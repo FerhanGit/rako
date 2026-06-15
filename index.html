@@ -3221,7 +3221,7 @@ function gdashUpdate(){ if(mg.dead)return; mg.score++; mg.speed=5+mg.score*0.003
   for(const s of mg.spikes) s.x-=mg.speed; mg.spikes=mg.spikes.filter(s=>s.x>-50);
   const px=W*0.25;
   for(const s of mg.spikes){ const sw=s.n*22; if(px+12>s.x-sw*0.5 && px-12<s.x+sw*0.5 && mg.py>-28){ mg.dead=true; SFX.die();
-    if(Math.floor(mg.score/10)===100){ enterDarkRoom(); return; } } }
+    if(Math.floor(mg.score/20)===100){ enterDarkRoom(); return; } } }
 }
 // ---- THE DARK ROOM (secret: die at exactly 100 in Geometry Dash) ----
 function enterDarkRoom(){
