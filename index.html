@@ -1277,7 +1277,7 @@ function juiceDecay(){
 function hudTimers(){
   if(msgTimer>0){ msgTimer--; if(msgTimer===0) document.getElementById('msg').classList.add('hidden'); }
   const pe=document.getElementById('prompt');
-  if(promptTxt){ let pt=translatePrompt(promptTxt); if(mobileOn) pt=stripKeys(pt); pe.textContent=pt; pe.classList.remove('hidden'); } else pe.classList.add('hidden');
+  if(promptTxt && !(mobileOn && promptTxt==='Press Enter to chat')){ let pt=translatePrompt(promptTxt); if(mobileOn) pt=stripKeys(pt); pe.textContent=pt; pe.classList.remove('hidden'); } else pe.classList.add('hidden');
   // on-screen action button — appears whenever an "E" interaction is available (great on touch)
   const ab=document.getElementById('actBtn');
   if(ab){
