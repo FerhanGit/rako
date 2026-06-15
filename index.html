@@ -3252,7 +3252,7 @@ function enterDarkRoom(){
 }
 function darkUpdate(){
   const m=mg; if(!m) return; m.t++;
-  if(m.t===10*60){ m.scared=true; shake=36; hurtFlash=1; SFX.boss&&SFX.boss(); SFX.die&&SFX.die(); SFX.hit&&SFX.hit(); }
+  if(m.t===10*60){ m.scared=true; shake=44; hurtFlash=1; SFX.jumpscare&&SFX.jumpscare(); }
   if(m.t>=10*60+70){ m.scared=false; m.done=true; }
 }
 function darkDraw(){
