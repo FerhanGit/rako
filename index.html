@@ -846,6 +846,15 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
   bindMg('mgBack', ()=>{ if(isMinigameScene()) scene='hub'; });
 })();
 function isMinigameScene(){ return scene==='snake'||scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='mine'||scene==='amongus'; }
+function inSecretArea(){ return scene==='hub'||scene==='darkroom'||isMinigameScene(); }
+function updateTopbarButtons(){
+  // in the secret city / minigames there is no inventory, map, or admin — hide those buttons
+  const city=inSecretArea();
+  const inv=document.getElementById('invBtn'), map=document.getElementById('mapBtn'), ab=document.getElementById('adminBtn');
+  if(inv) inv.classList.toggle('hidden', city);
+  if(map) map.classList.toggle('hidden', city);
+  if(ab)  ab.classList.toggle('hidden', city || !settings.admin);   // admin only when ATI active AND not in the city
+}
 function mgDirInput(dx,dy){ if(scene==='snake') snakeDir(dx,dy); else if(scene==='mine') mineMove(dx,dy); }
 function mineTapDig(){ const m=mg; if(!m||m.dead||m.win) return;
   const gx=Math.floor((mgMouse.x-m.ox)/m.cell), gy=Math.floor((mgMouse.y-m.oy)/m.cell);
