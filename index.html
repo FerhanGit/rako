@@ -1192,7 +1192,7 @@ const ADMIN_ACTIONS=[
   {nm:'Ban all monsters',fn(){ let n=0; for(let i=objects.length-1;i>=0;i--){ if(objects[i].type==='monster'){ objects.splice(i,1); n++; } } flash('Banned '+n+' monsters from the realm'); }},
 ];
 function openAdmin(){
-  if(state!=='play') return;
+  if(state!=='play' || inSecretArea()) return;
   state='admin';
   const B=document.getElementById('adminBody');
   B.innerHTML=ADMIN_ACTIONS.map((a,i)=>'<button class="closeBtn" data-a="'+i+'" style="flex:1 1 45%;">'+a.nm+'</button>').join('');
