@@ -1204,7 +1204,7 @@ function closeAdmin(){ state='play'; document.getElementById('admin').classList.
 
 function toggleInventory(){
   if(state==='inv'){ state='play'; document.getElementById('inv').classList.add('hidden'); return; }
-  if(state!=='play') return;
+  if(state!=='play' || inSecretArea()) return;   // no inventory in the secret city / minigames
   state='inv'; renderInventory();
   document.getElementById('inv').classList.remove('hidden');
   if(document.pointerLockElement) document.exitPointerLock();
