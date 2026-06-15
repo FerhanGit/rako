@@ -1875,7 +1875,7 @@ function markExplored(x,z){
 }
 function toggleMap(){
   if(state==='map'){ state='play'; return; }
-  if(state!=='play') return;
+  if(state!=='play' || inSecretArea()) return;   // no map in the secret city / minigames
   state='map'; if(document.pointerLockElement) document.exitPointerLock();
 }
 function drawMap(){
