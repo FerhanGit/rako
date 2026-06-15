@@ -3655,7 +3655,7 @@ document.getElementById('setBack').onclick=()=>showScreen('lobby');
 // Play flow: choose mode -> choose party size -> start
 let pendingMode='normal';
 document.querySelectorAll('button.mode').forEach(b=> b.onclick=()=>{ pendingMode=b.dataset.mode; resetInviteUI(); showScreen('party'); });
-document.querySelectorAll('button.party[data-n]').forEach(b=> b.onclick=()=>start(pendingMode, +b.dataset.n));
+document.querySelectorAll('button.party[data-n]').forEach(b=> b.onclick=()=>searchThenStart(pendingMode, +b.dataset.n));
 document.getElementById('btnInvite').onclick=openInvitePicker;
 document.getElementById('partyBack').onclick=()=>{ resetInviteUI(); showScreen('play'); };
 // leaderboards & friends
