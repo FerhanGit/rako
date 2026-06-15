@@ -3116,10 +3116,10 @@ function sendChat(){ const c=document.getElementById('chat'), raw=c.value.trim()
 }
 function spawnHubFriends(){
   hubFriends=[];
-  // only your REAL co-op friend appears here
-  if(coop && coop.friendName){
+  // only a REAL friend who actually joined your co-op game appears here
+  if(coop && coop.friendName && coopFriendObj){
     hubFriends.push({ name:coop.friendName, x:W*0.42, y:H*0.66,
-      tx:W*0.42, ty:H*0.66, t:Math.random()*200, col:skinSolid((coopFriendObj&&coopFriendObj.skin)||'green') });
+      tx:W*0.42, ty:H*0.66, t:Math.random()*200, col:skinSolid(coopFriendObj.skin||'green') });
   }
 }
 function enterHub(){ scene='hub'; housePos={x:W/2,y:H*0.74}; cam.flyTime=0;
