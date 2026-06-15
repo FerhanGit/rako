@@ -3738,8 +3738,27 @@ function drawCineBg(g,t){
   g.fillStyle='rgba(255,140,60,0.5)'; for(let i=0;i<30;i++){ const ex=(i*97+t*1.5)%W2, ey=hor-((i*53+t*2)%hor); g.fillRect(ex,ey,1.5,1.5); }
 }
 let _cineRAF=0,_cineT=0;
+// Load YOUR background image if you drop one next to index.html. Tries these names in order;
+// if none exist it falls back to the drawn nightmare-city. (Your own local file — nothing embedded.)
+let cineImg=null;
+(function loadCineImg(){
+  const names=['loading.png','loading.jpg','loading.jpeg','bg.png','bg.jpg','background.png','background.jpg'];
+  let i=0; const img=new Image();
+  img.onload=()=>{ cineImg=img; };
+  img.onerror=()=>{ if(++i<names.length) img.src=names[i]; };
+  img.src=names[0];
+})();
 function resizeCine(){ const cv=document.getElementById('cineCv'); cv.width=Math.min(1280,window.innerWidth); cv.height=Math.min(800,window.innerHeight); }
-function cineFrame(){ const cv=document.getElementById('cineCv'); if(!cv){ _cineRAF=0; return; } _cineT++; drawCineBg(cv.getContext('2d'),_cineT); _cineRAF=requestAnimationFrame(cineFrame); }
+function cineFrame(){
+  const cv=document.getElementById('cineCv'); if(!cv){ _cineRAF=0; return; } _cineT++;
+  const g=cv.getContext('2d'), cw=cv.width, ch=cv.height;
+  if(cineImg && cineImg.width){
+    const s=Math.max(cw/cineImg.width, ch/cineImg.height), dw=cineImg.width*s, dh=cineImg.height*s;
+    g.drawImage(cineImg,(cw-dw)/2,(ch-dh)/2,dw,dh);
+    g.fillStyle='rgba(0,0,0,0.38)'; g.fillRect(0,ch*0.58,cw,ch*0.42);   // darken bottom so the bar/text read
+  } else { drawCineBg(g,_cineT); }
+  _cineRAF=requestAnimationFrame(cineFrame);
+}
 function hideCine(){ document.getElementById('cine').classList.add('hidden'); if(_cineRAF){ cancelAnimationFrame(_cineRAF); _cineRAF=0; } }
 function showCine(label,durMs,then){
   const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; if(!_cineRAF) cineFrame();
