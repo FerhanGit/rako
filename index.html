@@ -2990,17 +2990,18 @@ function renderShop(){
   document.getElementById('shopGems').textContent=(account.gems||0)+' 💎';
   G.innerHTML='';
   const col=skinSolid(account.skin);
+  const m=mobileOn, cw=m?108:150, ch=m?70:96, cr=m?18:24;
   for(const sk of CHAR_SKINS){
     const owned=account.ownedSkins.includes(sk.id) || sk.price===0;
     const sel=account.charSkin===sk.id;
     const card=document.createElement('div');
-    card.style.cssText='width:150px;border:2px solid '+(sel?'#7fe070':'#2c5a3a')+';border-radius:12px;padding:8px;background:#0c1810;text-align:center';
-    const cv=document.createElement('canvas'); cv.width=80; cv.height=96; cv.style.cssText='display:block;margin:0 auto';
-    const g=cv.getContext('2d'); drawCharacter(g,40,58,24,sk.id,col,1);
+    card.style.cssText='width:'+cw+'px;border:2px solid '+(sel?'#7fe070':'#2c5a3a')+';border-radius:12px;padding:'+(m?'5px':'8px')+';background:#0c1810;text-align:center';
+    const cv=document.createElement('canvas'); cv.width=m?60:80; cv.height=ch; cv.style.cssText='display:block;margin:0 auto';
+    const g=cv.getContext('2d'); drawCharacter(g,cv.width/2,ch*0.62,cr,sk.id,col,1);
     card.appendChild(cv);
-    const nm=document.createElement('div'); nm.style.cssText='font-weight:bold;margin-top:4px'; nm.textContent=sk.name; card.appendChild(nm);
-    const ds=document.createElement('div'); ds.style.cssText='font-size:11px;color:#9ab09a;min-height:30px;margin:2px 0'; ds.textContent=sk.desc; card.appendChild(ds);
-    const btn=document.createElement('button'); btn.className='closeBtn'; btn.style.cssText='width:100%;margin-top:4px';
+    const nm=document.createElement('div'); nm.style.cssText='font-weight:bold;margin-top:4px;font-size:'+(m?'13px':'15px'); nm.textContent=sk.name; card.appendChild(nm);
+    const ds=document.createElement('div'); ds.style.cssText='font-size:'+(m?'10px':'11px')+';color:#9ab09a;min-height:'+(m?'34px':'30px')+';margin:2px 0'; ds.textContent=sk.desc; card.appendChild(ds);
+    const btn=document.createElement('button'); btn.className='closeBtn'; btn.style.cssText='width:100%;margin-top:4px;font-size:'+(m?'12px':'14px');
     if(sel){ btn.textContent='✓ SELECTED'; btn.style.background='#2f6f3f'; }
     else if(owned){ btn.textContent='SELECT'; btn.onclick=()=>{ account.charSkin=sk.id; saveAccount(); renderShop(); }; }
     else { btn.textContent='BUY '+sk.price+' 💎';
