@@ -2064,15 +2064,39 @@ function drawFurn(f,night){
     ctx.fillStyle='#2f7a3a'; ctx.beginPath(); ctx.arc(cx,cy-4,12,0,7); ctx.fill();
   }
 }
+// Draw a top-down character of the given skin. `g` = a 2D context, `col` = chosen SKIN colour.
+function drawCharacter(g, x, y, r, id, col, f){
+  id=id||'aster'; col=col||'#3a8a3a'; f=f||1;
+  const headY=y-r*0.85, headR=r*0.52, skin='#e8c49a';
+  g.save();
+  if(id==='pickaxe'){
+    g.strokeStyle='#7a4a22'; g.lineWidth=Math.max(2,r*0.18); g.beginPath(); g.moveTo(x+r*0.9,y+r*0.5); g.lineTo(x+r*1.25,y-r*1.0); g.stroke();
+    g.strokeStyle='#cfd0d8'; g.lineWidth=Math.max(3,r*0.28); g.beginPath(); g.arc(x+r*1.25,y-r*1.05,r*0.45,-0.7,0.7); g.stroke();
+  }
+  g.fillStyle=id==='sofka'?'#c01818' : id==='ted'?col : id==='demon'?'#a01414' : id==='pickaxe'?'#5a3f22' : id==='winterguy'?'#3a5a8a' : '#888';
+  g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.62,0,0,7); g.fill();                              // lower (pants/legs)
+  const shirt = id==='ted'?'#d03030' : id==='demon'?'#c81c1c' : id==='pickaxe'?'#6a4a2a' : id==='winterguy'?col : col;
+  const bodyW = id==='winterguy'?r*1.12:r*0.82, bodyH=id==='winterguy'?r*1.0:r*0.72;
+  g.fillStyle=shirt; g.beginPath(); g.ellipse(x,y-r*0.12,bodyW,bodyH,0,0,7); g.fill();              // body (shirt/pullover)
+  if(id==='winterguy'){ g.fillStyle='#3a2a1a'; g.fillRect(x-r*0.75,y+r*0.85,r*0.6,r*0.45); g.fillRect(x+r*0.15,y+r*0.85,r*0.6,r*0.45); } // boots
+  if(id==='sofka'){ g.fillStyle='#111'; g.beginPath(); g.ellipse(x,headY+r*0.35,headR+r*0.25,headR+r*0.7,0,0,7); g.fill(); }              // long hair behind
+  if(id==='demon'){ g.fillStyle='#7a1010';                                                          // horns
+    g.beginPath(); g.moveTo(x-headR*0.9,headY-headR*0.4); g.lineTo(x-headR*0.5,headY-headR*1.7); g.lineTo(x-headR*0.1,headY-headR*0.6); g.fill();
+    g.beginPath(); g.moveTo(x+headR*0.9,headY-headR*0.4); g.lineTo(x+headR*0.5,headY-headR*1.7); g.lineTo(x+headR*0.1,headY-headR*0.6); g.fill(); }
+  g.fillStyle = id==='demon'?'#e22222':skin; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();      // head
+  if(id==='sofka'){ g.fillStyle='#111'; g.beginPath(); g.arc(x,headY,headR+1,Math.PI,0); g.fill(); } // hair fringe
+  if(id==='pickaxe'){ g.fillStyle='#f0c020'; g.beginPath(); g.arc(x,headY-1,headR+2,Math.PI,0); g.fill(); g.fillRect(x-headR-3,headY-2,(headR+3)*2,3); } // hard hat
+  if(id==='winterguy'){ g.fillStyle='#b03030'; g.beginPath(); g.arc(x,headY-1,headR+2,Math.PI,0); g.fill(); g.fillStyle='#fff'; g.beginPath(); g.arc(x,headY-headR-2,2.5,0,7); g.fill(); } // beanie
+  // eyes
+  if(id==='demon'){ g.fillStyle='#fff'; g.beginPath(); g.arc(x-headR*0.4,headY-1,headR*0.22,0,7); g.arc(x+headR*0.4,headY-1,headR*0.22,0,7); g.fill();
+    g.fillStyle='#300'; g.beginPath(); g.arc(x-headR*0.4,headY,headR*0.1,0,7); g.arc(x+headR*0.4,headY,headR*0.1,0,7); g.fill(); }
+  else { g.fillStyle='#222'; g.beginPath(); g.arc(x+f*headR*0.3,headY-1,Math.max(1.4,headR*0.2),0,7); g.fill(); }
+  g.restore();
+}
 function drawHousePlayer(){
   const x=housePos.x, y=housePos.y, f=cam.hface||1;
   ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(x,y+11,12,5,0,0,7); ctx.fill();
-  const sb=skinBody(x,y,13);
-  ctx.save(); ctx.globalAlpha=sb.alpha; ctx.fillStyle=sb.fill;
-  ctx.beginPath(); ctx.ellipse(x,y,10,13,0,0,7); ctx.fill();                            // body (skin)
-  ctx.restore();
-  ctx.fillStyle='#e8c49a'; ctx.beginPath(); ctx.arc(x,y-11,7,0,7); ctx.fill();           // head
-  ctx.fillStyle='#222'; ctx.beginPath(); ctx.arc(x+f*2.5,y-12,1.6,0,7); ctx.fill();      // eye
+  drawCharacter(ctx, x, y, 13, account.charSkin, skinSolid(account.skin), f);
 }
 function roundRect(x,y,w,h,r){ ctx.beginPath();
   ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
