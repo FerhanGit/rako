@@ -371,7 +371,17 @@ let scene='forest', nightAmt=0, wasNight=false, outsidePos=null, caveChestOpened
 let difficulty='normal', quality=250;
 const DIFF={ easy:{hp:0.55,dmg:0.5,spd:0.85}, normal:{hp:1,dmg:1,spd:1}, hard:{hp:1.6,dmg:1.5,spd:1.15},
   impossible:{hp:5, dmg:4, spd:1.45} };
-let account={ name:'Hunter', wins:0, since:'', timePlayed:0, friends:[], skin:'green', avatar:'' };
+let account={ name:'Hunter', wins:0, since:'', timePlayed:0, friends:[], skin:'green', avatar:'',
+  gems:0, charSkin:'aster', ownedSkins:['aster'] };
+// character outfits bought with gems in the lobby Shop. `colorize` parts use your chosen SKIN color.
+const CHAR_SKINS=[
+  { id:'aster',     name:'Aster',     price:0,  desc:'The starter — gray pants, shirt in your chosen color.' },
+  { id:'pickaxe',   name:'Pickaxe',   price:10, desc:'A miner: hard hat, dirty clothes, carries a pickaxe.' },
+  { id:'sofka',     name:'Sofka',     price:20, desc:'Girl with long black hair and red pants.' },
+  { id:'ted',       name:'Ted',       price:40, desc:'Red shirt; choose his pants colour.' },
+  { id:'winterguy', name:'Winter Guy',price:75, desc:'Bundled up & chunky — hat, pullover and boots.' },
+  { id:'demon',     name:'Demon',     price:100,desc:'Horns, red skin, fanged grin. Pure menace.' },
+];
 const AVATARS=['😀','😎','🤠','👽','🤖','👹','👺','💀','👻','🧛','🧙','🧝','🦁','🐯','🐺','🦊','🐻','🐲','🦄','🐸','🐧','🦅','🐉','🔥','⚡','🌟','💎','👑','🗡️','🏹'];
 const SKIN_ORDER=['black','red','orange','green','yellow','brown','pink','purple','ghost','gold','silver','chess','zebra','rainbow','rainbowzebra','white'];
 const SKIN_HEX={black:'#222222',red:'#d03030',orange:'#e07820',green:'#3a8a3a',yellow:'#e0d020',
