@@ -3233,8 +3233,7 @@ function drawHub(){
     ctx.fillStyle='#cfe0cf'; ctx.font='11px sans-serif'; ctx.textAlign='center'; ctx.fillText(f.name, f.x, f.y-22); ctx.textAlign='left';
   }
   const x=housePos.x,y=housePos.y; ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(x,y+12,12,5,0,0,7); ctx.fill();
-  const sb=skinBody(x,y,13); ctx.save(); ctx.globalAlpha=sb.alpha; ctx.fillStyle=sb.fill; ctx.beginPath(); ctx.ellipse(x,y,10,13,0,0,7); ctx.fill(); ctx.restore();
-  ctx.fillStyle='#e8c49a'; ctx.beginPath(); ctx.arc(x,y-11,7,0,7); ctx.fill();
+  drawCharacter(ctx, x, y, 13, account.charSkin, skinSolid(account.skin), cam.hface||1);
 }
 function startGame(g){ scene=g; if(g==='snake')snakeInit(); else if(g==='gdash')gdashInit(); else if(g==='blast')blastInit(); else if(g==='brawl')brawlInit(); else if(g==='mine')mineInit(); else if(g==='amongus')auInit(); }
 function mgKey(k){
