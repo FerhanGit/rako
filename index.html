@@ -818,6 +818,7 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
   bind('mAtk', ()=>{ if(state!=='play') return; if(scene==='interior') houseAttack(); else if(scene==='forest') attack(); else mgClick(); });
   bind('mChat',()=>{ if(state==='play') openChat(); });
   bind('mHouse',()=>{ if(state==='play' && scene==='hub') leaveHub(); });   // one-tap teleport out of the Secret City
+  bind('mLobby',()=>{ leaveToLobby(); });   // big button: quit to the lobby
   // weapon buttons — only fire when in the forest fight
   bind('wPistol', ()=>{ if(state==='play'&&scene==='forest') firePistol(); });
   bind('wPoison', ()=>{ if(state==='play'&&scene==='forest') activatePoison(); });
