@@ -1356,10 +1356,13 @@ function update(){
   const airborne = flying || cam.jumpY>0.6;
   if(!airborne){
     for(const o of objects){
-      if(o.type==='tree' && Math.hypot(nx-o.x,nz-o.z)<1.0){ nx=cam.x; nz=cam.z; break; }
-      if(o.type==='wall' && Math.hypot(nx-o.x,nz-o.z)<1.5){ nx=cam.x; nz=cam.z; break; }
-      if(o.type==='spire' && Math.hypot(nx-o.x,nz-o.z)<o.width*0.45){ nx=cam.x; nz=cam.z; break; }
-      if(o.type==='cabin' && Math.hypot(nx-o.x,nz-o.z)<3.2){ nx=cam.x; nz=cam.z; break; }
+      let r=0;
+      if(o.type==='tree') r=1.0; else if(o.type==='wall') r=1.5;
+      else if(o.type==='spire') r=o.width*0.45; else if(o.type==='cabin') r=3.2;
+      else continue;
+      const nd=Math.hypot(nx-o.x,nz-o.z);
+      // only block if the move would keep you inside AND not move you away (prevents being frozen if you spawn overlapping)
+      if(nd<r && nd<=Math.hypot(cam.x-o.x,cam.z-o.z)){ nx=cam.x; nz=cam.z; break; }
     }
   }
   cam.x=Math.max(1,Math.min(WORLD-1,nx));
