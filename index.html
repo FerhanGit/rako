@@ -3222,8 +3222,27 @@ function scoreboardHTML(){
 function win(){ burst(BOSS.x,BOSS.z,'#ffd040',60); shake=18; SFX.win();
   account.wins++; account.gems=(account.gems||0)+100; saveAccount(); netSyncStats(); buildMatch(true);
   showResult("VICTORY","The God of the End falls. You are <b>"+account.name+"</b>, the Monster-Slayer.<br><br>Total wins: "+account.wins+"<br><b style='color:#7fe0ff'>+100 💎 gems!</b> (spend them in the Shop)<br><br>"+scoreboardHTML(),"#8fe070,#40c0ff"); }
+const DEATH_MSGS=[
+  "The forest claims another soul... but legends rise again.",
+  "Your light goes out. The monsters feast tonight.",
+  "You fought well, hunter — but the dark always wins eventually.",
+  "Torn apart in the cursed woods. The trees drink deep.",
+  "The God of the End barely noticed you.",
+  "Night fell, and you did not see the dawn.",
+  "Skewered, gutted, and forgotten. Try again?",
+  "So close... yet the abyss was closer.",
+  "The nightmare city adds your bones to its spires.",
+  "Your screams echo, then nothing. Silence in the woods.",
+  "Down you go — another name lost to the gloom.",
+  "The beasts dragged you under. Rise and avenge yourself!",
+  "Game over, slayer. The cursed forest remains hungry.",
+  "You blinked. The monsters did not.",
+];
+const DEATH_TITLES=["YOU DIED","SLAIN","DEVOURED","GAME OVER","FALLEN","CONSUMED"];
 function lose(){ shake=22; SFX.die(); buildMatch(false);
-  showResult("YOU DIED","The forest claims another soul... but legends rise again.<br><br>"+scoreboardHTML(),"#ff5050,#a000a0"); }
+  const msg=DEATH_MSGS[Math.floor(Math.random()*DEATH_MSGS.length)];
+  const title=DEATH_TITLES[Math.floor(Math.random()*DEATH_TITLES.length)];
+  showResult(title, msg+"<br><br>"+scoreboardHTML(),"#ff5050,#a000a0"); }
 
 // ================= CHAT + SECRET CITY + MINIGAMES =================
 let mg=null; const mgMouse={x:W/2,y:H/2};
