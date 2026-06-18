@@ -909,6 +909,10 @@ function reset(){
     else if(b==='lava') objects.push(makeMonster(x,z,8));
     else if(b==='space') objects.push(makeMonster(x,z,9));
   }
+  // hostile wildlife — bears, foxes, frogs, squirrels — attack day & night
+  for(let i=0;i<40;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
+    if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+5 || inCity(x,z)) continue;
+    objects.push(makeMonster(x,z,10+Math.floor(Math.random()*4))); }
   // food on the ground
   for(let i=0;i<22;i++) objects.push(food(8+Math.random()*(WORLD-16), 16+Math.random()*(WORLD-30)));
   // normal chests
