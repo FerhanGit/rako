@@ -3085,7 +3085,7 @@ function resetInviteUI(){ waitingInvite=null;
 
 // ---------- lobby screens ----------
 function showScreen(name){
-  ['Start','Lobby','Account','Play','Settings','Result','Code','Party','Leader','Friends','Skin','Shop'].forEach(s=>
+  ['Start','Lobby','Account','Play','Settings','Result','Code','Party','Leader','Friends','Skin','Shop','Quests'].forEach(s=>
     document.getElementById('scr'+s).classList.toggle('hidden', s.toLowerCase()!==name));
 }
 function refreshChip(){ document.getElementById('chipName').textContent=account.name;
