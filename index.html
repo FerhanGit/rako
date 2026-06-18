@@ -1265,6 +1265,21 @@ function openIceChest(o){
   burst(o.x,o.z,'#bfeaff',24); SFX.chest();
   flash("❄ ICE CHEST! You claim the ICE SWORD — frozen, far heavier hits!");
 }
+function enterBuilding(o){
+  outsidePos={x:cam.x, z:cam.z, yaw:cam.yaw};
+  if(o.type==='rocket')         startGame('flappy');
+  else if(o.type==='igloo')     startGame('rivals');
+  else if(o.type==='spaceship') startGame('rakoin');
+  else if(o.type==='volcano')   enterVolcano(o);
+  else if(o.type==='library')   enterLibrary(o);
+}
+function enterVolcano(o){
+  if(Math.random()<0.3){   // small chance of the lava chest → minigun
+    cam.hasMinigun=true; cam.hasPistol=true; cam.dmg=Math.max(cam.dmg,42);
+    burst(cam.x,cam.z,'#ff8a2a',30); SFX.rako();
+    flash('🌋 LAVA CHEST! You found the MINIGUN — press B to unload a hail of bullets!');
+  } else { SFX.door(); flash('🌋 You climb the volcano and peer inside... no lava chest this time. Climb again!'); }
+}
 function enterCabin(){
   outsidePos={x:cam.x, z:cam.z, yaw:cam.yaw};
   scene='interior'; houseTimer=0; cam.flyTime=0; cam.hface=1;
