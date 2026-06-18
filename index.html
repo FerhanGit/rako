@@ -616,7 +616,11 @@ const SFX={
 };
 
 // ---------- object factory ----------
-function tree(x,z){ return {type:'tree', x,z, height:5+Math.random()*3, width:2.4, solid:true}; }
+function tree(x,z){
+  const giant=Math.random()<0.18;                       // ~1 in 5 is a towering giant
+  const h=giant ? 11+Math.random()*7 : 5+Math.random()*3;
+  return {type:'tree', x,z, height:h, width:giant?4.2:2.4, giant, solid:true};
+}
 function makeMonster(x,z,tier){
   const T=[
     {n:'Forest Slime',c:'#5fd35f',hp:30,dmg:6,spd:0.035,h:1.4,w:1.4},
