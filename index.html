@@ -1322,10 +1322,63 @@ function libContent(n){
 function renderLibPage(){
   const t=document.getElementById('libText'); t.innerHTML=libContent(_libN);
   document.getElementById('libPage').textContent='Page '+_libN+' / '+LIB_PAGES;
-  if(_libN===LIB_PAGES) t.querySelectorAll('.liba').forEach(el=> el.onclick=()=>{ closeLibrary(); flash('📖 The letter blazes gold — RAKO is complete!'); if(typeof win==='function') win(); });
+  if(_libN===LIB_WIN_PAGE) t.querySelectorAll('.liba').forEach(el=> el.onclick=()=>{ closeBook(); flash('📖 The letter blazes gold — RAKO is complete!'); if(typeof win==='function') win(); });
 }
-function enterLibrary(o){ _libN=1; state='lib'; document.getElementById('libpanel').classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); renderLibPage(); }
-function closeLibrary(){ if(state==='lib'){ state='play'; document.getElementById('libpanel').classList.add('hidden'); } }
+function openBook(){ _libN=1; state='lib'; document.getElementById('libpanel').classList.remove('hidden'); renderLibPage(); }
+function closeBook(){ if(state==='lib'){ state='play'; document.getElementById('libpanel').classList.add('hidden'); } }
+// ---- the walkable LIBRARY hall: 100 shelves; shelf 51 holds the shining book ----
+const LIB_ROOM={x:120,y:80,w:720,h:440};
+let libPos={x:0,y:0};
+function enterLibrary(o){
+  outsidePos={x:cam.x,z:cam.z,yaw:cam.yaw};
+  scene='library'; libPos={x:LIB_ROOM.x+LIB_ROOM.w/2, y:LIB_ROOM.y+LIB_ROOM.h-40};
+  if(document.pointerLockElement) document.exitPointerLock();
+  SFX.door&&SFX.door(); flash('📖 The Library — 100 shelves of books. Find shelf 51 and the shining book.');
+}
+function libShelf(i){   // shelf i (1..100) position in a 10×10 grid
+  const cols=10, gw=(LIB_ROOM.w-80)/cols, gh=(LIB_ROOM.h-80)/10;
+  const r=Math.floor((i-1)/cols), c=(i-1)%cols;
+  return {x:LIB_ROOM.x+40+c*gw+gw/2, y:LIB_ROOM.y+40+r*gh+gh/2, gw, gh, n:i};
+}
+function updateLibrary(){
+  const sp=3.4, m=18, R=LIB_ROOM;
+  let nx=libPos.x, ny=libPos.y;
+  if(keys['w']||keys['arrowup'])   ny-=sp;
+  if(keys['s']||keys['arrowdown']) ny+=sp;
+  if(keys['a']||keys['arrowleft']){ nx-=sp; cam.hface=-1; }
+  if(keys['d']||keys['arrowright']){ nx+=sp; cam.hface=1; }
+  libPos.x=Math.max(R.x+m,Math.min(R.x+R.w-m,nx)); libPos.y=Math.max(R.y+m,Math.min(R.y+R.h-m,ny));
+  const sh=libShelf(51); const near51=Math.hypot(libPos.x-sh.x,libPos.y-sh.y)<40;
+  const atDoor=Math.abs(libPos.x-(R.x+R.w/2))<48 && libPos.y>R.y+R.h-46;
+  promptTxt = near51 ? "Press E to read the SHINING BOOK" : (atDoor ? "Press E to leave the library" : "");
+}
+function libraryInteract(){
+  const R=LIB_ROOM, sh=libShelf(51);
+  if(Math.hypot(libPos.x-sh.x,libPos.y-sh.y)<40){ openBook(); return; }
+  if(Math.abs(libPos.x-(R.x+R.w/2))<48 && libPos.y>R.y+R.h-46){ scene='forest';
+    if(outsidePos){ cam.x=outsidePos.x; cam.z=outsidePos.z; cam.yaw=outsidePos.yaw; } cam.eyeH=0.55; }
+}
+function drawLibrary(){
+  const R=LIB_ROOM;
+  ctx.fillStyle='#0b0805'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#241509'; ctx.fillRect(R.x-16,R.y-16,R.w+32,R.h+32);
+  ctx.fillStyle='#5a3f22'; ctx.fillRect(R.x,R.y,R.w,R.h);                              // floor
+  // 100 shelves, each full of coloured book spines
+  const cols=['#7a3030','#30607a','#7a7030','#3a7a40','#5a3a7a','#7a5020'];
+  for(let i=1;i<=100;i++){ const s=libShelf(i), bw=s.gw-10, bh=s.gh-14, bx=s.x-bw/2, by=s.y-bh/2;
+    ctx.fillStyle='#3a2410'; ctx.fillRect(bx,by,bw,bh);
+    for(let k=0;k<6;k++){ ctx.fillStyle=cols[(i+k)%cols.length]; ctx.fillRect(bx+3+k*(bw-6)/6, by+3, (bw-6)/6-1.5, bh-6); }
+    ctx.fillStyle=(i===51)?'#ffe070':'#8a7050'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.fillText(i, s.x, by-3);
+    if(i===51){ const g=0.5+0.4*Math.sin(time*0.15); ctx.fillStyle='rgba(255,220,90,'+g+')'; ctx.fillRect(bx,by,bw,bh);
+      ctx.fillStyle='#fff'; ctx.fillText('✦', s.x, s.y+3); }
+  }
+  // exit door
+  ctx.fillStyle='#1a0f06'; ctx.fillRect(R.x+R.w/2-34,R.y+R.h-14,68,14);
+  ctx.fillStyle='#ffd86a'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center'; ctx.fillText('EXIT',R.x+R.w/2,R.y+R.h-3); ctx.textAlign='left';
+  // player
+  const x=libPos.x,y=libPos.y; ctx.fillStyle='rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(x,y+12,12,5,0,0,7); ctx.fill();
+  drawCharacter(ctx,x,y,13,account.charSkin,skinSolid(account.skin),cam.hface||1);
+}
 function enterCabin(){
   outsidePos={x:cam.x, z:cam.z, yaw:cam.yaw};
   scene='interior'; houseTimer=0; cam.flyTime=0; cam.hface=1;
