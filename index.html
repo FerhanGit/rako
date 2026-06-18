@@ -448,7 +448,8 @@ let account={ name:'Hunter', wins:0, since:'', timePlayed:0, friends:[], skin:'g
   pass:{xp:0, paid:false, claimedFree:[], claimedPaid:[], colors:[]} };
 // ---- RAKO PASS (battle pass: free + premium tracks) ----
 const PASS_MAX=100, PASS_PER_LEVEL=100, PASS_COST=1000;
-const SPECIAL_COLORS=['ghost','zebra','rainbow','rainbowzebra','silver','gold','black'];   // locked unless unlocked via the premium pass
+const SPECIAL_COLORS=['ghost','zebra','rainbow','rainbowzebra','silver','gold','black'];   // locked: buy with gems, or unlock via the premium pass
+const SPECIAL_COLOR_PRICE={ghost:30,zebra:40,silver:40,gold:50,black:30,rainbow:60,rainbowzebra:80};
 const PAID_COLOR_ORDER=['ghost','zebra','rainbow','rainbowzebra','silver','gold','black']; // tiers 1..7 grant these
 function passLevel(){ return Math.min(PASS_MAX, Math.floor((account.pass.xp||0)/PASS_PER_LEVEL)); }
 function freeReward(t){ return t===PASS_MAX ? {skin:'sob'} : {gems:10}; }
