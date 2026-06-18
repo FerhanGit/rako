@@ -2010,7 +2010,7 @@ function draw(){
   if(!flying && k>0.02) drawNightSky(k);
   // ground (darker at night)
   const gr=ctx.createLinearGradient(0,H/2,0,H);
-  gr.addColorStop(0, mix(BP.grTop,'#234a26',k)); gr.addColorStop(1, mix(BP.grBot,'#0c1c0e',k));
+  gr.addColorStop(0, mix(BP.grTop,'#0a0a10',k*0.72)); gr.addColorStop(1, mix(BP.grBot,'#06060a',k*0.72));   // keep the biome colour readable even at night
   ctx.fillStyle=gr; ctx.fillRect(-14,H/2,W+28,H/2+280);
   drawGround();
   drawGrass();
