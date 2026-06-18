@@ -3679,6 +3679,10 @@ function submitCode(){
     m.textContent='SECRETCODE unlocked! Every run starts with +150 max HP.'; }
   else if(c==='bebe'){ settings.armor0505=true; saveSettings(); m.style.color='#9fd0ff';
     m.textContent='BEBE unlocked! Every run starts with STRONG ARMOR (70% less damage).'; }
+  else if(c==='0505'){ account.ownedSkins=account.ownedSkins||['aster'];
+    if(!account.ownedSkins.includes('aura')) account.ownedSkins.push('aura');
+    account.charSkin='aura'; saveAccount(); refreshChip(); m.style.color='#ff80ff';
+    m.textContent='0505 unlocked! The AURA skin is yours and equipped — black & rainbow aura that morphs every 5s!'; }
   else { m.style.color='#e08080'; m.textContent='Unknown code.'; }
 }
 
