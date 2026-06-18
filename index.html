@@ -420,6 +420,19 @@ const cvs=document.getElementById('game'), ctx=cvs.getContext('2d');
 const W=cvs.width, H=cvs.height;
 const FOV=Math.PI/2.4, FOCAL=(W/2)/Math.tan(FOV/2);
 const WORLD=320;                 // world is WORLD x WORLD units (bigger map)
+// ---- biomes: regions of the map with their own sky/ground + monsters ----
+const BIOME_PAL={
+  forest:{skyTop:'#5a86a8',skyBot:'#9ec07a',grTop:'#357a3a',grBot:'#12350f'},
+  snow:  {skyTop:'#9fb6c8',skyBot:'#e6eef5',grTop:'#cfe0ea',grBot:'#8fa6b8'},
+  lava:  {skyTop:'#5a2418',skyBot:'#c4441a',grTop:'#5a2010',grBot:'#1a0805'},
+  space: {skyTop:'#0a0820',skyBot:'#1a1040',grTop:'#221a3a',grBot:'#08060f'},
+};
+function biomeAt(x,z){
+  if(z>WORLD*0.80) return 'space';     // far depths = the void
+  if(x<WORLD*0.26) return 'snow';      // west = frozen
+  if(x>WORLD*0.74) return 'lava';      // east = volcanic
+  return 'forest';
+}
 const HOME={x:100, z:12, r:6};   // safe cabin area
 const BOSS={x:100, z:186};        // the God of the End, deep in the nightmare city
 const SH={x:150, z:96, r:11};     // the Stronghold compound
