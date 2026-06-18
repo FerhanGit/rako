@@ -1368,6 +1368,13 @@ function firePistol(){
   if(state!=='play' || scene!=='forest') return;
   if(!cam.hasPistol){ flash("No pistol yet — find the legendary chest deep in the cave."); return; }
   if(cam.pistolCd>0) return;
+  if(cam.hasMinigun){   // minigun: rapid 3-shot spread
+    cam.pistolCd=4; SFX.hit(); shake=Math.max(shake,4);
+    for(let s=-1;s<=1;s++){ const a=cam.yaw+s*0.09;
+      objects.push({type:'bullet', x:cam.x+Math.sin(a)*0.8, z:cam.z+Math.cos(a)*0.8,
+        vx:Math.sin(a)*1.0, vz:Math.cos(a)*1.0, life:70, dmg:Math.max(20,Math.round(cam.dmg*1.0)), height:0.4, width:0.3}); }
+    return;
+  }
   cam.pistolCd=16; SFX.hit(); shake=Math.max(shake,3);
   objects.push({type:'bullet', x:cam.x+Math.sin(cam.yaw)*0.8, z:cam.z+Math.cos(cam.yaw)*0.8,
     vx:Math.sin(cam.yaw)*0.9, vz:Math.cos(cam.yaw)*0.9, life:70, dmg:Math.max(24,Math.round(cam.dmg*1.2)), height:0.4, width:0.3});
