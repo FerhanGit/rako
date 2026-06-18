@@ -2152,7 +2152,7 @@ function project(o){
 function draw(){
   if(!cam){ ctx.fillStyle="#0b1410"; ctx.fillRect(0,0,W,H); return; }
   if(scene==='interior'){ drawInterior(); drawHUD(); return; }
-  if(scene==='library'){ drawLibrary(); drawHUD(); return; }
+  if(scene==='library'){ drawLibraryScene(); drawHUD(); return; }
   if(scene==='cave'){ drawCave(); drawHUD(); return; }
   if(scene==='hub'){ drawHub(); return; }
   if(scene==='snake'){ snakeDraw(); return; }
