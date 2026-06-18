@@ -3791,14 +3791,19 @@ function startGame(g){ scene=g;
   promptTxt='';   // clear the hub "Press E to play X" prompt so it doesn't linger over the minigame
   const pe=document.getElementById('prompt'); if(pe) pe.classList.add('hidden');
   const ab=document.getElementById('actBtn'); if(ab) ab.classList.add('hidden');
-  if(g==='snake')snakeInit(); else if(g==='gdash')gdashInit(); else if(g==='blast')blastInit(); else if(g==='brawl')brawlInit(); else if(g==='mine')mineInit(); else if(g==='amongus')auInit(); }
+  if(g==='snake')snakeInit(); else if(g==='gdash')gdashInit(); else if(g==='blast')blastInit(); else if(g==='brawl')brawlInit(); else if(g==='mine')mineInit(); else if(g==='amongus')auInit();
+  else if(g==='flappy')flappyInit(); else if(g==='rivals')rivalsInit(); else if(g==='rakoin')rakoinInit(); }
+function mgExit(){ scene='forest'; if(outsidePos){ cam.x=outsidePos.x; cam.z=outsidePos.z; cam.yaw=outsidePos.yaw; } cam.eyeH=0.55; }
 function mgKey(k){
   if(scene==='darkroom'){ if(mg && mg.done && (k==='q'||k==='escape'||k==='e'||k===' ')){ scene='hub'; } return; }  // can't quit until the jumpscare passes
-  if(k==='q'||k==='escape'){ scene='hub'; return; }
+  // building minigames return to the forest; hub minigames return to the hub
+  const backToForest=(scene==='flappy'||scene==='rivals'||scene==='rakoin');
+  if(k==='q'||k==='escape'){ if(backToForest) mgExit(); else scene='hub'; return; }
   if(mg && mg.dead && k==='e'){ startGame(scene); return; }
   if(scene==='snake'){ if(k==='w'||k==='arrowup')snakeDir(0,-1); else if(k==='s'||k==='arrowdown')snakeDir(0,1);
     else if(k==='a'||k==='arrowleft')snakeDir(-1,0); else if(k==='d'||k==='arrowright')snakeDir(1,0); }
   else if(scene==='gdash'){ if(k===' '||k==='w'||k==='arrowup') gdashJump(); }
+  else if(scene==='flappy'){ if(k===' '||k==='w'||k==='arrowup') flappyFlap(); }
   else if(scene==='mine'){ if(k==='w'||k==='arrowup')mineMove(0,-1); else if(k==='s'||k==='arrowdown')mineMove(0,1);
     else if(k==='a'||k==='arrowleft')mineMove(-1,0); else if(k==='d'||k==='arrowright')mineMove(1,0); }
   // among us moves continuously from held keys in auUpdate
