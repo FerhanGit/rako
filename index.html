@@ -3098,6 +3098,21 @@ function renderSkins(){
   G.innerHTML = SKIN_ORDER.map(s=>'<button class="swatch'+(account.skin===s?' sel':'')+'" data-s="'+s+'" style="background:'+skinCSS(s)+'">'+s+'</button>').join('');
   G.querySelectorAll('button[data-s]').forEach(b=> b.onclick=()=>{ account.skin=b.dataset.s; saveAccount(); refreshChip(); renderSkins(); renderShop(); });
 }
+function openQuests(){ refreshQuests(); renderQuests(); showScreen('quests'); }
+function renderQuests(){
+  const B=document.getElementById('questBody'); if(!B) return;
+  document.getElementById('questGems').textContent=(account.gems||0)+' 💎';
+  const row=(q)=>{ const pct=Math.min(100,Math.round(q.prog/q.need*100));
+    return '<div style="padding:8px 4px;border-bottom:1px solid #214027">'+
+      '<div style="display:flex;justify-content:space-between"><span>'+(q.claimed?'✅ ':'')+esc(q.text)+'</span><b style="color:#7fe0ff">+'+q.reward+' 💎</b></div>'+
+      '<div style="height:9px;background:#16243f;border-radius:5px;margin-top:5px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:'+(q.claimed?'#3fd06a':'#7fd0ff')+'"></i></div>'+
+      '<div style="font-size:11px;color:#9ab09a;margin-top:2px">'+Math.min(q.prog,q.need)+' / '+q.need+'</div></div>'; };
+  let h='<div style="font-weight:bold;color:#8fe070;margin:2px 0 4px">DAILY <span style="font-size:11px;color:#9ab09a;font-weight:normal">— new every day</span></div>';
+  h+=account.quests.daily.map(row).join('');
+  h+='<div style="font-weight:bold;color:#ffcf5c;margin:12px 0 4px">WEEKLY <span style="font-size:11px;color:#9ab09a;font-weight:normal">— harder, big reward</span></div>';
+  if(account.quests.weekly) h+=row(account.quests.weekly);
+  B.innerHTML=h;
+}
 function openShop(){ renderShop(); showScreen('shop'); }
 function renderShop(){
   const G=document.getElementById('shopGrid'); if(!G) return;
