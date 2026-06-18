@@ -1063,9 +1063,10 @@ function inSecretArea(){ return scene==='hub'||scene==='darkroom'||isMinigameSce
 function updateTopbarButtons(){
   // in the secret city / minigames there is no inventory, map, or admin — hide those buttons
   const city=inSecretArea();
-  const inv=document.getElementById('invBtn'), map=document.getElementById('mapBtn'), ab=document.getElementById('adminBtn');
+  const inv=document.getElementById('invBtn'), map=document.getElementById('mapBtn'), ab=document.getElementById('adminBtn'), qb=document.getElementById('qBtn');
   if(inv) inv.classList.toggle('hidden', city);
   if(map) map.classList.toggle('hidden', city);
+  if(qb)  qb.classList.toggle('hidden', city);
   if(ab)  ab.classList.toggle('hidden', city || !settings.admin);   // admin only when ATI active AND not in the city
 }
 function mgDirInput(dx,dy){ if(scene==='snake') snakeDir(dx,dy); else if(scene==='mine') mineMove(dx,dy); }
