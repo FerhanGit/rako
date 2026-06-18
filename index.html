@@ -3044,6 +3044,7 @@ function renderShop(){
     const btn=document.createElement('button'); btn.className='closeBtn'; btn.style.cssText='width:100%;margin-top:4px;font-size:'+(m?'12px':'14px');
     if(sel){ btn.textContent='✓ SELECTED'; btn.style.background='#2f6f3f'; }
     else if(owned){ btn.textContent='SELECT'; btn.onclick=()=>{ account.charSkin=sk.id; saveAccount(); renderShop(); }; }
+    else if(sk.code){ btn.textContent='🔒 code '+sk.code.toUpperCase(); btn.style.background='#3a2a5a'; btn.disabled=true; }
     else { btn.textContent='BUY '+sk.price+' 💎';
       btn.onclick=()=>{ if((account.gems||0)>=sk.price){ account.gems-=sk.price; account.ownedSkins.push(sk.id); account.charSkin=sk.id; saveAccount(); SFX.chest&&SFX.chest(); renderShop(); }
         else { btn.textContent='not enough 💎'; SFX.hurt&&SFX.hurt(); setTimeout(renderShop,900); } }; }
