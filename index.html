@@ -1083,7 +1083,7 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
   bindMg('mgDown', ()=>mgDirInput(0, 1));
   bindMg('mgLeft', ()=>mgDirInput(-1,0));
   bindMg('mgRight',()=>mgDirInput(1, 0));
-  bindMg('mgBack', ()=>{ if(isMinigameScene()) scene='hub'; });
+  bindMg('mgBack', ()=>{ if(scene==='flappy'||scene==='rivals'||scene==='rakoin') mgExit(); else if(isMinigameScene()) scene='hub'; });
 })();
 function isMinigameScene(){ return scene==='snake'||scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='mine'||scene==='amongus'||scene==='flappy'||scene==='rivals'||scene==='rakoin'; }
 function inSecretArea(){ return scene==='hub'||scene==='darkroom'||isMinigameScene(); }
