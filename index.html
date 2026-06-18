@@ -4448,7 +4448,8 @@ function cineFrame(){
   _cineRAF=requestAnimationFrame(cineFrame);
 }
 function hideCine(){ document.getElementById('cine').classList.add('hidden'); if(_cineRAF){ cancelAnimationFrame(_cineRAF); _cineRAF=0; } }
-function showCine(label,durMs,then){
+function showCine(label,durMs,then,style){
+  _cineStyle=style||'';
   const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; if(!_cineRAF) cineFrame();
   document.getElementById('cineLabel').textContent=label;
   const fill=document.getElementById('cineFill'), pct=document.getElementById('cinePct'), t0=performance.now();
