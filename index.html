@@ -466,7 +466,7 @@ let account={ name:'Hunter', wins:0, since:'', timePlayed:0, friends:[], skin:'g
 const PASS_MAX=100, PASS_PER_LEVEL=100, PASS_COST=1000;
 const SPECIAL_COLORS=['ghost','chess','zebra','rainbow','rainbowzebra','silver','gold','black','gradient'];   // locked: buy with gems, or unlock via the premium pass
 const SPECIAL_COLOR_PRICE={ghost:30,chess:35,zebra:40,silver:40,gold:50,black:30,rainbow:60,rainbowzebra:80,gradient:70};
-const PAID_COLOR_ORDER=['ghost','chess','zebra','rainbow','rainbowzebra','silver','gold','black']; // tiers 1..8 grant these
+const PAID_COLOR_ORDER=['ghost','chess','zebra','rainbow','rainbowzebra','silver','gold','black','gradient']; // tiers 1..9 grant these
 function passLevel(){ return Math.min(PASS_MAX, Math.floor((account.pass.xp||0)/PASS_PER_LEVEL)); }
 function freeReward(t){ return t===PASS_MAX ? {skin:'sob'} : {gems:10}; }
 function paidReward(t){
