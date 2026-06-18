@@ -441,6 +441,8 @@ const BIOME_PAL={
   lava:  {skyTop:'#5a2418',skyBot:'#c4441a',grTop:'#5a2010',grBot:'#1a0805'},
   space: {skyTop:'#0a0820',skyBot:'#1a1040',grTop:'#221a3a',grBot:'#08060f'},
 };
+const BIOME_LABEL={forest:'🌲 Cursed Forest',snow:'❄ Frozen Wastes',lava:'🌋 Lava Fields',space:'🌌 The Void'};
+let curBiome='forest';
 function biomeAt(x,z){
   if(z>WORLD*0.80) return 'space';     // far depths = the void
   if(x<WORLD*0.26) return 'snow';      // west = frozen
