@@ -806,6 +806,12 @@ function reset(){
     const tier=Math.min(4, Math.floor(z/40));
     objects.push(makeMonster(x,z,tier));
   }
+  // Flying Clutches (tier 5) — airborne weavers
+  for(let i=0;i<16;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34);
+    if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6) continue; objects.push(makeMonster(x,z,5)); }
+  // Night Stalkers (tier 6) — only dangerous at night; freeze when you look at them
+  for(let i=0;i<10;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-40);
+    if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,6)); }
   // food on the ground
   for(let i=0;i<22;i++) objects.push(food(8+Math.random()*(WORLD-16), 16+Math.random()*(WORLD-30)));
   // normal chests
