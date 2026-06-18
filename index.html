@@ -2375,10 +2375,10 @@ function drawMap(){
   dot(SH.x,SH.z,'#caa020','');
   dot(BOSS.x,BOSS.z,'#ff20a0','');
   for(const o of objects){ if((o.type==='chest'&&!o.opened)) dot(o.x,o.z,o.rako?'#ffe070':'#caa020'); }
-  // biome buildings — always shown on the map so you can find the far biomes
+  // biome buildings — only shown once you've explored near them (fog of war)
   const BICON={igloo:'🏠',spaceship:'🛸',rocket:'🚀',volcano:'🌋',library:'📖',icechest:'❄'};
   ctx.textAlign='center';
-  for(const o of objects){ if(BICON[o.type]){ const px=ox+(o.x/WORLD)*S, py=oy+(o.z/WORLD)*S;
+  for(const o of objects){ if(BICON[o.type] && seen(o.x,o.z)){ const px=ox+(o.x/WORLD)*S, py=oy+(o.z/WORLD)*S;
     ctx.font='14px sans-serif'; ctx.fillText(BICON[o.type], px, py+5); } }
   for(const al of allies){ if(al.down) continue; if(!seen(al.x,al.z)) continue;
     const px=ox+(al.x/WORLD)*S, py=oy+(al.z/WORLD)*S; ctx.fillStyle=al.color; ctx.fillRect(px-2,py-2,4,4); }
