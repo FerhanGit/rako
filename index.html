@@ -1310,9 +1310,9 @@ const LIB_LINES=[
 let _libN=1;
 function libContent(n){
   if(n===LIB_WIN_PAGE){
-    let html="<p>The ink on this page shimmers and stirs...</p><p>Somewhere in this very sentence, a single letter <b>a</b> holds the way out. Click any <b>a</b>:</p><p style='font-size:22px;line-height:1.9'>";
+    let html="<p>The ink on this page shimmers and stirs...</p><p>Somewhere in this very sentence, a single letter holds the way out. Click the right one.</p><p style='font-size:22px;line-height:1.9'>";
     for(const ch of "and so the aether at last awaits a wanderer brave and patient"){
-      if(ch==='a') html+="<span class='liba' style='color:#ffcf5c;cursor:pointer;text-shadow:0 0 8px #ffcf5c'>a</span>";
+      if(ch==='a') html+="<span class='liba' style='cursor:pointer'>a</span>";   // normal-looking 'a', no colour cue
       else html+=(ch===' '?'&nbsp;':ch);
     }
     return html+"</p>";
