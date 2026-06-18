@@ -1206,6 +1206,7 @@ function openNearbyChest(){
 function interact(){
   if(state!=='play') return;
   if(scene==='interior'){ tryExitCabin(); return; }
+  if(scene==='library'){ libraryInteract(); return; }
   if(scene==='cave'){ caveInteract(); return; }
   if(scene==='hub'){ hubInteract(); return; }
   // collect a nearby coin into your inventory
