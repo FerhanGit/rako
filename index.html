@@ -2014,10 +2014,12 @@ function draw(){
   // collect & sort visible objects far->near
   const night=isNight();                 // forest monsters only appear at night
   const draws=[];
+  const cullDist=quality*0.34;   // don't project/sort things beyond the fade range — big perf win
   for(const o of objects){
     if(o.type==='boss' && !o.alive) continue;
     if(o.type==='monster' && !night && !alwaysHostile(o)) continue;
     if(o.gone) continue;
+    if(o.type!=='boss'){ const dx=o.x-cam.x, dz=o.z-cam.z; if(dx*dx+dz*dz > cullDist*cullDist) continue; }   // quick distance cull
     const p=project(o); if(p) draws.push({o,p});
   }
   for(const pt of particles){ const p=project(pt); if(p) draws.push({o:pt,p}); }
