@@ -1022,7 +1022,7 @@ function attack(){
 
 // reward goes to the team (player) whether you or a teammate opens it
 function grantChest(o, who){
-  o.opened=true; burst(o.x,o.z,'#ffe070',16); SFX.chest();
+  o.opened=true; burst(o.x,o.z,'#ffe070',16); SFX.chest(); if(!who) questEvent('chest');
   const by = who ? (who+" opened a chest — ") : "";
   let code='sharp';
   if(!o.rako){ const roll=Math.random(); code = roll<0.4?'feast':(roll<0.7?'vitality':'sharp'); }
