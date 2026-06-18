@@ -1563,7 +1563,7 @@ function update(){
   const flying=cam.flyTime>0;
   // sprint with Shift (drains hunger faster)
   const sprinting = (keys['shift']) && !flying && cam.hunger>0;
-  let spd=flying?0.26:0.12;
+  let spd=flying?0.30:0.17;
   if(sprinting) spd*=1.8;
   const fwd={x:Math.sin(cam.yaw), z:Math.cos(cam.yaw)};
   const rgt={x:Math.cos(cam.yaw), z:-Math.sin(cam.yaw)};
