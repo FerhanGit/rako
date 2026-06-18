@@ -741,6 +741,9 @@ function makeMonster(x,z,tier){
     {n:'Forest Demon',c:'#d3502f',hp:140,dmg:25,spd:0.065,h:2.4,w:2.0},
     {n:'Flying Clutch',c:'#c89bff',hp:34,dmg:12,spd:0.11,h:1.6,w:1.6, fly:true},
     {n:'Night Stalker',c:'#1c1c24',hp:130,dmg:30,spd:0.17,h:2.7,w:1.4, stalker:true},
+    {n:'Frost Wraith', c:'#bfe6ff',hp:75, dmg:16,spd:0.075,h:2.0,w:1.6},   // 7 — snow biome
+    {n:'Magma Hound',  c:'#ff6a2a',hp:95, dmg:23,spd:0.105,h:1.7,w:1.9},   // 8 — lava biome
+    {n:'Void Horror',  c:'#9b5fff',hp:165,dmg:31,spd:0.085,h:2.6,w:2.2},   // 9 — space biome
   ];
   const t=T[Math.min(tier,T.length-1)], d=DIFF[difficulty];
   const hp=Math.round(t.hp*d.hp);
