@@ -1577,8 +1577,17 @@ function update(){
       const range=o.type==='boss'?60:18;
       if(d<range) o.aggro=true;
       if(o.aggro && !safe){
-        if(d>1.0){ o.x+=rx/d*o.spd; o.z+=rz/d*o.spd; }
-        if(d<2.0 && o.cd<=0 && !flying && cam.invuln<=0){   // airborne or untouchable = safe
+        let canMove=true, canHit=true;
+        if(o.stalker){   // Weeping-Angel: freezes while you look at it, hunts when unwatched
+          const dotn=((-rx)*Math.sin(cam.yaw)+(-rz)*Math.cos(cam.yaw))/d;
+          if(dotn>0.78 && d<34){ canMove=false; canHit=false; }
+        }
+        if(canMove && d>1.0){
+          let mx=rx/d, mz=rz/d;
+          if(o.fly){ o.flyPh+=0.12; const px=-mz, pz=mx, s=Math.sin(o.flyPh)*0.5; mx+=px*s; mz+=pz*s; }  // weave through the air
+          o.x+=mx*o.spd; o.z+=mz*o.spd;
+        }
+        if(canHit && d<2.0 && o.cd<=0 && !flying && cam.invuln<=0){   // airborne or untouchable = safe
           cam.hp-=pdmg(o.dmg); o.cd=(o.type==='boss')?40:48;
           burst(cam.x,cam.z,'#ff3030',6); SFX.hurt();
           shake=Math.max(shake,o.type==='boss'?16:10); hurtFlash=Math.min(1,hurtFlash+0.6);
