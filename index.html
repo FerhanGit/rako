@@ -1466,6 +1466,9 @@ function toggleFullscreen(){
   }
 }
 document.getElementById('invBtn').onclick=()=>toggleInventory();
+document.getElementById('qBtn').onclick=()=>{ if(state==='qpanel') closeQuestPanel(); else openQuestPanel(); };
+document.getElementById('qpanelClose').onclick=()=>closeQuestPanel();
+document.getElementById('qpanel').addEventListener('mousedown',e=>{ if(e.target.id==='qpanel') closeQuestPanel(); });
 document.getElementById('fsBtn').onclick=()=>toggleFullscreen();
 
 function startFly(){
