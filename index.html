@@ -3997,6 +3997,10 @@ document.getElementById('btnSkin').onclick=()=>{ renderSkins(); showScreen('skin
 document.getElementById('skinBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnShop').onclick=()=>openShop();
 document.getElementById('shopBack').onclick=()=>showScreen('lobby');
+document.getElementById('freeGems').onclick=()=>{ const b=document.getElementById('freeGems');
+  if(account.adGift){ b.textContent='✓ already claimed'; b.disabled=true; return; }
+  account.adGift=true; account.gems=(account.gems||0)+50; saveAccount(); SFX.chest&&SFX.chest();
+  b.textContent='✓ +50 💎 claimed!'; b.disabled=true; renderShop(); };
 document.getElementById('btnQuests').onclick=()=>openQuests();
 document.getElementById('questsBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnPass').onclick=()=>openPass();
