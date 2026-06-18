@@ -689,7 +689,7 @@ function hitsFurniture(x,y,r){
 }
 function isNight(){ return (time%CYCLE) >= DAY_LEN; }
 // monsters in the nightmare city, and stronghold guards, are hostile day AND night
-function alwaysHostile(o){ return o.guard || Math.hypot(o.x-BOSS.x,o.z-BOSS.z)<52; }
+function alwaysHostile(o){ return o.guard || o.always || Math.hypot(o.x-BOSS.x,o.z-BOSS.z)<52; }
 function phaseLeft(){ const c=time%CYCLE; return isNight()? CYCLE-c : DAY_LEN-c; }   // frames left in phase
 
 // ---------- audio (procedural, no files) ----------
