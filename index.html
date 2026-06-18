@@ -3929,7 +3929,12 @@ function mgKey(k){
 function mgClick(){ if(scene==='gdash') gdashJump(); else if(scene==='blast') blastClick(); else if(scene==='brawl') brawlShoot();
   else if(scene==='flappy') flappyFlap(); else if(scene==='rivals') rivalsShoot(); else if(scene==='rakoin') rakoinShoot(); }
 // ---- minigame win helper: award gems + return to forest ----
-function mgReward(msg){ account.gems=(account.gems||0)+5; saveAccount(); SFX.win&&SFX.win(); flash((msg||'Minigame complete')+' — +5 💎!'); }
+function mgReward(msg){
+  account.mgClaimed=account.mgClaimed||{};
+  if(account.mgClaimed[scene]){ flash((msg||'Minigame complete')+' — (you already earned the 5 💎 here)'); return; }
+  account.mgClaimed[scene]=true; account.gems=(account.gems||0)+5; saveAccount(); SFX.win&&SFX.win();
+  flash((msg||'Minigame complete')+' — +5 💎! (one-time)');
+}
 function mgHud(title,info,dead){
   ctx.fillStyle='#fff'; ctx.textAlign='left'; ctx.font='bold 18px sans-serif'; ctx.fillText(title,16,28);
   ctx.font='14px sans-serif'; ctx.fillText(info,16,50);
