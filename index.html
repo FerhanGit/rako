@@ -2464,6 +2464,7 @@ function drawGround(){
 }
 function drawGrass(){
   const step=3, span=20, night=isNight();
+  const BPg=(BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest).grass;
   const cx=Math.round(cam.x/step)*step, cz=Math.round(cam.z/step)*step;
   ctx.lineCap='round';
   for(let gz=cz-span; gz<=cz+span; gz+=step) for(let gx=cx-span; gx<=cx+span; gx+=step){
