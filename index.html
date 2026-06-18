@@ -4433,7 +4433,14 @@ function resizeCine(){ const cv=document.getElementById('cineCv'); cv.width=Math
 function cineFrame(){
   const cv=document.getElementById('cineCv'); if(!cv){ _cineRAF=0; return; } _cineT++;
   const g=cv.getContext('2d'), cw=cv.width, ch=cv.height;
-  if(cineImg && cineImg.width){
+  if(_cineStyle==='gems'){
+    g.fillStyle='#0a0c18'; g.fillRect(0,0,cw,ch);
+    for(let i=0;i<80;i++){ const x=(i*89+_cineT*3)%cw, y=((i*61+_cineT*7)%(ch+60))-30;
+      g.save(); g.translate(x,y); g.rotate((i+_cineT*0.04)); g.fillStyle='hsl('+((i*40+_cineT*4)%360)+',85%,65%)';
+      g.beginPath(); g.moveTo(0,-7); g.lineTo(6,0); g.lineTo(0,9); g.lineTo(-6,0); g.closePath(); g.fill(); g.restore(); }
+    g.fillStyle='rgba(255,255,255,'+(0.4+0.3*Math.sin(_cineT*0.1))+')'; g.textAlign='center'; g.font='bold '+Math.round(ch*0.09)+'px sans-serif';
+    g.fillText('💎  BONUS GEMS  💎', cw/2, ch*0.42); g.textAlign='left';
+  } else if(cineImg && cineImg.width){
     const s=Math.max(cw/cineImg.width, ch/cineImg.height), dw=cineImg.width*s, dh=cineImg.height*s;
     g.drawImage(cineImg,(cw-dw)/2,(ch-dh)/2,dw,dh);
     g.fillStyle='rgba(0,0,0,0.38)'; g.fillRect(0,ch*0.58,cw,ch*0.42);   // darken bottom so the bar/text read
