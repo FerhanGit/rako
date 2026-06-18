@@ -2449,7 +2449,7 @@ function drawGround(){
   const seg=(a,b)=>{ if(!a||!b) return; const d=Math.min(a.depth,b.depth);
     const al=Math.max(0,0.22*(1-d/span)); if(al<=0.01) return;
     ctx.globalAlpha=al; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); };
-  ctx.strokeStyle='#3a6a40';
+  ctx.strokeStyle=mix((BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest).grass,'#000000',0.35);
   // lines running along world-x (constant z)
   for(let gz=cz-span; gz<=cz+span; gz+=step){
     let prev=null;
