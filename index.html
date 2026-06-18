@@ -4418,7 +4418,7 @@ function drawCineBg(g,t){
   g.fillStyle='#05040a'; for(let i=0;i<6;i++){ const fx=cx+(i-2.5)*W2*0.05,fy=hor+H2*0.05; g.fillRect(fx-3,fy-22,6,22); g.beginPath(); g.arc(fx,fy-26,4,0,7); g.fill(); }
   g.fillStyle='rgba(255,140,60,0.5)'; for(let i=0;i<30;i++){ const ex=(i*97+t*1.5)%W2, ey=hor-((i*53+t*2)%hor); g.fillRect(ex,ey,1.5,1.5); }
 }
-let _cineRAF=0,_cineT=0;
+let _cineRAF=0,_cineT=0,_cineStyle='';
 // Load YOUR background image if you drop one next to index.html. Tries these names in order;
 // if none exist it falls back to the drawn nightmare-city. (Your own local file — nothing embedded.)
 let cineImg=null;
