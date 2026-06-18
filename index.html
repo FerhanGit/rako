@@ -1644,6 +1644,7 @@ function startFly(){
 // ---------- helpers ----------
 function dist(o){ return Math.hypot(o.x-cam.x,o.z-cam.z); }
 function inHome(){ return Math.hypot(cam.x-HOME.x,cam.z-HOME.z)<HOME.r; }
+function angDiff(a,b){ let d=(b-a)%(Math.PI*2); if(d>Math.PI)d-=Math.PI*2; if(d<-Math.PI)d+=Math.PI*2; return d; }
 function burst(x,z,col,n){ for(let i=0;i<n;i++) particles.push({x,z,
    vx:(Math.random()-.5)*0.3,vz:(Math.random()-.5)*0.3,life:22+Math.random()*14,col}); }
 function flash(t){ msgTimer=160; promptTxt=''; const m=document.getElementById('msg');
