@@ -2069,6 +2069,13 @@ function drawWeather(){
     for(let i=0;i<90;i++){ const x=(i*113+time*7)%(W+40)-20, y=(i*71+time*16)%(H+40)-20; ctx.fillStyle='hsl('+((i*40+time*6)%360)+',90%,70%)'; ctx.fillRect(x,y,3,5); }
     ctx.fillStyle='rgba(120,180,255,0.06)'; ctx.fillRect(-14,-280,W+28,H+560);
   }
+  if(weather==='meteor'){
+    ctx.fillStyle='rgba(40,10,4,0.18)'; ctx.fillRect(-14,-280,W+28,H+560);
+    for(let i=0;i<26;i++){ const x=(i*151+time*18)%(W+120)-60, y=(i*97+time*22)%(H+120)-60;
+      const g=ctx.createLinearGradient(x,y,x-26,y-40); g.addColorStop(0,'rgba(255,220,120,0.95)'); g.addColorStop(1,'rgba(255,90,20,0)');
+      ctx.strokeStyle=g; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-26,y-40); ctx.stroke();
+      ctx.fillStyle='#ffd070'; ctx.beginPath(); ctx.arc(x,y,2.5,0,7); ctx.fill(); }
+  }
   if(thunderFlash>0){ ctx.fillStyle='rgba(255,255,255,'+(thunderFlash*0.5)+')'; ctx.fillRect(-14,-280,W+28,H+560); }
 }
 
