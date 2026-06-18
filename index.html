@@ -3276,9 +3276,9 @@ function renderSkins(){
     account.skin=id; saveAccount(); refreshChip(); renderSkins(); renderShop(); });
 }
 function openQuests(){ refreshQuests(); renderQuests(); showScreen('quests'); }
-function renderQuests(){
-  const B=document.getElementById('questBody'); if(!B) return;
-  document.getElementById('questGems').textContent=(account.gems||0)+' 💎';
+function renderQuests(targetId){
+  const B=document.getElementById(targetId||'questBody'); if(!B) return;
+  const gm=document.getElementById('questGems'); if(gm) gm.textContent=(account.gems||0)+' 💎';
   const row=(q)=>{ const pct=Math.min(100,Math.round(q.prog/q.need*100));
     return '<div style="padding:8px 4px;border-bottom:1px solid #214027">'+
       '<div style="display:flex;justify-content:space-between"><span>'+(q.claimed?'✅ ':'')+esc(q.text)+'</span><b style="color:#7fe0ff">+'+q.reward+' 💎</b></div>'+
