@@ -1115,7 +1115,7 @@ function openStronghold(sc){
   if(sc.opened){ flash("The stronghold chest is empty."); return; }
   const g=strongholdGuards();
   if(g>0){ flash("The chest is sealed — defeat all "+g+" stronghold guard"+(g>1?"s":"")+" first!"); return; }
-  sc.opened=true;
+  sc.opened=true; questEvent('stronghold'); questEvent('chest');
   cam.hasStone=true; cam.hasPisto=true; cam.dmg=Math.max(cam.dmg,40); cam.points+=50;   // stone + stone sword + pistol
   burst(sc.x,sc.z,'#cfcfd6',28); SFX.rako();
   flash("STRONGHOLD CHEST! You claim +50 Stone, the STONE SWORD and the PISTOL — your attacks hit far harder!");
