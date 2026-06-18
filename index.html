@@ -2474,7 +2474,7 @@ function drawGrass(){
     const sc=FOCAL/d, bl=Math.max(2, sc*0.5);
     const j=((gx*73+gz*131)&255)/255;                 // deterministic per-tuft jitter
     ctx.globalAlpha=a;
-    ctx.strokeStyle = ((gx+gz)&1) ? (night?'#1f4a24':'#2f6b2f') : (night?'#274f29':'#3f8a3f');
+    ctx.strokeStyle = mix(BPg, '#000000', (night?0.45:0.10) + (((gx+gz)&1)?0.18:0));
     ctx.lineWidth=Math.max(1, sc*0.04);
     for(let b=-1;b<=1;b++){ const bx=pt.x + (j-0.5)*sc*0.35 + b*sc*0.08;
       ctx.beginPath(); ctx.moveTo(bx, pt.y); ctx.lineTo(bx + (j-0.5+b*0.2)*bl*0.5, pt.y-bl*(0.7+0.3*j)); ctx.stroke(); }
