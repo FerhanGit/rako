@@ -1678,7 +1678,7 @@ function update(){
       if(Math.random()<0.6) objects.push(food(o.x,o.z));  // monsters drop food
       objects.splice(i,1);
       if(o.lastHitBy && o.lastHitBy.type==='ally'){ o.lastHitBy.kills++; }   // teammate scored
-      else { kills++; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); }
+      else { kills++; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); gainXP(o.type==='boss'?40:3); }
     } else if(o.type==='bunny' && o.hp<=0){
       burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1);
       flash("Meat +1 (total "+cam.meat+") — feed a wolf (P) to tame it");
