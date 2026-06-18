@@ -1308,9 +1308,9 @@ const LIB_LINES=[
 ];
 let _libN=1;
 function libContent(n){
-  if(n===LIB_PAGES){
-    let html="<p>The final page. The ink shimmers and stirs.</p><p>One single letter holds the way out. Find an <b>a</b> in the line below and press it.</p><p style='font-size:24px;letter-spacing:3px'>";
-    for(const ch of "the aether awaits a wanderer"){
+  if(n===LIB_WIN_PAGE){
+    let html="<p>The ink on this page shimmers and stirs...</p><p>Somewhere in this very sentence, a single letter <b>a</b> holds the way out. Click any <b>a</b>:</p><p style='font-size:22px;line-height:1.9'>";
+    for(const ch of "and so the aether at last awaits a wanderer brave and patient"){
       if(ch==='a') html+="<span class='liba' style='color:#ffcf5c;cursor:pointer;text-shadow:0 0 8px #ffcf5c'>a</span>";
       else html+=(ch===' '?'&nbsp;':ch);
     }
