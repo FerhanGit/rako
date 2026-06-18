@@ -3329,7 +3329,7 @@ function scoreboardHTML(){
   return lastMatch.map((p,i)=>'#'+(i+1)+' '+(p.you?'':'')+p.name+' — '+p.kills+' ').join('<br>');
 }
 function win(){ burst(BOSS.x,BOSS.z,'#ffd040',60); shake=18; SFX.win();
-  account.wins++; account.gems=(account.gems||0)+100; saveAccount(); netSyncStats(); buildMatch(true);
+  account.wins++; account.gems=(account.gems||0)+100; questEvent('boss'); saveAccount(); netSyncStats(); buildMatch(true);
   showResult("VICTORY","The God of the End falls. You are <b>"+account.name+"</b>, the Monster-Slayer.<br><br>Total wins: "+account.wins+"<br><b style='color:#7fe0ff'>+100 💎 gems!</b> (spend them in the Shop)<br><br>"+scoreboardHTML(),"#8fe070,#40c0ff"); }
 const DEATH_MSGS=[
   "The forest claims another soul... but legends rise again.",
