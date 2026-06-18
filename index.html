@@ -2609,6 +2609,53 @@ function drawCabin(p){
   ctx.fillStyle="#cfe8d0"; ctx.font=`${Math.max(8,h*0.06)}px sans-serif`;
   ctx.textAlign="center"; ctx.fillText("HOME", x, wallTop-h*0.04); ctx.textAlign="left";
 }
+function drawIgloo(p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  const g=ctx.createLinearGradient(0,base-h,0,base); g.addColorStop(0,'#fbfdff'); g.addColorStop(1,'#cfe0ee');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,base,w*0.5,Math.PI,0); ctx.fill(); ctx.fillRect(x-w*0.5,base-2,w,2);
+  ctx.strokeStyle='#aac4d8'; ctx.lineWidth=Math.max(1,h*0.03);
+  for(let i=1;i<4;i++){ ctx.beginPath(); ctx.arc(x,base,w*0.5*(i/4),Math.PI,0); ctx.stroke(); }
+  ctx.fillStyle='#3a4a58'; ctx.beginPath(); ctx.arc(x,base,w*0.16,Math.PI,0); ctx.fill(); ctx.fillRect(x-w*0.16,base-w*0.08,w*0.32,w*0.08);
+}
+function drawSpaceship(p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  const cy=base-h*0.3;
+  ctx.fillStyle='#8893a6'; ctx.beginPath(); ctx.ellipse(x,cy,w*0.5,h*0.18,0,0,7); ctx.fill();               // saucer
+  ctx.fillStyle='#aeb8c8'; ctx.beginPath(); ctx.ellipse(x,cy-h*0.06,w*0.5,h*0.1,0,0,7); ctx.fill();
+  const dome=ctx.createLinearGradient(0,cy-h*0.35,0,cy); dome.addColorStop(0,'#9fe8ff'); dome.addColorStop(1,'#3a6a9a');
+  ctx.fillStyle=dome; ctx.beginPath(); ctx.arc(x,cy-h*0.05,w*0.22,Math.PI,0); ctx.fill();                    // glass dome
+  for(let i=-2;i<=2;i++){ ctx.fillStyle=(Math.floor(time*0.1)+i)%2?'#ffe070':'#ff6a6a'; ctx.beginPath(); ctx.arc(x+i*w*0.16,cy+h*0.06,w*0.03,0,7); ctx.fill(); }
+  ctx.fillStyle='#3a4250'; ctx.fillRect(x-w*0.06,cy+h*0.16,w*0.12,h*0.16);                                    // landing leg
+}
+function drawRocket(p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.fillStyle='#e8edf4'; ctx.fillRect(x-w*0.3,base-h*0.78,w*0.6,h*0.78);                                    // body
+  ctx.fillStyle='#d04030'; ctx.beginPath(); ctx.moveTo(x-w*0.3,base-h*0.78); ctx.lineTo(x,base-h); ctx.lineTo(x+w*0.3,base-h*0.78); ctx.fill();  // nose
+  ctx.fillStyle='#3a6aa0'; ctx.beginPath(); ctx.arc(x,base-h*0.5,w*0.16,0,7); ctx.fill();                     // window
+  ctx.fillStyle='#d04030'; ctx.beginPath(); ctx.moveTo(x-w*0.3,base-h*0.12); ctx.lineTo(x-w*0.55,base); ctx.lineTo(x-w*0.3,base); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+w*0.3,base-h*0.12); ctx.lineTo(x+w*0.55,base); ctx.lineTo(x+w*0.3,base); ctx.fill();   // fins
+}
+function drawVolcano(p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.fillStyle='#3a2620'; ctx.beginPath(); ctx.moveTo(x-w*0.5,base); ctx.lineTo(x-w*0.16,base-h*0.86); ctx.lineTo(x+w*0.16,base-h*0.86); ctx.lineTo(x+w*0.5,base); ctx.fill();
+  ctx.fillStyle='#5a3a2a'; ctx.beginPath(); ctx.moveTo(x-w*0.5,base); ctx.lineTo(x-w*0.16,base-h*0.86); ctx.lineTo(x-w*0.05,base-h*0.86); ctx.lineTo(x-w*0.2,base); ctx.fill();
+  const lg=ctx.createLinearGradient(0,base-h,0,base-h*0.7); lg.addColorStop(0,'#ffe060'); lg.addColorStop(1,'#e0431a');
+  ctx.fillStyle=lg; ctx.fillRect(x-w*0.16,base-h*0.9,w*0.32,h*0.1);                                            // glowing crater
+  for(let i=0;i<5;i++){ ctx.fillStyle='rgba(255,'+(120+i*20)+',40,'+(0.5-i*0.08)+')'; ctx.beginPath(); ctx.arc(x+Math.sin(time*0.1+i)*w*0.1, base-h*(0.9+i*0.05), w*0.05,0,7); ctx.fill(); }
+}
+function drawLibrary(p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.fillStyle='#6a6258'; ctx.fillRect(x-w*0.5,base-h*0.72,w,h*0.72);                                         // stone body
+  ctx.fillStyle='#4a443c'; ctx.beginPath(); ctx.moveTo(x-w*0.56,base-h*0.72); ctx.lineTo(x,base-h); ctx.lineTo(x+w*0.56,base-h*0.72); ctx.fill();  // pediment roof
+  ctx.fillStyle='#857c70'; for(let i=-2;i<=2;i++) ctx.fillRect(x+i*w*0.2-w*0.03,base-h*0.66,w*0.06,h*0.66);     // columns
+  ctx.fillStyle='#2a241c'; ctx.fillRect(x-w*0.1,base-h*0.4,w*0.2,h*0.4);                                       // door
+  ctx.fillStyle='#cfc0a0'; ctx.font=`${Math.max(8,h*0.06)}px serif`; ctx.textAlign='center'; ctx.fillText('LIBRARY',x,base-h*0.75); ctx.textAlign='left';
+}
+function drawIceChest(o,p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  const gl=0.5+0.4*Math.sin(time*0.1);
+  ctx.fillStyle='#7fd0ff'; ctx.fillRect(x-w*0.5,base-h*0.6,w,h*0.6);
+  ctx.fillStyle='#bfeaff'; ctx.fillRect(x-w*0.5,base-h*0.62,w,h*0.16);
+  ctx.fillStyle='rgba(180,240,255,'+gl+')'; ctx.fillRect(x-w*0.5,base-h*0.6,w,h*0.6);
+  ctx.fillStyle='#2a6a9a'; ctx.fillRect(x-w*0.08,base-h*0.34,w*0.16,h*0.16);
+  if(o.opened){ ctx.fillStyle='#0a2030'; ctx.fillRect(x-w*0.4,base-h*0.5,w*0.8,h*0.3); }
+  ctx.fillStyle='#dff4ff'; ctx.font=`${Math.max(8,h*0.18)}px sans-serif`; ctx.textAlign='center';
+  ctx.fillText(o.opened?'❄ opened':'❄ Ice Chest',x,base-h*0.72); ctx.textAlign='left';
+}
 function drawHole(o,p){
   const x=p.sx, base=p.groundY, rx=Math.max(7,p.wPx*0.5), ry=Math.max(5,p.wPx*0.28);
   // raised sandy rim around the pit (lit on the near side)
