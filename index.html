@@ -675,11 +675,13 @@ function makeMonster(x,z,tier){
     {n:'Treant',      c:'#3a6a3a',hp:80,dmg:15,spd:0.045,h:3.0,w:2.2},
     {n:'Shade',       c:'#7a5fd3',hp:100,dmg:19,spd:0.07,h:1.9,w:1.6},
     {n:'Forest Demon',c:'#d3502f',hp:140,dmg:25,spd:0.065,h:2.4,w:2.0},
+    {n:'Flying Clutch',c:'#c89bff',hp:34,dmg:12,spd:0.11,h:1.6,w:1.6, fly:true},
+    {n:'Night Stalker',c:'#1c1c24',hp:130,dmg:30,spd:0.17,h:2.7,w:1.4, stalker:true},
   ];
   const t=T[Math.min(tier,T.length-1)], d=DIFF[difficulty];
   const hp=Math.round(t.hp*d.hp);
   return {type:'monster',x,z,height:t.h,width:t.w,hp,maxHp:hp,dmg:Math.max(1,Math.round(t.dmg*d.dmg)),spd:t.spd*d.spd,
-          col:t.c,name:t.n,flash:0,aggro:false,cd:0};
+          col:t.c,name:t.n,flash:0,aggro:false,cd:0, fly:!!t.fly, stalker:!!t.stalker, flyPh:Math.random()*6};
 }
 function food(x,z){ return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6}; }
 function chest(x,z,rako){ return {type:'chest',x,z,height:1.1,width:1.3,opened:false,rako:!!rako}; }
