@@ -1703,6 +1703,10 @@ function update(){
     if(sc) promptTxt= sc.opened ? "" : (strongholdGuards()>0 ? "Stronghold chest — defeat all guards" : "Press E to claim the Stone Sword");
   }
   if(!promptTxt){
+    const ic=objects.find(o=>o.type==='icechest' && dist(o)<3);
+    if(ic && !ic.opened) promptTxt="Press E to open the Ice Chest (Ice Sword)";
+  }
+  if(!promptTxt){
     const cab=objects.find(o=>o.type==='cabin');
     if(cab && Math.hypot(cam.x-cab.x,cam.z-cab.z)<4.4 && cam.z<cab.z) promptTxt="Press E to enter your cabin";
   }
