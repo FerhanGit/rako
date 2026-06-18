@@ -761,11 +761,15 @@ function makeMonster(x,z,tier){
     {n:'Frost Wraith', c:'#bfe6ff',hp:75, dmg:16,spd:0.075,h:2.0,w:1.6},   // 7 — snow biome
     {n:'Magma Hound',  c:'#ff6a2a',hp:95, dmg:23,spd:0.105,h:1.7,w:1.9},   // 8 — lava biome
     {n:'Void Horror',  c:'#9b5fff',hp:165,dmg:31,spd:0.085,h:2.6,w:2.2},   // 9 — space biome
+    {n:'Angry Bear',   c:'#7a4a26',hp:120,dmg:24,spd:0.06, h:2.2,w:2.2, always:true},  // 10
+    {n:'Rabid Fox',    c:'#e07820',hp:38, dmg:13,spd:0.135,h:1.3,w:1.5, always:true},  // 11
+    {n:'Toxic Frog',   c:'#4fae3a',hp:30, dmg:10,spd:0.095,h:1.0,w:1.2, always:true},  // 12
+    {n:'Feral Squirrel',c:'#b08040',hp:22,dmg:8, spd:0.16, h:0.9,w:1.0, always:true},  // 13
   ];
   const t=T[Math.min(tier,T.length-1)], d=DIFF[difficulty];
   const hp=Math.round(t.hp*d.hp);
   return {type:'monster',x,z,height:t.h,width:t.w,hp,maxHp:hp,dmg:Math.max(1,Math.round(t.dmg*d.dmg)),spd:t.spd*d.spd,
-          col:t.c,name:t.n,flash:0,aggro:false,cd:0, fly:!!t.fly, stalker:!!t.stalker, flyPh:Math.random()*6};
+          col:t.c,name:t.n,flash:0,aggro:false,cd:0, fly:!!t.fly, stalker:!!t.stalker, always:!!t.always, flyPh:Math.random()*6};
 }
 function food(x,z){ return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6}; }
 function chest(x,z,rako){ return {type:'chest',x,z,height:1.1,width:1.3,opened:false,rako:!!rako}; }
