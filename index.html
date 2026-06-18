@@ -4228,7 +4228,6 @@ function rivalsShoot(){ const m=mg; if(m.dead||m.cd>0)return; m.cd=10; m.muzzle=
 }
 function rivalsUpdate(){ const m=mg; if(m.dead)return; if(m.cd>0)m.cd--; if(m.muzzle>0)m.muzzle--;
   const ts=0.05; if(keys['a']||keys['arrowleft'])m.yaw-=ts; if(keys['d']||keys['arrowright'])m.yaw+=ts;
-  m.yaw += (Input&&0); // (mouse handled in the main mousemove via locked? minigames use keys)
   if(m.foes.length<4 && --m.spawn<=0){ m.spawn=45; m.foes.push({ang:Math.random()*Math.PI*2, dist:9+Math.random()*4, hp:20}); }
   for(const f of m.foes){ f.dist-=0.018; if(f.dist<1.0){ m.hp-=0.5; } }   // they close in and bite
   if(m.hp<=0){ m.hp=0; m.dead=true; SFX.die&&SFX.die(); }
