@@ -1078,6 +1078,9 @@ function updateMobileScene(){
   ['mJump','mAtk','mChat'].forEach(id=>{ const b=document.getElementById(id); if(b) b.style.display=inMg?'none':''; });
   const house=document.getElementById('mHouse'); if(house) house.style.display=(scene==='hub')?'':'none';   // House teleport: secret-city only
   const lobby=document.getElementById('mLobby'); if(lobby) lobby.style.display=inMg?'none':'';              // big Lobby button everywhere except inside a minigame
+  const fForest=(scene==='forest');
+  const sp=document.getElementById('mSprint'); if(sp) sp.style.display=fForest?'':'none';
+  const fl=document.getElementById('mFly'); if(fl) fl.style.display=fForest?'':'none';
 }
 function updateWeaponButtons(){
   if(!mobileOn) return;
