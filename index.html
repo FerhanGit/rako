@@ -917,14 +917,13 @@ function reset(){
   // Night Stalkers (tier 6) — only dangerous at night; freeze when you look at them
   for(let i=0;i<10;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-40);
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,6)); }
-  // biome-native monsters — spawn only in their region
-  for(let i=0;i<48;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
-    if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6 || inCity(x,z)) continue;
-    const b=biomeAt(x,z);
-    if(b==='snow') objects.push(makeMonster(x,z, [7,14,15,16][Math.floor(Math.random()*4)]));        // frost wraith, snow fox, yeti, white bear
-    else if(b==='lava') objects.push(makeMonster(x,z, [8,17,18][Math.floor(Math.random()*3)]));        // magma hound, lava dog, lava brute
-    else if(b==='space') objects.push(makeMonster(x,z, [9,19][Math.floor(Math.random()*2)]));          // void horror, alien
-  }
+  // biome-native monsters — guaranteed to fill their region
+  const spawnInBiome=(biome,tiers,n)=>{ let c=0,tries=0; while(c<n && tries++<900){ const x=Math.random()*WORLD,z=Math.random()*WORLD;
+    if(biomeAt(x,z)!==biome||inCity(x,z)||Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6) continue;
+    objects.push(makeMonster(x,z, tiers[Math.floor(Math.random()*tiers.length)])); c++; } };
+  spawnInBiome('snow', [7,14,15,16], 20);   // frost wraith, snow fox, yeti, white bear
+  spawnInBiome('lava', [8,17,18],   20);    // magma hound, lava dog, lava brute
+  spawnInBiome('space',[9,19],      18);    // void horror, alien
   // hostile wildlife — bears, foxes, frogs, squirrels — attack day & night
   for(let i=0;i<40;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+5 || inCity(x,z)) continue;
