@@ -2051,7 +2051,8 @@ function draw(){
   // collect & sort visible objects far->near
   const night=isNight();                 // forest monsters only appear at night
   const draws=[];
-  const cullDist=quality*0.34;   // don't project/sort things beyond the fade range — big perf win
+  const snowView=biomeAt(cam.x,cam.z)==='snow';
+  const cullDist=quality*(snowView?0.5:0.34);   // don't project/sort things beyond the fade range — big perf win (snow = see farther)
   for(const o of objects){
     if(o.type==='boss' && !o.alive) continue;
     if(o.type==='monster' && !night && !alwaysHostile(o)) continue;
