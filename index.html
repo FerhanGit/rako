@@ -4048,6 +4048,11 @@ window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
 // ---------- boot ----------
 loadData(); refreshChip(); applyQuality(quality);
 refreshQuests();
+// normalise the pass on older saves, then auto-claim anything earned
+if(!account.pass) account.pass={xp:0,paid:false,claimedFree:[],claimedPaid:[],colors:[]};
+account.pass.claimedFree=account.pass.claimedFree||[]; account.pass.claimedPaid=account.pass.claimedPaid||[]; account.pass.colors=account.pass.colors||[];
+grantPassTiers();
+if(colorLocked(account.skin)){ account.skin='green'; saveAccount(); }   // can't keep a special colour you haven't unlocked
 if(!account.gift50){ account.gift50=true; account.gems=(account.gems||0)+50; saveAccount(); }   // free 50 gems, once
 applyLang(); renderLangGrid(); refreshPlatform();
 state='menu';
