@@ -1290,6 +1290,42 @@ function enterVolcano(o){
     flash('🌋 LAVA CHEST! You found the MINIGUN — press B to unload a hail of bullets!');
   } else { SFX.door(); flash('🌋 You climb the volcano and peer inside... no lava chest this time. Climb again!'); }
 }
+// ---- LIBRARY: read "The History of RAKO"; on the final page, click an 'a' to win ----
+const LIB_PAGES=51;
+const LIB_LINES=[
+  "In the first dark, the forest was only a seed and a scream.",
+  "RAKO was not born — it was remembered into being.",
+  "The God of the End slept beneath the roots for a thousand winters.",
+  "Hunters came with torches, and the trees learned to hunger back.",
+  "The nightmare city rose where the moon cracked open.",
+  "Wolves were once guardians, before the long cold turned them.",
+  "The Skyling chooses only those who fall and rise again.",
+  "Every chest is a promise the forest does not mean to keep.",
+  "The stronghold guards forgot their names, never their blades.",
+  "Snow drifted south and froze the foxes mid-laugh.",
+  "Beyond the void, the stars are only distant campfires.",
+  "Whoever reads to the very end may rewrite the end.",
+];
+let _libN=1;
+function libContent(n){
+  if(n===LIB_PAGES){
+    let html="<p>The final page. The ink shimmers and stirs.</p><p>One single letter holds the way out. Find an <b>a</b> in the line below and press it.</p><p style='font-size:24px;letter-spacing:3px'>";
+    for(const ch of "the aether awaits a wanderer"){
+      if(ch==='a') html+="<span class='liba' style='color:#ffcf5c;cursor:pointer;text-shadow:0 0 8px #ffcf5c'>a</span>";
+      else html+=(ch===' '?'&nbsp;':ch);
+    }
+    return html+"</p>";
+  }
+  const a=LIB_LINES[(n*3)%LIB_LINES.length], b=LIB_LINES[(n*5+1)%LIB_LINES.length], c=LIB_LINES[(n*7+2)%LIB_LINES.length];
+  return "<p>"+a+"</p><p>"+b+"</p><p>"+c+"</p>";
+}
+function renderLibPage(){
+  const t=document.getElementById('libText'); t.innerHTML=libContent(_libN);
+  document.getElementById('libPage').textContent='Page '+_libN+' / '+LIB_PAGES;
+  if(_libN===LIB_PAGES) t.querySelectorAll('.liba').forEach(el=> el.onclick=()=>{ closeLibrary(); flash('📖 The letter blazes gold — RAKO is complete!'); if(typeof win==='function') win(); });
+}
+function enterLibrary(o){ _libN=1; state='lib'; document.getElementById('libpanel').classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); renderLibPage(); }
+function closeLibrary(){ if(state==='lib'){ state='play'; document.getElementById('libpanel').classList.add('hidden'); } }
 function enterCabin(){
   outsidePos={x:cam.x, z:cam.z, yaw:cam.yaw};
   scene='interior'; houseTimer=0; cam.flyTime=0; cam.hface=1;
