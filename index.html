@@ -3907,6 +3907,8 @@ window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
 
 // ---------- boot ----------
 loadData(); refreshChip(); applyQuality(quality);
+refreshQuests();
+if(!account.gift50){ account.gift50=true; account.gems=(account.gems||0)+50; saveAccount(); }   // free 50 gems, once
 applyLang(); renderLangGrid(); refreshPlatform();
 state='menu';
 // first launch (no language chosen yet) opens the start screen; otherwise go to the lobby
