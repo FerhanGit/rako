@@ -2301,8 +2301,10 @@ function drawMap(){
   for(let gz=0;gz<MAP;gz++) for(let gx=0;gx<MAP;gx++){
     if(!explored[gz*MAP+gx]) continue;
     const wx=gx*MCELL, wz=gz*MCELL;
-    ctx.fillStyle = Math.hypot(wx-BOSS.x,wz-BOSS.z)<48 ? '#3a1020'
-                  : Math.hypot(wx-SH.x,wz-SH.z)<SH.r+2 ? '#3a3a42' : '#1d3d1f';
+    let col = Math.hypot(wx-BOSS.x,wz-BOSS.z)<48 ? '#3a1020'
+            : Math.hypot(wx-SH.x,wz-SH.z)<SH.r+2 ? '#3a3a42' : null;
+    if(!col){ const b=biomeAt(wx,wz); col = b==='snow'?'#cfe0ea' : b==='lava'?'#7a3216' : b==='space'?'#3a2a5a' : '#1d3d1f'; }
+    ctx.fillStyle=col;
     ctx.fillRect(ox+gx*cs, oy+gz*cs, cs+1, cs+1);
   }
   const seen=(x,z)=>explored[Math.floor(z/MCELL)*MAP+Math.floor(x/MCELL)];
