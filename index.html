@@ -2819,6 +2819,14 @@ function drawWings(){
   ctx.restore();
 }
 
+function gainXP(n){ if(!cam) return; cam.xp=(cam.xp||0)+n;
+  while(cam.xp>=cam.xpNext){ cam.xp-=cam.xpNext; cam.level=(cam.level||1)+1; cam.xpNext=Math.floor(cam.xpNext*1.4)+5; levelPerk(); } }
+function levelPerk(){
+  cam.maxHp+=12; cam.hp=cam.maxHp; cam.dmg+=2.5;
+  if(cam.level%3===0){ cam.maxHunger+=10; }
+  SFX.win&&SFX.win(); burst(cam.x,cam.z,'#ffe070',18);
+  flash("⭐ LEVEL UP! Lv "+cam.level+" — +12 max HP, +2.5 damage"+(cam.level%3===0?", +10 hunger":""));
+}
 function drawBars(){
   ctx.textAlign="left";
   // HP (damage) + XP bars
