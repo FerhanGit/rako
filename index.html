@@ -897,7 +897,7 @@ function reset(){
   for(let i=0;i<10;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-40);
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,6)); }
   // biome-native monsters — spawn only in their region
-  for(let i=0;i<90;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
+  for(let i=0;i<48;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6 || inCity(x,z)) continue;
     const b=biomeAt(x,z);
     if(b==='snow') objects.push(makeMonster(x,z,7));
