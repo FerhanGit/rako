@@ -418,7 +418,9 @@ const CHAR_SKINS=[
   { id:'demon',     name:'Demon',     price:100,desc:'Horns, red skin, fanged grin. Pure menace.' },
   { id:'mystery',   name:'???',       price:125,desc:'Entirely black — clothes, face, skin, all hidden. Just a ? on its chest.' },
   { id:'filip',     name:'Filip',     price:140,desc:'Broken arm in a cast, and a deeply stupid face.' },
+  { id:'aura',      name:'Aura',      price:0, code:'0505', desc:'Black & rainbow aura; reskins itself every 5s. Unlock with code 0505.' },
 ];
+let _auraBase='aster', _auraT=0;   // the Aura skin morphs into a random outfit every 5 seconds
 const AVATARS=['😀','😎','🤠','👽','🤖','👹','👺','💀','👻','🧛','🧙','🧝','🦁','🐯','🐺','🦊','🐻','🐲','🦄','🐸','🐧','🦅','🐉','🔥','⚡','🌟','💎','👑','🗡️','🏹'];
 const SKIN_ORDER=['black','red','orange','green','yellow','brown','pink','purple','ghost','gold','silver','chess','zebra','rainbow','rainbowzebra','white'];
 const SKIN_HEX={black:'#222222',red:'#d03030',orange:'#e07820',green:'#3a8a3a',yellow:'#e0d020',
