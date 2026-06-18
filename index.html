@@ -2198,7 +2198,7 @@ function draw(){
   drawHUD();
 }
 // ---------- weather ----------
-let weather='clear', weatherT=0, thunderFlash=0;
+let weather='clear', weatherT=0, thunderFlash=0, _diamondT=0;
 function drawWeather(){
   weatherT--;
   if(weatherT<=0){ weatherT=60*(45+Math.random()*80); const r=Math.random();
