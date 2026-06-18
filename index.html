@@ -1208,6 +1208,8 @@ function interact(){
   if(rc){ mineRock(rc); return; }
   const sc=objects.find(o=>o.type==='shchest' && dist(o)<3.2);
   if(sc){ openStronghold(sc); return; }
+  const ic=objects.find(o=>o.type==='icechest' && dist(o)<3);
+  if(ic){ openIceChest(ic); return; }
   const cv=objects.find(o=>o.type==='cave' && dist(o)<3.5);
   if(cv){ enterCave(); return; }
   if(openNearbyChest()) return;
