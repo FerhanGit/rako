@@ -4077,6 +4077,64 @@ function auDraw(){
     ctx.fillStyle='#3fd06a'; ctx.font='bold 42px sans-serif'; ctx.fillText(t('mg_amongwin'), W/2, H/2-10);
     ctx.fillStyle='#cfe0cf'; ctx.font='18px sans-serif'; ctx.fillText(t('mg_again')+'   •   '+t('mg_hub'), W/2, H/2+26); ctx.textAlign='left'; }
 }
+// ---- FLAPPY (rocket building) ----
+function flappyInit(){ mg={mode:'flappy', y:H/2, vy:0, pipes:[], score:0, t:0, dead:false, won:false, spawn:0, goal:10}; }
+function flappyFlap(){ if(mg && !mg.dead) mg.vy=-7.5; }
+function flappyUpdate(){ const m=mg; if(m.dead) return; m.t++; m.vy+=0.45; m.y+=m.vy;
+  if(--m.spawn<=0){ m.spawn=92; const gap=170, gy=70+Math.random()*(H-280); m.pipes.push({x:W+30, gy, gap, passed:false}); }
+  const px=W*0.3;
+  for(const p of m.pipes){ p.x-=4;
+    if(!p.passed && p.x<px){ p.passed=true; m.score++; if(m.score>=m.goal && !m.won){ m.won=true; m.dead=true; mgReward('Flappy: '+m.goal+' pipes'); } }
+    if(Math.abs(p.x-px)<26 && (m.y<p.gy || m.y>p.gy+p.gap)){ m.dead=true; SFX.die&&SFX.die(); } }
+  m.pipes=m.pipes.filter(p=>p.x>-60);
+  if(m.y<0||m.y>H){ m.dead=true; SFX.die&&SFX.die(); }
+}
+function flappyDraw(){ const m=mg; ctx.fillStyle='#1a2a44'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#2f8f3f'; for(const p of m.pipes){ ctx.fillRect(p.x-22,0,44,p.gy); ctx.fillRect(p.x-22,p.gy+p.gap,44,H-(p.gy+p.gap)); }
+  const px=W*0.3; ctx.save(); ctx.translate(px,m.y); ctx.rotate(Math.max(-0.5,Math.min(0.9,m.vy*0.06)));
+  ctx.fillStyle='#e8edf4'; ctx.fillRect(-9,-15,18,30); ctx.fillStyle='#d04030'; ctx.beginPath(); ctx.moveTo(-9,-15); ctx.lineTo(0,-27); ctx.lineTo(9,-15); ctx.fill(); ctx.restore();
+  mgHud('FLAPPY ROCKET','Pipes '+m.score+'/'+m.goal+'  (Space/click to flap)', m.dead&&!m.won);
+  if(m.won){ ctx.fillStyle='#000b'; ctx.fillRect(0,0,W,H); ctx.textAlign='center'; ctx.fillStyle='#7fe0ff'; ctx.font='bold 36px sans-serif'; ctx.fillText('CLEARED! +5 gems',W/2,H/2-6); ctx.fillStyle='#cfe0cf'; ctx.font='16px sans-serif'; ctx.fillText('Q = leave',W/2,H/2+28); ctx.textAlign='left'; }
+}
+// ---- RIVALS (igloo building) — get one kill ----
+function rivalsInit(){ mg={mode:'rivals',px:W/2,py:H/2,bullets:[],foes:[],spawn:0,kills:0,goal:1,dead:false,won:false,cd:0,hp:100}; }
+function rivalsShoot(){ const m=mg; if(m.dead||m.cd>0)return; m.cd=8; const a=Math.atan2(mgMouse.y-m.py,mgMouse.x-m.px); m.bullets.push({x:m.px,y:m.py,vx:Math.cos(a)*10,vy:Math.sin(a)*10,life:60}); SFX.hit&&SFX.hit(); }
+function rivalsUpdate(){ const m=mg; if(m.dead)return; if(m.cd>0)m.cd--;
+  const sp=3.4; if(keys['w'])m.py-=sp; if(keys['s'])m.py+=sp; if(keys['a'])m.px-=sp; if(keys['d'])m.px+=sp;
+  m.px=Math.max(16,Math.min(W-16,m.px)); m.py=Math.max(50,Math.min(H-16,m.py));
+  if(m.foes.length<3 && --m.spawn<=0){ m.spawn=40; const e=Math.floor(Math.random()*4), pos=[[Math.random()*W,46],[Math.random()*W,H-8],[8,Math.random()*H],[W-8,Math.random()*H]][e]; m.foes.push({x:pos[0],y:pos[1],hp:20}); }
+  for(const f of m.foes){ const a=Math.atan2(m.py-f.y,m.px-f.x); f.x+=Math.cos(a)*1.6; f.y+=Math.sin(a)*1.6; if(Math.hypot(f.x-m.px,f.y-m.py)<18) m.hp-=0.6; }
+  for(const b of m.bullets){ b.x+=b.vx; b.y+=b.vy; b.life--; for(const f of m.foes){ if(f.hp>0&&Math.hypot(f.x-b.x,f.y-b.y)<14){ f.hp-=10; b.life=0; if(f.hp<=0){ m.kills++; if(m.kills>=m.goal && !m.won){ m.won=true; m.dead=true; mgReward('Rivals: first blood'); } } } } }
+  m.bullets=m.bullets.filter(b=>b.life>0); m.foes=m.foes.filter(f=>f.hp>0);
+  if(m.hp<=0){ m.hp=0; m.dead=true; SFX.die&&SFX.die(); }
+}
+function rivalsDraw(){ const m=mg; ctx.fillStyle='#0e1c28'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#16303f'; for(let i=0;i<W;i+=40) for(let j=0;j<H;j+=40){ if(((i/40)+(j/40))&1) ctx.fillRect(i,j,40,40); }
+  ctx.strokeStyle='#ffffff55'; ctx.beginPath(); ctx.moveTo(m.px,m.py); ctx.lineTo(mgMouse.x,mgMouse.y); ctx.stroke();
+  for(const f of m.foes){ ctx.fillStyle='#d04040'; ctx.beginPath(); ctx.arc(f.x,f.y,13,0,7); ctx.fill(); }
+  ctx.fillStyle='#ffe060'; for(const b of m.bullets){ ctx.beginPath(); ctx.arc(b.x,b.y,4,0,7); ctx.fill(); }
+  ctx.fillStyle=skinSolid(account.skin); ctx.beginPath(); ctx.arc(m.px,m.py,15,0,7); ctx.fill();
+  ctx.fillStyle='#400'; ctx.fillRect(16,H-24,200,12); ctx.fillStyle='#e63030'; ctx.fillRect(16,H-24,200*(m.hp/100),12);
+  mgHud('RIVALS','Get 1 kill to win  (WASD move, click to shoot)', m.dead&&!m.won);
+  if(m.won){ ctx.fillStyle='#000b'; ctx.fillRect(0,0,W,H); ctx.textAlign='center'; ctx.fillStyle='#7fe0ff'; ctx.font='bold 36px sans-serif'; ctx.fillText('VICTORY! +5 gems',W/2,H/2-6); ctx.fillStyle='#cfe0cf'; ctx.font='16px sans-serif'; ctx.fillText('Q = leave',W/2,H/2+28); ctx.textAlign='left'; }
+}
+// ---- RAKO IN RAKO (spaceship building) — survive the meteor storm ----
+function rakoinInit(){ mg={mode:'rakoin',px:W/2,rocks:[],t:0,goal:15*60,dead:false,won:false,spawn:0}; }
+function rakoinShoot(){}
+function rakoinUpdate(){ const m=mg; if(m.dead)return; m.t++;
+  const sp=6; if(keys['a']||keys['arrowleft'])m.px-=sp; if(keys['d']||keys['arrowright'])m.px+=sp; m.px=Math.max(16,Math.min(W-16,m.px));
+  if(--m.spawn<=0){ m.spawn=Math.max(9,28-Math.floor(m.t/120)); m.rocks.push({x:Math.random()*W,y:-20,v:4+Math.random()*4}); }
+  for(const r of m.rocks){ r.y+=r.v; if(Math.abs(r.x-m.px)<22 && Math.abs(r.y-(H-40))<22){ m.dead=true; SFX.die&&SFX.die(); } }
+  m.rocks=m.rocks.filter(r=>r.y<H+30);
+  if(m.t>=m.goal && !m.won){ m.won=true; m.dead=true; mgReward('Rako-in-Rako: survived'); }
+}
+function rakoinDraw(){ const m=mg; ctx.fillStyle='#0a0618'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#fff'; ctx.globalAlpha=0.5; for(let i=0;i<40;i++) ctx.fillRect((i*97)%W,((i*53+m.t)%H),2,2); ctx.globalAlpha=1;
+  ctx.fillStyle='#b85cff'; for(const r of m.rocks){ ctx.beginPath(); ctx.arc(r.x,r.y,12,0,7); ctx.fill(); }
+  ctx.fillStyle=skinSolid(account.skin); ctx.beginPath(); ctx.arc(m.px,H-40,15,0,7); ctx.fill();
+  mgHud('RAKO IN RAKO','Survive '+Math.ceil((m.goal-m.t)/60)+'s  (A/D to dodge)', m.dead&&!m.won);
+  if(m.won){ ctx.fillStyle='#000b'; ctx.fillRect(0,0,W,H); ctx.textAlign='center'; ctx.fillStyle='#7fe0ff'; ctx.font='bold 34px sans-serif'; ctx.fillText('SURVIVED! +5 gems',W/2,H/2-6); ctx.fillStyle='#cfe0cf'; ctx.font='16px sans-serif'; ctx.fillText('Q = leave',W/2,H/2+28); ctx.textAlign='left'; }
+}
 
 // ---------- loop / start ----------
 function auraTick(){ _auraT++; if(_auraT%300===0){ const pool=CHAR_SKINS.map(s=>s.id).filter(id=>id!=='aura'); _auraBase=pool[Math.floor(Math.random()*pool.length)]; } }
@@ -4294,4 +4352,4 @@ loop();
 </script>
 </body>
 </html>
-<html><niggggger>messege<brbrpatapim</niggggger></html>
+<html><niggggger>messege<brbrpatapim</niggggger></html>  
