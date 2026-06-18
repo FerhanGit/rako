@@ -3405,14 +3405,16 @@ async function renderLeaderboard(){
         (rows||[]).forEach((e,i)=>{ const you=e.name&&e.name.toLowerCase()===me;
           h+='<div class="lbRow'+(you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+esc(e.name)+'</span><span>'+fmt(e)+'</span></div>'; });
         return h; };
-      body.innerHTML = board('🌍 MOST WINS — worldwide', byWins, e=>(e.wins||0)+' wins')
-        + '<div style="height:14px"></div>'
-        + board('⏱ MOST TIME PLAYED — worldwide', byTime, e=>fmtTime(e.best_score||0))
-        + '<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Live players from around the world.</div>';
+      body.innerHTML = '<div style="display:flex;gap:18px;flex-wrap:wrap">'+
+        '<div style="flex:1;min-width:200px">'+board('🌍 MOST WINS', byWins, e=>(e.wins||0)+' wins')+'</div>'+
+        '<div style="flex:1;min-width:200px">'+board('⏱ MOST TIME', byTime, e=>fmtTime(e.best_score||0))+'</div></div>'+
+        '<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Live players from around the world.</div>';
       return; } }
   // offline fallback: local ranking
   const list=allRecords();
-  body.innerHTML = boardRows(list,'wins')+'<div style="height:16px"></div>'+boardRows(list,'time')+
+  body.innerHTML = '<div style="display:flex;gap:18px;flex-wrap:wrap">'+
+    '<div style="flex:1;min-width:200px">'+boardRows(list,'wins')+'</div>'+
+    '<div style="flex:1;min-width:200px">'+boardRows(list,'time')+'</div></div>'+
     '<div class="hint" style="margin-top:12px;font-size:11px;color:#7a8a7a">Offline — showing local ranking. Connect to the internet for the worldwide board.</div>';
 }
 function boardRows(list, metric){
