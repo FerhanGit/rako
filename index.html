@@ -1629,7 +1629,7 @@ document.getElementById('invBtn').onclick=()=>toggleInventory();
 document.getElementById('qBtn').onclick=()=>{ if(state==='qpanel') closeQuestPanel(); else openQuestPanel(); };
 document.getElementById('libPrev').onclick=()=>{ if(_libN>1){ _libN--; renderLibPage(); } };
 document.getElementById('libNext').onclick=()=>{ if(_libN<LIB_PAGES){ _libN++; renderLibPage(); } };
-document.getElementById('libClose').onclick=()=>closeLibrary();
+document.getElementById('libClose').onclick=()=>closeBook();
 document.getElementById('qpanelClose').onclick=()=>closeQuestPanel();
 document.getElementById('qpanel').addEventListener('mousedown',e=>{ if(e.target.id==='qpanel') closeQuestPanel(); });
 document.getElementById('fsBtn').onclick=()=>toggleFullscreen();
