@@ -2890,8 +2890,10 @@ function skinBody(x,y,r){ const s=(account&&account.skin)||'green';
   if(s==='zebra') return {fill:zebraPat(), alpha:1};
   if(s==='rainbowzebra') return {fill:rzebraPat(), alpha:1};
   if(s==='rainbow') return {fill:rainbowGrad(x,y,r), alpha:1};
+  if(s==='gradient'){ const g=ctx.createLinearGradient(x-r,y-r,x+r,y+r); g.addColorStop(0,'#5a7bff'); g.addColorStop(0.5,'#9b5fff'); g.addColorStop(1,'#ff5fa8'); return {fill:g, alpha:1}; }
   return {fill:SKIN_HEX[s]||'#3a8a3a', alpha:1}; }
 function skinCSS(name){
+  if(name==='gradient') return 'linear-gradient(135deg,#5a7bff,#9b5fff,#ff5fa8)';
   if(name==='ghost') return 'rgba(220,235,255,0.55)';
   if(name==='gold') return 'linear-gradient(135deg,#ffe680,#b8860b)';
   if(name==='silver') return 'linear-gradient(135deg,#f4f4fa,#9a9aa5)';
