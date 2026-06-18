@@ -884,7 +884,7 @@ function reset(){
   objects.push(shChest(SH.x, SH.z));
 
   // monsters: denser & tougher the deeper (higher z) you go
-  for(let i=0;i<140;i++){
+  for(let i=0;i<85;i++){
     const x=Math.random()*WORLD, z=20+Math.random()*(WORLD-30);
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+3) continue;
     const tier=Math.min(4, Math.floor(z/40));
