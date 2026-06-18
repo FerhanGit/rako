@@ -708,7 +708,7 @@ function reset(){
   objects.push({type:'cabin', x:HOME.x, z:HOME.z+3, height:7.5, width:9, solid:true});
 
   // scatter trees over the forest (not inside the city, stronghold, or home)
-  for(let i=0;i<900;i++){
+  for(let i=0;i<1500;i++){
     const x=Math.random()*WORLD, z=Math.random()*WORLD;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r) continue;
     if(Math.hypot(x-SH.x,z-SH.z)<SH.r+4) continue;
