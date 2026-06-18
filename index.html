@@ -923,12 +923,12 @@ function reset(){
   const placeIn=(biome,fn,n)=>{ let c=0,tries=0; while(c<n && tries++<400){ const x=Math.random()*WORLD,z=Math.random()*WORLD;
     if(biomeAt(x,z)!==biome||inCity(x,z)||Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6) continue; fn(x,z); c++; } };
   const bld=(type,h,w)=>((x,z)=>objects.push({type,x,z,height:h,width:w,solid:true}));
-  placeIn('snow', bld('igloo',3.5,5), 4);
+  placeIn('snow', bld('igloo',3.5,5), 3);
   placeIn('space',bld('spaceship',5,7), 2);
   placeIn('space',bld('rocket',10,3), 2);
-  placeIn('lava', bld('volcano',13,13), 2);
-  placeIn('lava', bld('library',7,8), 2);
-  placeIn('snow', (x,z)=>objects.push({type:'icechest',x,z,height:1.2,width:1.4,opened:false}), 3);
+  placeIn('lava', bld('volcano',14,14), 1);    // exactly one volcano
+  placeIn('lava', bld('library',7,8), 1);      // one library
+  placeIn('snow', (x,z)=>objects.push({type:'icechest',x,z,height:1.2,width:1.4,opened:false}), 1);   // one ice chest
   // food on the ground
   for(let i=0;i<22;i++) objects.push(food(8+Math.random()*(WORLD-16), 16+Math.random()*(WORLD-30)));
   // normal chests
