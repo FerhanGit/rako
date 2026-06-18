@@ -1886,10 +1886,27 @@ function draw(){
   ctx.globalAlpha=1;
 
   drawMotes();        // drifting fireflies
+  drawWeather();      // rain / fog / thunder
   drawVignette();     // darkened edges for mood
   ctx.restore();      // end screen-shake transform (HUD stays steady)
 
   drawHUD();
+}
+// ---------- weather ----------
+let weather='clear', weatherT=0, thunderFlash=0;
+function drawWeather(){
+  weatherT--;
+  if(weatherT<=0){ weatherT=60*(40+Math.random()*70); const r=Math.random(); weather=r<0.5?'clear':r<0.8?'rain':'fog';
+    if(weather!=='clear') flash(weather==='rain'?'A cold rain begins to fall...':'A thick fog rolls in...'); }
+  if(weather==='rain' && Math.random()<0.0035){ thunderFlash=1; SFX.boss&&SFX.boss(); }
+  if(thunderFlash>0) thunderFlash=Math.max(0,thunderFlash-0.05);
+  if(weather==='fog'){ ctx.fillStyle='rgba(176,182,196,0.17)'; ctx.fillRect(-14,-280,W+28,H+560); }
+  if(weather==='rain'){
+    ctx.strokeStyle='rgba(150,170,205,0.42)'; ctx.lineWidth=1.4; ctx.beginPath();
+    for(let i=0;i<140;i++){ const x=(i*101+time*15)%(W+40)-20, y=(i*57+time*26)%(H+40)-20; ctx.moveTo(x,y); ctx.lineTo(x-4,y+15); }
+    ctx.stroke(); ctx.fillStyle='rgba(40,50,72,0.18)'; ctx.fillRect(-14,-280,W+28,H+560);
+  }
+  if(thunderFlash>0){ ctx.fillStyle='rgba(255,255,255,'+(thunderFlash*0.5)+')'; ctx.fillRect(-14,-280,W+28,H+560); }
 }
 
 // ---------- HUD (shared by forest + interior) ----------
