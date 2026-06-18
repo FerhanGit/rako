@@ -2821,13 +2821,17 @@ function drawWings(){
 
 function drawBars(){
   ctx.textAlign="left";
-  // HP (damage) bar
-  ctx.fillStyle="#000a"; ctx.fillRect(12,H-58,250,46);
+  // HP (damage) + XP bars
+  ctx.fillStyle="#000a"; ctx.fillRect(12,H-72,250,60);
+  // XP / level bar
+  ctx.fillStyle="#16243f"; ctx.fillRect(18,H-66,236,8);
+  ctx.fillStyle="#7fd0ff"; ctx.fillRect(18,H-66,236*Math.min(1,(cam.xp||0)/(cam.xpNext||1)),8);
   ctx.fillStyle="#400"; ctx.fillRect(18,H-52,236,10);
   ctx.fillStyle="#e63030"; ctx.fillRect(18,H-52,236*(cam.hp/cam.maxHp),10);
   ctx.fillStyle="#420"; ctx.fillRect(18,H-38,236,10);
   ctx.fillStyle="#e6a020"; ctx.fillRect(18,H-38,236*(cam.hunger/cam.maxHunger),10);
   ctx.fillStyle="#fff"; ctx.font="11px sans-serif";
+  ctx.fillText("LV "+(cam.level||1)+"   "+(cam.xp||0)+"/"+(cam.xpNext||0)+" XP", 22, H-67+0);
   ctx.fillText("HP "+Math.ceil(cam.hp)+"/"+cam.maxHp, 22, H-44);
   ctx.fillText("HUNGER "+Math.ceil(cam.hunger)+"/"+cam.maxHunger, 22, H-30);
   ctx.fillText("DMG "+Math.round(cam.dmg)+"   Kills "+kills+"   Meat "+(cam.meat||0)+"   Coins "+(cam.coins||0), 22, H-16);
