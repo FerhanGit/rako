@@ -3629,8 +3629,9 @@ function auDraw(){
 }
 
 // ---------- loop / start ----------
+function auraTick(){ _auraT++; if(_auraT%300===0){ const pool=CHAR_SKINS.map(s=>s.id).filter(id=>id!=='aura'); _auraBase=pool[Math.floor(Math.random()*pool.length)]; } }
 function loop(){
-  try{ update(); draw();
+  try{ auraTick(); update(); draw();
     if(mobileOn && scene!==_lastMScene){ _lastMScene=scene; updateMobileScene(); } }
   catch(err){ console.error(err); const m=document.getElementById('msg');
     if(m){ m.textContent=''+err.message; m.classList.remove('hidden'); } }
