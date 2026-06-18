@@ -1513,6 +1513,7 @@ function update(){
   // flight bobbing height
   const targetH = flying?4.2:0.55;
   cam.eyeH += (targetH-cam.eyeH)*0.15;
+  if(moved && !flying){ cam.bobT=(cam.bobT||0)+(sprinting?0.45:0.30); cam.eyeH += Math.sin(cam.bobT)*0.035; }   // walking head-bob
   if(flying){ cam.flyTime--; if(cam.flyTime===0) flash("Your Skyling sets you down gently."); }
 
   // poison aura while invisible
