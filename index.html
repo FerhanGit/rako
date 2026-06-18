@@ -1731,6 +1731,14 @@ function update(){
     if(ic && !ic.opened) promptTxt="Press E to open the Ice Chest (Ice Sword)";
   }
   if(!promptTxt){
+    const bd=objects.find(o=>['rocket','igloo','spaceship','volcano','library'].includes(o.type) && dist(o)<4);
+    if(bd) promptTxt = bd.type==='rocket'?"Press E to play Flappy (rocket)"
+      : bd.type==='igloo'?"Press E to play Rivals (igloo)"
+      : bd.type==='spaceship'?"Press E to play Rako-in-Rako"
+      : bd.type==='volcano'?"Press E to climb into the volcano"
+      : "Press E to enter the Library";
+  }
+  if(!promptTxt){
     const cab=objects.find(o=>o.type==='cabin');
     if(cab && Math.hypot(cam.x-cab.x,cam.z-cab.z)<4.4 && cam.z<cab.z) promptTxt="Press E to enter your cabin";
   }
