@@ -3032,7 +3032,7 @@ function renderShop(){
   const col=skinSolid(account.skin);
   const m=mobileOn, cw=m?108:150, ch=m?70:96, cr=m?18:24;
   for(const sk of CHAR_SKINS){
-    const owned=account.ownedSkins.includes(sk.id) || sk.price===0;
+    const owned=account.ownedSkins.includes(sk.id) || (sk.price===0 && !sk.code);
     const sel=account.charSkin===sk.id;
     const card=document.createElement('div');
     card.style.cssText='width:'+cw+'px;border:2px solid '+(sel?'#7fe070':'#2c5a3a')+';border-radius:12px;padding:'+(m?'5px':'8px')+';background:#0c1810;text-align:center';
