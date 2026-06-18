@@ -407,7 +407,43 @@ let difficulty='normal', quality=250;
 const DIFF={ easy:{hp:0.55,dmg:0.5,spd:0.85}, normal:{hp:1,dmg:1,spd:1}, hard:{hp:1.6,dmg:1.5,spd:1.15},
   impossible:{hp:5, dmg:4, spd:1.45} };
 let account={ name:'Hunter', wins:0, since:'', timePlayed:0, friends:[], skin:'green', avatar:'',
-  gems:0, charSkin:'aster', ownedSkins:['aster'] };
+  gems:0, charSkin:'aster', ownedSkins:['aster'], quests:{day:'',week:-1,daily:[],weekly:null}, gift50:false };
+// ---- QUESTS (daily + weekly, rewarded in gems) ----
+const DAILY_POOL=[
+  {type:'wolf',       reward:12, lo:1, hi:3,  text:n=>'Kill '+n+' wild wolf'+(n>1?'s':'')},
+  {type:'bunny',      reward:10, lo:5, hi:10, text:n=>'Hunt '+n+' bunnies'},
+  {type:'monster',    reward:15, lo:8, hi:16, text:n=>'Slay '+n+' monsters'},
+  {type:'chest',      reward:14, lo:1, hi:2,  text:n=>'Open '+n+' chest'+(n>1?'s':'')},
+  {type:'stronghold', reward:25, lo:1, hi:1,  text:n=>'Clear the Stronghold of all guards'},
+];
+const WEEKLY_POOL=[
+  {type:'boss',    reward:90, lo:1,   hi:1,   text:n=>'Slay the God of the End'},
+  {type:'bunny',   reward:80, lo:100, hi:100, text:n=>'Hunt 100 bunnies'},
+  {type:'monster', reward:85, lo:120, hi:120, text:n=>'Slay 120 monsters'},
+];
+function _rint(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
+function genQuest(tpl){ const need=_rint(tpl.lo,tpl.hi); return {type:tpl.type, need, prog:0, reward:tpl.reward, claimed:false, text:tpl.text(need)}; }
+function refreshQuests(){
+  if(!account.quests) account.quests={day:'',week:-1,daily:[],weekly:null};
+  const today=new Date().toDateString(), wk=Math.floor(Date.now()/(7*864e5));
+  if(account.quests.day!==today || !account.quests.daily.length){
+    account.quests.day=today; const pool=DAILY_POOL.slice();
+    for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+    account.quests.daily=pool.slice(0,3).map(genQuest); saveAccount();
+  }
+  if(account.quests.week!==wk || !account.quests.weekly){
+    account.quests.week=wk; account.quests.weekly=genQuest(WEEKLY_POOL[Math.floor(Math.random()*WEEKLY_POOL.length)]); saveAccount();
+  }
+}
+function questEvent(type,n){
+  n=n||1; if(!account.quests) return;
+  const all=account.quests.daily.concat(account.quests.weekly?[account.quests.weekly]:[]);
+  let changed=false;
+  for(const q of all){ if(q.claimed||q.type!==type) continue; q.prog=Math.min(q.need,q.prog+n); changed=true;
+    if(q.prog>=q.need){ q.claimed=true; account.gems=(account.gems||0)+q.reward; SFX.win&&SFX.win();
+      flash('✅ Quest complete: '+q.text+'  (+'+q.reward+' 💎)'); } }
+  if(changed) saveAccount();
+}
 // character outfits bought with gems in the lobby Shop. `colorize` parts use your chosen SKIN color.
 const CHAR_SKINS=[
   { id:'aster',     name:'Aster',     price:0,  desc:'The starter — gray pants, shirt in your chosen color.' },
