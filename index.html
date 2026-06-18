@@ -436,10 +436,10 @@ const FOV=Math.PI/2.4, FOCAL=(W/2)/Math.tan(FOV/2);
 const WORLD=320;                 // world is WORLD x WORLD units (bigger map)
 // ---- biomes: regions of the map with their own sky/ground + monsters ----
 const BIOME_PAL={
-  forest:{skyTop:'#5a86a8',skyBot:'#9ec07a',grTop:'#357a3a',grBot:'#12350f'},
-  snow:  {skyTop:'#9fb6c8',skyBot:'#e6eef5',grTop:'#cfe0ea',grBot:'#8fa6b8'},
-  lava:  {skyTop:'#5a2418',skyBot:'#c4441a',grTop:'#5a2010',grBot:'#1a0805'},
-  space: {skyTop:'#0a0820',skyBot:'#1a1040',grTop:'#221a3a',grBot:'#08060f'},
+  forest:{skyTop:'#5a86a8',skyBot:'#9ec07a',grTop:'#3a9a40',grBot:'#1c5a22', grass:'#3f8a3f'},   // green
+  snow:  {skyTop:'#9fb6c8',skyBot:'#eef4fa',grTop:'#f2f6fb',grBot:'#c4d4e2', grass:'#dfe9f2'},   // white
+  lava:  {skyTop:'#5a2418',skyBot:'#c4441a',grTop:'#d4581a',grBot:'#7a2606', grass:'#ff8a2a'},   // orange
+  space: {skyTop:'#0a0820',skyBot:'#1a1040',grTop:'#6a2eaa',grBot:'#2a1450', grass:'#9b5fff'},   // purple
 };
 const BIOME_LABEL={forest:'🌲 Cursed Forest',snow:'❄ Frozen Wastes',lava:'🌋 Lava Fields',space:'🌌 The Void'};
 let curBiome='forest';
