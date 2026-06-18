@@ -911,9 +911,9 @@ function reset(){
   for(let i=0;i<48;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6 || inCity(x,z)) continue;
     const b=biomeAt(x,z);
-    if(b==='snow') objects.push(makeMonster(x,z,7));
-    else if(b==='lava') objects.push(makeMonster(x,z,8));
-    else if(b==='space') objects.push(makeMonster(x,z,9));
+    if(b==='snow') objects.push(makeMonster(x,z, [7,14,15,16][Math.floor(Math.random()*4)]));        // frost wraith, snow fox, yeti, white bear
+    else if(b==='lava') objects.push(makeMonster(x,z, [8,17,18][Math.floor(Math.random()*3)]));        // magma hound, lava dog, lava brute
+    else if(b==='space') objects.push(makeMonster(x,z, [9,19][Math.floor(Math.random()*2)]));          // void horror, alien
   }
   // hostile wildlife — bears, foxes, frogs, squirrels — attack day & night
   for(let i=0;i<40;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
