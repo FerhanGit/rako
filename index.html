@@ -1601,7 +1601,7 @@ function update(){
   tickChat();
   // while a panel is open: keep the world alive (animations flow) but paused & player-safe,
   // so it never looks "frozen". Closing the panel resumes everything.
-  if(state==='inv'||state==='trade'||state==='admin'||state==='map'||state==='buy'||state==='qpanel'){ time++; juiceDecay(); hudTimers(); return; }
+  if(state==='inv'||state==='trade'||state==='admin'||state==='map'||state==='buy'||state==='qpanel'||state==='lib'){ time++; juiceDecay(); hudTimers(); return; }
   if(state!=='play') return;
   time++;
   updateTopbarButtons();
