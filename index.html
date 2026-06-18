@@ -2585,10 +2585,10 @@ function drawCabin(p){
   // little "HOME" sign
   ctx.fillStyle="#cfe8d0"; ctx.font=`${Math.max(8,h*0.06)}px sans-serif`;
   ctx.textAlign="center"; ctx.fillText("HOME", x, wallTop-h*0.04); ctx.textAlign="left";
-  // ---- flagpole + flag on the roof ----
-  const px=x+w*0.34, pbot=wallTop, ptop=wallTop-h*0.5;
-  ctx.strokeStyle='#cfcfd2'; ctx.lineWidth=Math.max(1,h*0.012); ctx.beginPath(); ctx.moveTo(px,pbot); ctx.lineTo(px,ptop); ctx.stroke();
-  const fw=w*0.28, fh=h*0.17, fx=px, fy=ptop;
+  // ---- flagpole + flag on TOP of the cabin (centered) ----
+  const px=x, pbot=wallTop, ptop=wallTop-h*0.7;
+  ctx.strokeStyle='#cfcfd2'; ctx.lineWidth=Math.max(1,h*0.014); ctx.beginPath(); ctx.moveTo(px,pbot); ctx.lineTo(px,ptop); ctx.stroke();
+  const fw=w*0.34, fh=h*0.21, fx=px, fy=ptop;
   ctx.fillStyle='#ffffff'; ctx.fillRect(fx,fy,fw,fh);
   ctx.fillStyle='#1f55c4'; ctx.fillRect(fx,fy+fh*0.13,fw,fh*0.15); ctx.fillRect(fx,fy+fh*0.72,fw,fh*0.15);   // two blue stripes
   const sc=fx+fw*0.5, scy=fy+fh*0.5, sr=fh*0.24;                                                            // Star of David
