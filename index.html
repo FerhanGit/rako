@@ -416,7 +416,41 @@ let difficulty='normal', quality=250;
 const DIFF={ easy:{hp:0.55,dmg:0.5,spd:0.85}, normal:{hp:1,dmg:1,spd:1}, hard:{hp:1.6,dmg:1.5,spd:1.15},
   impossible:{hp:5, dmg:4, spd:1.45} };
 let account={ name:'Hunter', wins:0, since:'', timePlayed:0, friends:[], skin:'green', avatar:'',
-  gems:0, charSkin:'aster', ownedSkins:['aster'], quests:{day:'',week:-1,daily:[],weekly:null}, gift50:false };
+  gems:0, charSkin:'aster', ownedSkins:['aster'], quests:{day:'',week:-1,daily:[],weekly:null}, gift50:false,
+  pass:{xp:0, paid:false, claimedFree:[], claimedPaid:[], colors:[]} };
+// ---- RAKO PASS (battle pass: free + premium tracks) ----
+const PASS_MAX=100, PASS_PER_LEVEL=100, PASS_COST=1000;
+const SPECIAL_COLORS=['ghost','zebra','rainbow','rainbowzebra','silver','gold','black'];   // locked unless unlocked via the premium pass
+const PAID_COLOR_ORDER=['ghost','zebra','rainbow','rainbowzebra','silver','gold','black']; // tiers 1..7 grant these
+function passLevel(){ return Math.min(PASS_MAX, Math.floor((account.pass.xp||0)/PASS_PER_LEVEL)); }
+function freeReward(t){ return t===PASS_MAX ? {skin:'sob'} : {gems:10}; }
+function paidReward(t){
+  if(t===PASS_MAX) return {skin:'clown'};
+  if(t>=1 && t<=PAID_COLOR_ORDER.length) return {color:PAID_COLOR_ORDER[t-1], gems:20};
+  return {gems:40};
+}
+function grantReward(r, track, t){
+  if(r.gems){ account.gems=(account.gems||0)+r.gems; }
+  if(r.color && !account.pass.colors.includes(r.color)){ account.pass.colors.push(r.color); }
+  if(r.skin){ account.ownedSkins=account.ownedSkins||['aster']; if(!account.ownedSkins.includes(r.skin)) account.ownedSkins.push(r.skin);
+    flash('🎁 RAKO PASS tier 100 — you unlocked the '+(r.skin==='clown'?'SCARY CLOWN':'SOB FACE')+' skin!'); }
+}
+function grantPassTiers(){
+  const p=account.pass, lvl=passLevel(); let got=false;
+  for(let t=1;t<=lvl;t++){
+    if(!p.claimedFree.includes(t)){ p.claimedFree.push(t); grantReward(freeReward(t),'free',t); got=true; }
+    if(p.paid && !p.claimedPaid.includes(t)){ p.claimedPaid.push(t); grantReward(paidReward(t),'paid',t); got=true; }
+  }
+  if(got){ refreshChip&&refreshChip(); saveAccount(); }
+}
+function addPassXP(n){ if(!account.pass) return; const before=passLevel(); account.pass.xp=(account.pass.xp||0)+n;
+  const after=passLevel(); if(after>before){ SFX.win&&SFX.win(); flash('⬆ RAKO PASS level '+after+'!'); }
+  grantPassTiers(); }
+function buyPremiumPass(){
+  if(account.pass.paid){ return false; }
+  if((account.gems||0)<PASS_COST){ return false; }
+  account.gems-=PASS_COST; account.pass.paid=true; grantPassTiers(); saveAccount(); return true;
+}
 // ---- QUESTS (daily + weekly, rewarded in gems) ----
 const DAILY_POOL=[
   {type:'wolf',       reward:12, lo:1, hi:3,  text:n=>'Kill '+n+' wild wolf'+(n>1?'s':'')},
