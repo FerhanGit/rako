@@ -1359,7 +1359,7 @@ function libraryInteract(){
   if(Math.abs(libPos.x-(R.x+R.w/2))<48 && libPos.y>R.y+R.h-46){ scene='forest';
     if(outsidePos){ cam.x=outsidePos.x; cam.z=outsidePos.z; cam.yaw=outsidePos.yaw; } cam.eyeH=0.55; }
 }
-function drawLibrary(){
+function drawLibraryScene(){
   const R=LIB_ROOM;
   ctx.fillStyle='#0b0805'; ctx.fillRect(0,0,W,H);
   ctx.fillStyle='#241509'; ctx.fillRect(R.x-16,R.y-16,R.w+32,R.h+32);
