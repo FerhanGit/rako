@@ -1369,9 +1369,7 @@ function drawLibraryScene(){
   for(let i=1;i<=100;i++){ const s=libShelf(i), bw=s.gw-10, bh=s.gh-14, bx=s.x-bw/2, by=s.y-bh/2;
     ctx.fillStyle='#3a2410'; ctx.fillRect(bx,by,bw,bh);
     for(let k=0;k<6;k++){ ctx.fillStyle=cols[(i+k)%cols.length]; ctx.fillRect(bx+3+k*(bw-6)/6, by+3, (bw-6)/6-1.5, bh-6); }
-    ctx.fillStyle=(i===51)?'#ffe070':'#8a7050'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.fillText(i, s.x, by-3);
-    if(i===51){ const g=0.5+0.4*Math.sin(time*0.15); ctx.fillStyle='rgba(255,220,90,'+g+')'; ctx.fillRect(bx,by,bw,bh);
-      ctx.fillStyle='#fff'; ctx.fillText('✦', s.x, s.y+3); }
+    ctx.fillStyle='#8a7050'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.fillText(i, s.x, by-3);   // every shelf just shows its number — no shine on 51
   }
   // exit door
   ctx.fillStyle='#1a0f06'; ctx.fillRect(R.x+R.w/2-34,R.y+R.h-14,68,14);
