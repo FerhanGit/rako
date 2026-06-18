@@ -3222,6 +3222,29 @@ function renderQuests(){
   if(account.quests.weekly) h+=row(account.quests.weekly);
   B.innerHTML=h;
 }
+function rewardLabel(r){ let s=[]; if(r.color) s.push(r.color+' colour'); if(r.skin) s.push((r.skin==='clown'?'CLOWN':'SOB')+' skin'); if(r.gems) s.push(r.gems+'💎'); return s.join(' + '); }
+function openPass(){ grantPassTiers(); renderPass(); showScreen('pass'); }
+function renderPass(){
+  const B=document.getElementById('passBody'); if(!B) return; const p=account.pass, lvl=passLevel();
+  const intoLvl=(p.xp||0)%PASS_PER_LEVEL;
+  document.getElementById('passHead').innerHTML='Level <b style="color:#ffcf5c">'+lvl+'/'+PASS_MAX+'</b> · '+(p.xp||0)+' XP · '+
+    (p.paid?'<b style="color:#7fe0ff">PREMIUM</b>':'Free track')+' · Gems: <b style="color:#7fe0ff">'+(account.gems||0)+'</b><br>'+
+    '<span style="font-size:12px;color:#9ab09a">Beat the God of the End for +100 XP (=1 level). Premium unlocks the special skin colours.</span>';
+  const buy=document.getElementById('passBuy'); buy.textContent=p.paid?'✓ PREMIUM OWNED':'UNLOCK PREMIUM — 1000 💎'; buy.disabled=p.paid;
+  let h='<div style="display:flex;gap:6px;font-weight:bold;color:#9ab09a;border-bottom:1px solid #2a4a30;padding-bottom:4px"><span style="width:42px">TIER</span><span style="flex:1">FREE</span><span style="flex:1">PREMIUM</span></div>';
+  for(let t=1;t<=PASS_MAX;t++){
+    const unlocked=t<=lvl, fr=freeReward(t), pr=paidReward(t);
+    const fc=p.claimedFree.includes(t), pc=p.claimedPaid.includes(t);
+    const cell=(claimed,unl,txt)=> '<span style="flex:1;color:'+(claimed?'#5fd06a':(unl?'#e8ecf5':'#5a6a5a'))+'">'+(claimed?'✓ ':'')+txt+'</span>';
+    h+='<div style="display:flex;gap:6px;align-items:center;padding:3px 0;'+(t===lvl+1?'background:#16240f':'')+(t%10===0?';font-weight:bold':'')+'">'+
+      '<span style="width:42px;color:'+(unlocked?'#ffcf5c':'#778')+'">'+t+'</span>'+
+      cell(fc,unlocked,rewardLabel(fr))+
+      cell(pc,unlocked&&p.paid,(p.paid?'':'🔒 ')+rewardLabel(pr))+'</div>';
+  }
+  B.innerHTML=h;
+  // keep the current tier in view
+  const box=B; box.scrollTop=Math.max(0,(lvl-3)*22);
+}
 function openShop(){ renderShop(); showScreen('shop'); }
 function renderShop(){
   const G=document.getElementById('shopGrid'); if(!G) return;
