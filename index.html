@@ -1257,6 +1257,12 @@ function openStronghold(sc){
   burst(sc.x,sc.z,'#cfcfd6',28); SFX.rako();
   flash("STRONGHOLD CHEST! You claim +50 Stone, the STONE SWORD and the PISTOL — your attacks hit far harder!");
 }
+function openIceChest(o){
+  if(o.opened){ flash("The ice chest is empty."); return; }
+  o.opened=true; questEvent('chest'); cam.dmg=Math.max(cam.dmg,46); cam.hasIceSword=true; cam.iceWeapon=true;
+  burst(o.x,o.z,'#bfeaff',24); SFX.chest();
+  flash("❄ ICE CHEST! You claim the ICE SWORD — frozen, far heavier hits!");
+}
 function enterCabin(){
   outsidePos={x:cam.x, z:cam.z, yaw:cam.yaw};
   scene='interior'; houseTimer=0; cam.flyTime=0; cam.hface=1;
