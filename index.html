@@ -3312,6 +3312,7 @@ function renderShop(){
   const G=document.getElementById('shopGrid'); if(!G) return;
   account.ownedSkins=account.ownedSkins||['aster'];
   document.getElementById('shopGems').textContent=(account.gems||0)+' 💎';
+  const fg=document.getElementById('freeGems'); if(fg){ fg.disabled=!!account.adGift; fg.textContent=account.adGift?'✓ free gems claimed':'🎁 Free +50 💎 (once)'; }
   G.innerHTML='';
   const col=skinSolid(account.skin);
   const m=mobileOn, cw=m?108:150, ch=m?70:96, cr=m?18:24;
