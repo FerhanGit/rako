@@ -3275,7 +3275,9 @@ function renderSkins(){
       return; }
     account.skin=id; saveAccount(); refreshChip(); renderSkins(); renderShop(); });
 }
-function openQuests(){ refreshQuests(); renderQuests(); showScreen('quests'); }
+function openQuests(){ refreshQuests(); renderQuests('questBody'); showScreen('quests'); }
+function openQuestPanel(){ if(state!=='play'||inSecretArea()) return; refreshQuests(); renderQuests('qpanelBody'); state='qpanel'; document.getElementById('qpanel').classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); }
+function closeQuestPanel(){ if(state==='qpanel'){ state='play'; document.getElementById('qpanel').classList.add('hidden'); } }
 function renderQuests(targetId){
   const B=document.getElementById(targetId||'questBody'); if(!B) return;
   const gm=document.getElementById('questGems'); if(gm) gm.textContent=(account.gems||0)+' 💎';
