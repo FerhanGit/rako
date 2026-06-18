@@ -2246,6 +2246,29 @@ function drawCharacter(g, x, y, r, id, col, f){
   }
   const headY=y-r*0.85, headR=r*0.52, skin='#e8c49a';
   g.save();
+  if(id==='sob'){
+    g.fillStyle='#3a3a66'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.62,0,0,7); g.fill();
+    g.fillStyle=col; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();
+    g.fillStyle='#e8c49a'; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();
+    g.strokeStyle='#222'; g.lineWidth=Math.max(1,r*0.07);
+    g.beginPath(); g.arc(x-headR*0.4,headY-headR*0.1,headR*0.22,0.2,Math.PI-0.2); g.arc(x+headR*0.4,headY-headR*0.1,headR*0.22,0.2,Math.PI-0.2); g.stroke(); // sad squinted eyes
+    g.fillStyle='#6fд0ff'.replace('д','d'); g.beginPath(); g.ellipse(x-headR*0.4,headY+headR*0.2,headR*0.12,headR*0.28,0,0,7); g.ellipse(x+headR*0.4,headY+headR*0.2,headR*0.12,headR*0.28,0,0,7); g.fill(); // tears
+    g.strokeStyle='#822'; g.lineWidth=Math.max(1,r*0.08); g.beginPath(); g.arc(x,headY+headR*0.7,headR*0.4,Math.PI+0.4,-0.4); g.stroke(); // frown
+    g.restore(); return;
+  }
+  if(id==='clown'){
+    g.fillStyle='#d02020'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.8,r*0.64,0,0,7); g.fill();
+    g.fillStyle='#f0f0f0'; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.84,r*0.72,0,0,7); g.fill();
+    g.fillStyle='#d02020'; g.beginPath(); g.arc(x-r*0.4,y-r*0.1,r*0.16,0,7); g.arc(x+r*0.4,y-r*0.1,r*0.16,0,7); g.fill(); // pom-poms
+    g.fillStyle='#3a8a3a'; for(let i=-2;i<=2;i++){ g.beginPath(); g.arc(x+i*headR*0.5,headY-headR*0.6,headR*0.4,Math.PI,0); g.fill(); } // green frizzy hair
+    g.fillStyle='#f4e8e0'; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();
+    g.fillStyle='#000'; g.beginPath(); g.moveTo(x-headR*0.6,headY-headR*0.4); g.lineTo(x-headR*0.1,headY); g.lineTo(x-headR*0.6,headY+headR*0.1); g.fill();
+    g.beginPath(); g.moveTo(x+headR*0.6,headY-headR*0.4); g.lineTo(x+headR*0.1,headY); g.lineTo(x+headR*0.6,headY+headR*0.1); g.fill(); // jagged eyes
+    g.fillStyle='#e01010'; g.beginPath(); g.arc(x,headY+headR*0.15,headR*0.22,0,7); g.fill(); // red nose
+    g.strokeStyle='#a00'; g.lineWidth=Math.max(2,r*0.12); g.beginPath(); g.arc(x,headY+headR*0.25,headR*0.6,0.2,Math.PI-0.2); g.stroke(); // wide grin
+    g.fillStyle='#fff'; g.fillRect(x-headR*0.5,headY+headR*0.55,headR,headR*0.22); // teeth
+    g.restore(); return;
+  }
   if(id==='mystery'){
     g.fillStyle='#050505';
     g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.62,0,0,7); g.fill();   // legs
