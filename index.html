@@ -1936,16 +1936,17 @@ function draw(){
   const shx = shake>0?(Math.random()-.5)*shake:0, shy = shake>0?(Math.random()-.5)*shake:0;
   ctx.translate(shx, shy + (cam.pitch||0));
 
-  // sky (overscanned for shake + pitch) — blends day<->night
+  // sky (overscanned for shake + pitch) — blends day<->night, tinted by biome
   const k=nightAmt;
+  const BP=BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest;
   const sky=ctx.createLinearGradient(0,0,0,H/2);
   if(flying){ sky.addColorStop(0,'#3a7bd5'); sky.addColorStop(1,'#9fd0ff'); }
-  else { sky.addColorStop(0, mix('#5a86a8','#0d1e2a',k)); sky.addColorStop(1, mix('#9ec07a','#2a4a3a',k)); }
+  else { sky.addColorStop(0, mix(BP.skyTop,'#0d1e2a',k)); sky.addColorStop(1, mix(BP.skyBot,'#2a4a3a',k)); }
   ctx.fillStyle=sky; ctx.fillRect(-14,-280,W+28,H/2+280);
   if(!flying && k>0.02) drawNightSky(k);
   // ground (darker at night)
   const gr=ctx.createLinearGradient(0,H/2,0,H);
-  gr.addColorStop(0, mix('#357a3a','#234a26',k)); gr.addColorStop(1, mix('#12350f','#0c1c0e',k));
+  gr.addColorStop(0, mix(BP.grTop,'#234a26',k)); gr.addColorStop(1, mix(BP.grBot,'#0c1c0e',k));
   ctx.fillStyle=gr; ctx.fillRect(-14,H/2,W+28,H/2+280);
   drawGround();
   drawGrass();
