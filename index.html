@@ -3563,15 +3563,12 @@ function colorLocked(s){ return SPECIAL_COLORS.includes(s) && !(account.pass && 
 function renderSkins(){
   const G=document.getElementById('skinGrid');
   const gm=document.getElementById('skinGems'); if(gm) gm.textContent=(account.gems||0)+' 💎';
-  G.innerHTML = SKIN_ORDER.map(s=>{ const lk=colorLocked(s); const pr=SPECIAL_COLOR_PRICE[s]||50;
+  G.innerHTML = SKIN_ORDER.map(s=>{ const lk=colorLocked(s);
     return '<button class="swatch'+(account.skin===s?' sel':'')+'" data-s="'+s+'" '+(lk?'data-lock="1" ':'')+
-      'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.6':'')+'">'+s+(lk?' 🔒'+pr+'💎':'')+'</button>'; }).join('');
+      'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.6':'')+'">'+s+(lk?' 🔒':'')+'</button>'; }).join('');
   G.querySelectorAll('button[data-s]').forEach(b=> b.onclick=()=>{
     const id=b.dataset.s;
-    if(b.dataset.lock){ const price=SPECIAL_COLOR_PRICE[id]||50;
-      if((account.gems||0)>=price){ account.gems-=price; account.pass.colors.push(id); account.skin=id; saveAccount(); refreshChip(); SFX.chest&&SFX.chest(); flash('Bought the '+id+' colour for '+price+' 💎!'); renderSkins(); if(typeof renderShop==='function') renderShop(); }
-      else { flash('Need '+price+' 💎 for the '+id+' colour (or get it free in the premium RAKO Pass).'); SFX.hurt&&SFX.hurt(); }
-      return; }
+    if(b.dataset.lock){ flash('🔒 '+id+' is a premium colour — unlock it in the RAKO Pass.'); SFX.hurt&&SFX.hurt(); return; }   // colours are pass-only, not buyable
     account.skin=id; saveAccount(); refreshChip(); renderSkins(); renderShop(); });
 }
 function openQuests(){ refreshQuests(); renderQuests('questBody'); showScreen('quests'); }
