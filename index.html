@@ -150,7 +150,8 @@
   #shopGrid{align-items:flex-start;}
   #leaderBody{max-height:46vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   #passBody{max-height:50vh;overflow-y:auto;-webkit-overflow-scrolling:touch;font-size:13px;}
-  #scrLobby{background:linear-gradient(rgba(4,10,4,0.55),rgba(4,8,4,0.74)), url('lobby.png') center/cover no-repeat;}
+  #scrLobby:not(.hidden){position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:linear-gradient(rgba(4,10,4,0.5),rgba(4,8,4,0.7)), url('lobby.png') center/cover no-repeat;background-size:cover;}
   #scrLobby button{font-size:15px;padding:7px 14px;margin:3px 0;min-width:200px;}
   #scrLobby .sub{margin:4px 0 8px;}
   /* cinematic loading / searching screen */
