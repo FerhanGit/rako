@@ -3658,7 +3658,7 @@ function renderSkins(){
   const gm=document.getElementById('skinGems'); if(gm) gm.textContent=(account.gems||0)+' 💎';
   G.innerHTML = SKIN_ORDER.map(s=>{ const lk=colorLocked(s);
     return '<button class="swatch'+(account.skin===s?' sel':'')+'" data-s="'+s+'" '+(lk?'data-lock="1" ':'')+
-      'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.6':'')+'">'+s+(lk?' 🔒':'')+'</button>'; }).join('');
+      'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.6':'')+'">'+T(s)+(lk?' 🔒':'')+'</button>'; }).join('');
   G.querySelectorAll('button[data-s]').forEach(b=> b.onclick=()=>{
     const id=b.dataset.s;
     if(b.dataset.lock){ flash('🔒 '+id+' is a premium colour — unlock it in the RAKO Pass.'); SFX.hurt&&SFX.hurt(); return; }   // colours are pass-only, not buyable
