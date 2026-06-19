@@ -1657,6 +1657,73 @@ function inHome(){ return Math.hypot(cam.x-HOME.x,cam.z-HOME.z)<HOME.r; }
 function angDiff(a,b){ let d=(b-a)%(Math.PI*2); if(d>Math.PI)d-=Math.PI*2; if(d<-Math.PI)d+=Math.PI*2; return d; }
 function burst(x,z,col,n){ for(let i=0;i<n;i++) particles.push({x,z,
    vx:(Math.random()-.5)*0.3,vz:(Math.random()-.5)*0.3,life:22+Math.random()*14,col}); }
+const FLASH_T={
+  es:{
+    "Night falls — the monsters awaken! Run home or fight.":"¡Cae la noche — los monstruos despiertan! Corre a casa o lucha.",
+    "Dawn breaks — the monsters retreat into shadow.":"Amanece — los monstruos se retiran a las sombras.",
+    "You head back out into the forest.":"Vuelves a salir al bosque.",
+    "You descend into a damp, echoing cave...":"Desciendes a una cueva húmeda y resonante...",
+    "You climb back out of the cave.":"Sales de la cueva.",
+    "You strike the God of the End!":"¡Golpeas al Dios del Fin!",
+    "TIME CRYSTAL! Every enemy is frozen for 5 seconds.":"¡CRISTAL DEL TIEMPO! Todos los enemigos congelados 5 segundos.",
+    "ICE WARD! Frozen world — nobody can touch you for 10 seconds.":"¡GUARDA DE HIELO! Mundo congelado — nadie puede tocarte 10 segundos.",
+    "Skyling lifts you into the sky!":"¡El Skyling te eleva al cielo!",
+    "The door is barred — fight off the monsters first!":"La puerta está bloqueada — ¡acaba con los monstruos primero!",
+    "You fed and tamed a wolf! It now hunts the Entities and protects you.":"¡Alimentaste y domaste a un lobo! Ahora caza a las Entidades y te protege."
+  },
+  tr:{
+    "Night falls — the monsters awaken! Run home or fight.":"Gece çöküyor — canavarlar uyanıyor! Eve koş ya da savaş.",
+    "Dawn breaks — the monsters retreat into shadow.":"Şafak söküyor — canavarlar gölgelere çekiliyor.",
+    "You head back out into the forest.":"Tekrar ormana çıkıyorsun.",
+    "You descend into a damp, echoing cave...":"Nemli, yankılı bir mağaraya iniyorsun...",
+    "You climb back out of the cave.":"Mağaradan çıkıyorsun.",
+    "You strike the God of the End!":"Son Tanrısına vuruyorsun!",
+    "TIME CRYSTAL! Every enemy is frozen for 5 seconds.":"ZAMAN KRİSTALİ! Tüm düşmanlar 5 saniye donar.",
+    "ICE WARD! Frozen world — nobody can touch you for 10 seconds.":"BUZ KALKANI! Donmuş dünya — 10 saniye kimse sana dokunamaz.",
+    "Skyling lifts you into the sky!":"Skyling seni göğe yükseltiyor!",
+    "The door is barred — fight off the monsters first!":"Kapı kapalı — önce canavarları yen!",
+    "You fed and tamed a wolf! It now hunts the Entities and protects you.":"Bir kurdu besleyip evcilleştirdin! Artık Varlıkları avlıyor ve seni koruyor."
+  },
+  bg:{
+    "Night falls — the monsters awaken! Run home or fight.":"Пада нощ — чудовищата се събуждат! Бягай у дома или се бий.",
+    "Dawn breaks — the monsters retreat into shadow.":"Зазорява — чудовищата се оттеглят в сенките.",
+    "You head back out into the forest.":"Връщаш се навън в гората.",
+    "You descend into a damp, echoing cave...":"Слизаш във влажна, ехтяща пещера...",
+    "You climb back out of the cave.":"Излизаш от пещерата.",
+    "You strike the God of the End!":"Удряш Бога на Края!",
+    "TIME CRYSTAL! Every enemy is frozen for 5 seconds.":"КРИСТАЛ НА ВРЕМЕТО! Всеки враг е замразен за 5 секунди.",
+    "ICE WARD! Frozen world — nobody can touch you for 10 seconds.":"ЛЕДЕНА ЗАЩИТА! Замразен свят — никой не може да те докосне 10 секунди.",
+    "Skyling lifts you into the sky!":"Skyling те издига в небето!",
+    "The door is barred — fight off the monsters first!":"Вратата е залостена — първо разбий чудовищата!",
+    "You fed and tamed a wolf! It now hunts the Entities and protects you.":"Нахрани и опитоми вълк! Сега той ловува Същностите и те пази."
+  },
+  ar:{
+    "Night falls — the monsters awaken! Run home or fight.":"يحل الليل — تستيقظ الوحوش! اركض للبيت أو قاتل.",
+    "Dawn breaks — the monsters retreat into shadow.":"يبزغ الفجر — تنسحب الوحوش إلى الظلال.",
+    "You head back out into the forest.":"تعود إلى الغابة.",
+    "You descend into a damp, echoing cave...":"تنزل إلى كهف رطب يتردد فيه الصدى...",
+    "You climb back out of the cave.":"تخرج من الكهف.",
+    "You strike the God of the End!":"تضرب إله النهاية!",
+    "TIME CRYSTAL! Every enemy is frozen for 5 seconds.":"بلورة الزمن! كل الأعداء متجمدون لمدة 5 ثوانٍ.",
+    "ICE WARD! Frozen world — nobody can touch you for 10 seconds.":"درع الجليد! عالم متجمد — لا أحد يستطيع لمسك لمدة 10 ثوانٍ.",
+    "Skyling lifts you into the sky!":"يرفعك السكايلينغ إلى السماء!",
+    "The door is barred — fight off the monsters first!":"الباب موصد — اقضِ على الوحوش أولاً!",
+    "You fed and tamed a wolf! It now hunts the Entities and protects you.":"أطعمت وروّضت ذئبًا! الآن يصطاد الكائنات ويحميك."
+  },
+  zh:{
+    "Night falls — the monsters awaken! Run home or fight.":"夜幕降临 — 怪物苏醒了！快回家或战斗。",
+    "Dawn breaks — the monsters retreat into shadow.":"黎明到来 — 怪物退回阴影。",
+    "You head back out into the forest.":"你回到了森林。",
+    "You descend into a damp, echoing cave...":"你走进一个潮湿回响的洞穴……",
+    "You climb back out of the cave.":"你爬出了洞穴。",
+    "You strike the God of the End!":"你击中了终焉之神！",
+    "TIME CRYSTAL! Every enemy is frozen for 5 seconds.":"时间水晶！所有敌人被冰冻5秒。",
+    "ICE WARD! Frozen world — nobody can touch you for 10 seconds.":"冰之守护！世界冻结 — 10秒内无人能碰你。",
+    "Skyling lifts you into the sky!":"天翼把你带上天空！",
+    "The door is barred — fight off the monsters first!":"门被堵住了 — 先打退怪物！",
+    "You fed and tamed a wolf! It now hunts the Entities and protects you.":"你喂养并驯服了一只狼！它现在猎杀实体并保护你。"
+  },
+};
 function trFlash(s){ if(!s || settings.lang==='en') return s; const L=FLASH_T[settings.lang]; return (L&&L[s])||s; }
 function flash(t){ msgTimer=160; promptTxt=''; const m=document.getElementById('msg');
    const tt=trFlash(t); m.textContent=mobileOn?stripKeys(tt):tt; m.classList.remove('hidden'); }
