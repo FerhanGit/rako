@@ -3074,10 +3074,11 @@ function drawMonster(o,p){
   const body = o.flash>0 ? "#fff" : (frozen ? "#7fd0e6" : o.col);
   const dark = o.flash>0 ? "#fff" : shade(o.col,0.55);
   const cy=base-h*0.46+lurch;
-  // menacing aura
-  const g=ctx.createRadialGradient(x,cy,3,x,cy,h*0.7);
-  g.addColorStop(0,'#00000055'); g.addColorStop(1,'#00000000');
-  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,cy,h*0.7,0,7); ctx.fill();
+  // menacing pulsing blood aura
+  const pulse=0.5+0.5*Math.sin(seedT*2);
+  const g=ctx.createRadialGradient(x,cy,3,x,cy,h*0.85);
+  g.addColorStop(0,'rgba(120,0,0,'+(0.35+0.25*pulse)+')'); g.addColorStop(0.5,'#10000088'); g.addColorStop(1,'#00000000');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,cy,h*0.85,0,7); ctx.fill();
   // hunched, lumpy body
   ctx.fillStyle=body;
   ctx.beginPath();
