@@ -4535,7 +4535,7 @@ function movieFigure(g,x,y,s,col,phase,arm){
 }
 function drawMovieScene(g,t){
   const cv=g.canvas, W2=cv.width, H2=cv.height, hor=H2*0.78;
-  const sc=Math.min(RAKO_MOVIE.length-1,Math.floor(t/180)), st=t/60;
+  const sc=Math.min(RAKO_MOVIE.length-1,Math.floor(t/300)), st=t/60;
   if(sc===0){ // green forest, a hunter walks across
     let sky=g.createLinearGradient(0,0,0,H2); sky.addColorStop(0,'#9ed0ff'); sky.addColorStop(1,'#cfeac0'); g.fillStyle=sky; g.fillRect(0,0,W2,H2);
     g.fillStyle='#2f6a2f'; g.fillRect(0,hor,W2,H2-hor);
