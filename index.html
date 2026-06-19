@@ -4400,10 +4400,10 @@ document.getElementById('btnShop').onclick=()=>openShop();
 document.getElementById('shopBack').onclick=()=>showScreen('lobby');
 document.getElementById('freeGems').onclick=()=>{ const b=document.getElementById('freeGems');
   if(account.adGift){ b.textContent='✓ already claimed'; b.disabled=true; return; }
-  showCine('🎬 Your bonus is loading...', 3500, ()=>{
+  playRakoMovie(()=>{
     account.adGift=true; account.gems=(account.gems||0)+50; saveAccount(); SFX.chest&&SFX.chest();
     flash('🎁 +50 💎 bonus claimed!'); renderShop();
-  }, 'gems'); };
+  }); };
 document.getElementById('btnQuests').onclick=()=>openQuests();
 document.getElementById('questsBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnPass').onclick=()=>openPass();
