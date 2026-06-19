@@ -1892,7 +1892,8 @@ function update(){
   cam.x=Math.max(1,Math.min(WORLD-1,nx));
   cam.z=Math.max(1,Math.min(WORLD-1,nz));
   markExplored(cam.x, cam.z);
-  { const b=biomeAt(cam.x,cam.z); if(b!==curBiome){ curBiome=b; flash(BIOME_LABEL[b]); } }
+  { const b=biomeAt(cam.x,cam.z); if(b!==curBiome){ curBiome=b; flash(BIOME_LABEL[b]); }
+    if(--_ambT<=0){ _ambT=160+Math.floor(Math.random()*160); biomeAmbient(b); } }
 
   // fall into a hole (unless flying or jumping over it)
   if(!flying && cam.jumpY<0.6 && cam.invuln<=0){
