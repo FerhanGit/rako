@@ -2007,6 +2007,7 @@ function update(){
       const rx=cam.x-o.x, rz=cam.z-o.z, d=Math.hypot(rx,rz)||1;
       const range=o.type==='boss'?60:18;
       if(d<range) o.aggro=true;
+      if(o.champion && o.aggro && d<42){ o.roarCd=(o.roarCd||0)-1; if(o.roarCd<=0){ o.roarCd=170; SFX.boss&&SFX.boss(); } }
       if(o.aggro && !safe){
         let canMove=true, canHit=true;
         if(o.stalker){   // Weeping-Angel: freezes while you look at it, hunts when unwatched
