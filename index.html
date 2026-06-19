@@ -4491,6 +4491,7 @@ function resizeCine(){ const cv=document.getElementById('cineCv'); cv.width=Math
 function cineFrame(){
   const cv=document.getElementById('cineCv'); if(!cv){ _cineRAF=0; return; } _cineT++;
   const g=cv.getContext('2d'), cw=cv.width, ch=cv.height;
+  if(_cineStyle==='movie'){ drawMovieScene(g,_cineT); _cineRAF=requestAnimationFrame(cineFrame); return; }
   if(_cineStyle==='gems'){
     g.fillStyle='#0a0c18'; g.fillRect(0,0,cw,ch);
     for(let i=0;i<80;i++){ const x=(i*89+_cineT*3)%cw, y=((i*61+_cineT*7)%(ch+60))-30;
