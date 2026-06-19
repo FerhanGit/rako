@@ -3831,9 +3831,11 @@ function scoreboardHTML(){
   if(!allies.length) return "Slain: "+kills;
   return lastMatch.map((p,i)=>'#'+(i+1)+' '+(p.you?'':'')+p.name+' — '+p.kills+' ').join('<br>');
 }
+const WIN_REWARD={easy:100, normal:125, hard:150, impossible:200};
 function win(){ burst(BOSS.x,BOSS.z,'#ffd040',60); shake=18; SFX.win();
-  account.wins++; account.gems=(account.gems||0)+100; questEvent('boss'); addPassXP(100); gainXP(100); saveAccount(); netSyncStats(); buildMatch(true);
-  showResult("VICTORY","The God of the End falls. You are <b>"+account.name+"</b>, the Monster-Slayer.<br><br>Total wins: "+account.wins+"<br><b style='color:#7fe0ff'>+100 💎 gems!</b> (spend them in the Shop)<br><br>"+scoreboardHTML(),"#8fe070,#40c0ff"); }
+  const rew=WIN_REWARD[difficulty]||100;
+  account.wins++; account.gems=(account.gems||0)+rew; questEvent('boss'); addPassXP(rew); gainXP(rew); saveAccount(); netSyncStats(); buildMatch(true);
+  showResult("VICTORY","The God of the End falls. You are <b>"+account.name+"</b>, the Monster-Slayer.<br><br>Total wins: "+account.wins+"<br><b style='color:#7fe0ff'>+"+rew+" 💎 gems &amp; +"+rew+" XP!</b> ["+difficulty.toUpperCase()+"]<br><br>"+scoreboardHTML(),"#8fe070,#40c0ff"); }
 const DEATH_MSGS=[
   "The forest claims another soul... but legends rise again.",
   "Your light goes out. The monsters feast tonight.",
