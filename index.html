@@ -3443,10 +3443,10 @@ function drawBars(){
   ctx.fillStyle="#420"; ctx.fillRect(18,H-38,236,10);
   ctx.fillStyle="#e6a020"; ctx.fillRect(18,H-38,236*(cam.hunger/cam.maxHunger),10);
   ctx.fillStyle="#fff"; ctx.font="11px sans-serif";
-  ctx.fillText("LV "+(cam.level||1)+"   "+(cam.xp||0)+"/"+(cam.xpNext||0)+" XP", 22, H-67+0);
-  ctx.fillText("HP "+Math.ceil(cam.hp)+"/"+cam.maxHp, 22, H-44);
-  ctx.fillText("HUNGER "+Math.ceil(cam.hunger)+"/"+cam.maxHunger, 22, H-30);
-  ctx.fillText("DMG "+Math.round(cam.dmg)+"   Kills "+kills+"   Meat "+(cam.meat||0)+"   Coins "+(cam.coins||0), 22, H-16);
+  ctx.fillText(T('LV')+" "+(cam.level||1)+"   "+(cam.xp||0)+"/"+(cam.xpNext||0)+" "+T('XP'), 22, H-67+0);
+  ctx.fillText(T('HP')+" "+Math.ceil(cam.hp)+"/"+cam.maxHp, 22, H-44);
+  ctx.fillText(T('HUNGER')+" "+Math.ceil(cam.hunger)+"/"+cam.maxHunger, 22, H-30);
+  ctx.fillText(T('DMG')+" "+Math.round(cam.dmg)+"   "+T('Kills')+" "+kills+"   "+T('Meat')+" "+(cam.meat||0)+"   "+T('Coins')+" "+(cam.coins||0), 22, H-16);
 
   // rock points (KORA) + ability hints
   if(settings.kora || cam.points>0 || cam.hasIce || cam.rpg>0){
