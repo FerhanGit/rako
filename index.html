@@ -3118,10 +3118,6 @@ function drawMonster(o,p){
     ctx.fillStyle="#000"; ctx.fillRect(x-bw, base-h-6, bw*2, 4);
     ctx.fillStyle="#c03030"; ctx.fillRect(x-bw, base-h-6, bw*2*(o.hp/o.maxHp),4);
   }
-  if(o.name==='Ronaldo'||o.name==='Messi'){
-    ctx.fillStyle='#fff'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
-    ctx.fillText(o.name, x, base-h-12); ctx.textAlign='left';
-  }
 }
 // darken a hex color by factor (0..1)
 function shade(hex,f){ const n=parseInt(hex.slice(1),16);
