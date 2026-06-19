@@ -4526,6 +4526,10 @@ document.getElementById('musicToggle').onclick=()=>{
   if(settings.music) startMusic(); else stopMusic(); refreshSettingsUI(); };
 document.getElementById('qualityToggle').onclick=()=>{
   applyQuality(quality===100?250:quality===250?500:100); refreshSettingsUI(); };
+document.getElementById('lightToggle').onclick=()=>cycleLight();
+document.getElementById('howToBtn').onclick=()=>document.getElementById('howto').classList.remove('hidden');
+document.getElementById('howToClose').onclick=()=>document.getElementById('howto').classList.add('hidden');
+document.getElementById('howto').addEventListener('mousedown',e=>{ if(e.target.id==='howto') document.getElementById('howto').classList.add('hidden'); });
 // secret codes
 document.getElementById('secretBtn').onclick=()=>{
   document.getElementById('codeInput').value='';
