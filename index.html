@@ -3319,6 +3319,27 @@ function levelPerk(){
   SFX.win&&SFX.win(); burst(cam.x,cam.z,'#ffe070',18);
   flash("⭐ LEVEL UP! Lv "+cam.level+" — +12 max HP, +2.5 damage"+(cam.level%3===0?", +10 hunger":""));
 }
+function drawWeaponBar(){
+  const slots=[
+    {key:'LMB', icon: cam.hasIceSword?'❄':'🗡', own:true},
+    {key:'B', icon:'🔫', own:!!(cam.hasPistol||cam.hasMinigun)},
+    {key:'C', icon:'🧪', own:!!cam.hasPoison},
+    {key:'T', icon:'🔮', own:!!cam.hasCrystal},
+    {key:'G', icon:'🧊', own:!!cam.hasIce},
+    {key:'R', icon:'🚀', own:cam.rpg>0},
+    {key:'F', icon:'🪽', own:!!cam.hasPet},
+  ];
+  const bw=44, gap=6, total=slots.length*bw+(slots.length-1)*gap, x0=(W-total)/2, y=H-56;
+  ctx.textAlign='center';
+  for(let i=0;i<slots.length;i++){ const s=slots[i], x=x0+i*(bw+gap);
+    ctx.globalAlpha=s.own?1:0.3;
+    ctx.fillStyle='#0c1810dd'; ctx.fillRect(x,y,bw,bw);
+    ctx.strokeStyle=s.own?'#5fd05f':'#2a4a2e'; ctx.lineWidth=2; ctx.strokeRect(x,y,bw,bw);
+    ctx.font='22px sans-serif'; ctx.fillStyle='#fff'; ctx.fillText(s.icon, x+bw/2, y+bw/2+3);
+    ctx.font='10px sans-serif'; ctx.fillStyle='#bcd'; ctx.fillText(s.key, x+bw/2, y+bw-4);
+  }
+  ctx.globalAlpha=1; ctx.textAlign='left';
+}
 function drawBars(){
   ctx.textAlign="left";
   // HP (damage) + XP bars
