@@ -3543,6 +3543,7 @@ function loadData(){
   try{ const s=JSON.parse(localStorage.getItem('rakoSettings')); if(s) settings=Object.assign(settings,s); }catch(e){}
   try{ const r=JSON.parse(localStorage.getItem('rakoRecords')); if(r && typeof r==='object') records=r; }catch(e){}
   if(!account.since){ account.since=new Date().toLocaleDateString(); saveAccount(); }
+  if(!account.name || account.name==='Hunter'){ account.name=randomName(); saveAccount(); }   // no default "Hunter" — give a random gamertag
   quality=settings.quality||250;
 }
 function saveAccount(){ try{ localStorage.setItem('rakoAccount',JSON.stringify(account)); }catch(e){} }
