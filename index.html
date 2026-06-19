@@ -964,6 +964,12 @@ function reset(){
   spawnInBiome('snow', [7,14,15,16], 20);   // frost wraith, snow fox, yeti, white bear
   spawnInBiome('lava', [8,17,18],   20);    // magma hound, lava dog, lava brute
   spawnInBiome('space',[9,19],      18);    // void horror, alien
+  // one champion boss per biome
+  [['snow',[15,16],'Frost Titan','#e8f4ff'],['lava',[18],'Inferno Colossus','#ff5a1a'],['space',[9],'Void Sovereign','#b15cff']].forEach(arr=>{
+    const bio=arr[0],tiers=arr[1],nm=arr[2],col=arr[3];
+    for(let tries=0;tries<900;tries++){ const x=Math.random()*WORLD,z=Math.random()*WORLD;
+      if(biomeAt(x,z)!==bio||inCity(x,z)||Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+8) continue;
+      objects.push(makeBiomeBoss(x,z,tiers[Math.floor(Math.random()*tiers.length)],nm,col)); break; } });
   // hostile wildlife — bears, foxes, frogs, squirrels — attack day & night
   for(let i=0;i<40;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+5 || inCity(x,z)) continue;
