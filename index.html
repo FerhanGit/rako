@@ -2315,6 +2315,7 @@ function drawHUD(){
     ctx.fillStyle='#000a'; ctx.fillRect(W-176,10,166,22);
     ctx.fillStyle='#cfe0cf'; ctx.font='13px sans-serif'; ctx.textAlign='right';
     ctx.fillText(BIOME_LABEL[curBiome]||'', W-14, 25); ctx.textAlign='left';
+    drawWeaponBar();
   }
   drawBars();
   // boss bar (forest only)
