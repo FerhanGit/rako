@@ -4518,6 +4518,29 @@ function showCine(label,durMs,then,style){
     if(e<1) requestAnimationFrame(step); else { hideCine(); if(then) then(); } })();
 }
 function searchThenStart(mode,n){ showCine('Searching for players…', 5000, ()=> start(mode,n)); }
+// a short cinematic about RAKO's story (plays before the free-gem reward; click to skip)
+const RAKO_MOVIE=[
+  'Long ago, the forest of RAKO was green and kind.',
+  'Then the God of the End stirred beneath its roots.',
+  'Night swallowed the trees, and the monsters came.',
+  'A nightmare city of black spires rose around the abyss.',
+  'Few hunters dare the dark... and fewer return.',
+  'Now you walk in. Will you end the End?',
+];
+let _movieSkip=null;
+function playRakoMovie(then){
+  const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; _cineStyle=''; if(!_cineRAF) cineFrame();
+  const fill=document.getElementById('cineFill'), pct=document.getElementById('cinePct'), label=document.getElementById('cineLabel'), title=document.getElementById('cineTitle');
+  title.textContent='THE STORY OF RAKO';
+  const per=3000, total=RAKO_MOVIE.length*per, t0=performance.now(); let done=false;
+  const finish=()=>{ if(done)return; done=true; _movieSkip=null; hideCine(); title.textContent='RAKO'; if(then)then(); };
+  _movieSkip=finish;
+  (function step(){ if(done)return; const el=performance.now()-t0, e=Math.min(1,el/total);
+    fill.style.width=(e*100).toFixed(0)+'%'; pct.textContent='click to skip ▶';
+    label.textContent=RAKO_MOVIE[Math.min(RAKO_MOVIE.length-1,Math.floor(el/per))];
+    if(el<total) requestAnimationFrame(step); else finish(); })();
+}
+document.addEventListener('pointerdown',()=>{ if(_movieSkip) _movieSkip(); });
 window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
 
 // ---------- boot ----------
