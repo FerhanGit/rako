@@ -1725,6 +1725,30 @@ const FLASH_T={
   },
 };
 function trFlash(s){ if(!s || settings.lang==='en') return s; const L=FLASH_T[settings.lang]; return (L&&L[s])||s; }
+// general UI-word dictionary (HUD, colours, monsters, shop/pass/quest words)
+const DICT={
+  es:{HP:'PV',HUNGER:'HAMBRE',DMG:'DAÑO',Kills:'Bajas',Meat:'Carne',Coins:'Monedas',XP:'XP','LV':'NIV',
+    BUY:'COMPRAR',SELECT:'ELEGIR','✓ SELECTED':'✓ ELEGIDO',DAILY:'DIARIAS',WEEKLY:'SEMANAL','RAKO PASS':'PASE RAKO',
+    black:'negro',red:'rojo',orange:'naranja',green:'verde',yellow:'amarillo',brown:'marrón',pink:'rosa',purple:'morado',ghost:'fantasma',gold:'oro',silver:'plata',chess:'ajedrez',zebra:'cebra',rainbow:'arcoíris',rainbowzebra:'arcoíris-cebra',gradient:'degradado',white:'blanco',aura:'aura',
+    'Forest Slime':'Limo del Bosque','Dire Wolf':'Lobo Temible','Treant':'Ent','Shade':'Sombra','Forest Demon':'Demonio del Bosque','Flying Clutch':'Garra Voladora','Night Stalker':'Acechador Nocturno','Frost Wraith':'Espectro de Escarcha','Magma Hound':'Sabueso de Magma','Void Horror':'Horror del Vacío','Angry Bear':'Oso Furioso','Rabid Fox':'Zorro Rabioso','Toxic Frog':'Rana Tóxica','Feral Squirrel':'Ardilla Salvaje','Snow Fox':'Zorro de Nieve','Yeti':'Yeti','White Bear':'Oso Blanco','Lava Dog':'Perro de Lava','Lava Brute':'Bruto de Lava','Alien':'Alienígena'},
+  tr:{HP:'CAN',HUNGER:'AÇLIK',DMG:'HASAR',Kills:'Öldürme',Meat:'Et',Coins:'Para',XP:'XP','LV':'SVY',
+    BUY:'SATIN AL',SELECT:'SEÇ','✓ SELECTED':'✓ SEÇİLİ',DAILY:'GÜNLÜK',WEEKLY:'HAFTALIK','RAKO PASS':'RAKO PASI',
+    black:'siyah',red:'kırmızı',orange:'turuncu',green:'yeşil',yellow:'sarı',brown:'kahverengi',pink:'pembe',purple:'mor',ghost:'hayalet',gold:'altın',silver:'gümüş',chess:'satranç',zebra:'zebra',rainbow:'gökkuşağı',rainbowzebra:'gökkuşağı-zebra',gradient:'gradyan',white:'beyaz',aura:'aura',
+    'Forest Slime':'Orman Balçığı','Dire Wolf':'Korkunç Kurt','Treant':'Ağaç Adam','Shade':'Gölge','Forest Demon':'Orman İblisi','Flying Clutch':'Uçan Pençe','Night Stalker':'Gece Avcısı','Frost Wraith':'Ayaz Hayaleti','Magma Hound':'Magma Tazısı','Void Horror':'Boşluk Dehşeti','Angry Bear':'Öfkeli Ayı','Rabid Fox':'Kuduz Tilki','Toxic Frog':'Zehirli Kurbağa','Feral Squirrel':'Vahşi Sincap','Snow Fox':'Kar Tilkisi','Yeti':'Yeti','White Bear':'Beyaz Ayı','Lava Dog':'Lav Köpeği','Lava Brute':'Lav Canavarı','Alien':'Uzaylı'},
+  bg:{HP:'ЖИВОТ',HUNGER:'ГЛАД',DMG:'ЩЕТИ',Kills:'Убийства',Meat:'Месо',Coins:'Монети',XP:'ОПИТ','LV':'НИВО',
+    BUY:'КУПИ',SELECT:'ИЗБЕРИ','✓ SELECTED':'✓ ИЗБРАНО',DAILY:'ДНЕВНИ',WEEKLY:'СЕДМИЧНА','RAKO PASS':'RAKO ПАС',
+    black:'черно',red:'червено',orange:'оранжево',green:'зелено',yellow:'жълто',brown:'кафяво',pink:'розово',purple:'лилаво',ghost:'призрак',gold:'злато',silver:'сребро',chess:'шах',zebra:'зебра',rainbow:'дъга',rainbowzebra:'дъга-зебра',gradient:'градиент',white:'бяло',aura:'аура',
+    'Forest Slime':'Горска Слуз','Dire Wolf':'Зловещ Вълк','Treant':'Дървесен','Shade':'Сянка','Forest Demon':'Горски Демон','Flying Clutch':'Летяща Хватка','Night Stalker':'Нощен Преследвач','Frost Wraith':'Мразовит Призрак','Magma Hound':'Магмено Куче','Void Horror':'Ужас от Бездната','Angry Bear':'Гневна Мечка','Rabid Fox':'Бясна Лисица','Toxic Frog':'Токсична Жаба','Feral Squirrel':'Дива Катерица','Snow Fox':'Снежна Лисица','Yeti':'Йети','White Bear':'Бяла Мечка','Lava Dog':'Лавено Куче','Lava Brute':'Лавен Звяр','Alien':'Извънземно'},
+  ar:{HP:'صحة',HUNGER:'جوع',DMG:'ضرر',Kills:'قتلى',Meat:'لحم',Coins:'عملات',XP:'خبرة','LV':'مستوى',
+    BUY:'شراء',SELECT:'اختيار','✓ SELECTED':'✓ مختار',DAILY:'يومية',WEEKLY:'أسبوعية','RAKO PASS':'تذكرة راكو',
+    black:'أسود',red:'أحمر',orange:'برتقالي',green:'أخضر',yellow:'أصفر',brown:'بني',pink:'وردي',purple:'بنفسجي',ghost:'شبح',gold:'ذهبي',silver:'فضي',chess:'شطرنج',zebra:'حمار وحشي',rainbow:'قوس قزح',rainbowzebra:'قوس-حمار',gradient:'تدرج',white:'أبيض',aura:'هالة',
+    'Forest Slime':'مخاط الغابة','Dire Wolf':'ذئب رهيب','Treant':'شجرة حية','Shade':'ظل','Forest Demon':'شيطان الغابة','Flying Clutch':'مخلب طائر','Night Stalker':'متعقب الليل','Frost Wraith':'شبح الصقيع','Magma Hound':'كلب الحمم','Void Horror':'رعب الفراغ','Angry Bear':'دب غاضب','Rabid Fox':'ثعلب مسعور','Toxic Frog':'ضفدع سام','Feral Squirrel':'سنجاب متوحش','Snow Fox':'ثعلب الثلج','Yeti':'يتي','White Bear':'دب أبيض','Lava Dog':'كلب الحمم','Lava Brute':'وحش الحمم','Alien':'كائن فضائي'},
+  zh:{HP:'生命',HUNGER:'饥饿',DMG:'伤害',Kills:'击杀',Meat:'肉',Coins:'金币',XP:'经验','LV':'等级',
+    BUY:'购买',SELECT:'选择','✓ SELECTED':'✓ 已选',DAILY:'每日',WEEKLY:'每周','RAKO PASS':'RAKO 通行证',
+    black:'黑色',red:'红色',orange:'橙色',green:'绿色',yellow:'黄色',brown:'棕色',pink:'粉色',purple:'紫色',ghost:'幽灵',gold:'金色',silver:'银色',chess:'棋盘',zebra:'斑马',rainbow:'彩虹',rainbowzebra:'彩虹斑马',gradient:'渐变',white:'白色',aura:'光环',
+    'Forest Slime':'森林史莱姆','Dire Wolf':'恐狼','Treant':'树人','Shade':'暗影','Forest Demon':'森林恶魔','Flying Clutch':'飞爪','Night Stalker':'夜行者','Frost Wraith':'霜怨灵','Magma Hound':'岩浆猎犬','Void Horror':'虚空恐魔','Angry Bear':'愤怒熊','Rabid Fox':'狂暴狐','Toxic Frog':'毒蛙','Feral Squirrel':'野松鼠','Snow Fox':'雪狐','Yeti':'雪怪','White Bear':'白熊','Lava Dog':'熔岩犬','Lava Brute':'熔岩巨兽','Alien':'外星人'},
+};
+function T(s){ if(!s||settings.lang==='en') return s; const L=DICT[settings.lang]; return (L&&L[s])||s; }
 function flash(t){ msgTimer=160; promptTxt=''; const m=document.getElementById('msg');
    const tt=trFlash(t); m.textContent=mobileOn?stripKeys(tt):tt; m.classList.remove('hidden'); }
 
