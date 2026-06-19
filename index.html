@@ -3729,7 +3729,7 @@ function renderShop(){
     else if(owned){ btn.textContent=T('SELECT'); btn.onclick=()=>{ account.charSkin=sk.id; saveAccount(); renderShop(); }; }
     else if(sk.code){ btn.textContent='🔒 code '+sk.code.toUpperCase(); btn.style.background='#3a2a5a'; btn.disabled=true; }
     else if(sk.passReq){ btn.textContent='🔒 '+(sk.passReq==='paid'?'Premium Pass T100':'Pass T100'); btn.style.background='#3a2a5a'; btn.disabled=true; }
-    else { btn.textContent='BUY '+sk.price+' 💎';
+    else { btn.textContent=T('BUY')+' '+sk.price+' 💎';
       btn.onclick=()=>{ if((account.gems||0)>=sk.price){ account.gems-=sk.price; account.ownedSkins.push(sk.id); account.charSkin=sk.id; saveAccount(); SFX.chest&&SFX.chest(); renderShop(); }
         else { btn.textContent='not enough 💎'; SFX.hurt&&SFX.hurt(); setTimeout(renderShop,900); } }; }
     card.appendChild(btn);
