@@ -1023,7 +1023,7 @@ addEventListener('keydown',e=>{
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 cvs.addEventListener('click',()=>{
   if(state!=='play') return;
-  if(scene==='gdash'||scene==='blast'||scene==='brawl'){ mgClick(); return; }
+  if(scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='flappy'||scene==='rivals'||scene==='rakoin'){ mgClick(); return; }
   if(scene==='interior'){ houseAttack(); return; }   // fight off intruders during a breach
   if(scene!=='forest') return;       // hub/house/cave: ignore canvas clicks
   if(mobileOn) return;               // mobile: look via touch-drag, attack via the ⚔ button
