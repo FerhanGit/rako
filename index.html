@@ -4524,20 +4524,62 @@ const RAKO_MOVIE=[
   'Few hunters dare the dark... and fewer return.',
   'Now you walk in. Will you end the End?',
 ];
-let _movieSkip=null;
+// little walking stick-figure used by the movie
+function movieFigure(g,x,y,s,col,phase,arm){
+  g.strokeStyle=col; g.fillStyle=col; g.lineWidth=Math.max(2,s*0.12);
+  g.beginPath(); g.arc(x,y-s,s*0.4,0,7); g.fill();                       // head
+  g.beginPath(); g.moveTo(x,y-s*0.6); g.lineTo(x,y+s*0.4); g.stroke();    // body
+  const sw=Math.sin(phase)*s*0.5;
+  g.beginPath(); g.moveTo(x,y+s*0.4); g.lineTo(x-sw,y+s); g.moveTo(x,y+s*0.4); g.lineTo(x+sw,y+s); g.stroke();   // legs
+  const aw=arm!=null?arm:Math.sin(phase+1)*s*0.4;
+  g.beginPath(); g.moveTo(x,y-s*0.3); g.lineTo(x-aw,y+s*0.1); g.moveTo(x,y-s*0.3); g.lineTo(x+aw,y+s*0.1); g.stroke();   // arms
+}
+function drawMovieScene(g,t){
+  const cv=g.canvas, W2=cv.width, H2=cv.height, hor=H2*0.78;
+  const sc=Math.min(RAKO_MOVIE.length-1,Math.floor(t/180)), st=t/60;
+  if(sc===0){ // green forest, a hunter walks across
+    let sky=g.createLinearGradient(0,0,0,H2); sky.addColorStop(0,'#9ed0ff'); sky.addColorStop(1,'#cfeac0'); g.fillStyle=sky; g.fillRect(0,0,W2,H2);
+    g.fillStyle='#2f6a2f'; g.fillRect(0,hor,W2,H2-hor);
+    g.fillStyle='#1f4a1f'; for(let i=0;i<10;i++){ const tx=(i*W2/9); g.fillRect(tx-8,hor-150,16,150); g.beginPath(); g.arc(tx,hor-150,46,0,7); g.fill(); }
+    movieFigure(g,(t%180)/180*W2,hor-6,30,'#3a2a1a',st*8);
+  } else if(sc===1){ // the God rises from a crack
+    g.fillStyle='#0a0810'; g.fillRect(0,0,W2,H2); g.fillStyle='#1a0a12'; g.fillRect(0,hor,W2,H2-hor);
+    g.strokeStyle='#ff5020'; g.lineWidth=4; g.beginPath(); g.moveTo(W2*0.3,hor); g.lineTo(W2*0.5,hor-10); g.lineTo(W2*0.7,hor); g.stroke();   // crack glow
+    const rise=Math.min(1,st/3); g.fillStyle='#120a16'; g.beginPath(); g.ellipse(W2/2,hor-H2*0.32*rise,W2*0.07,H2*0.22*rise,0,0,7); g.fill();
+    g.strokeStyle='#120a16'; g.lineWidth=5; for(let a=0;a<7;a++){ const an=Math.PI+(a/6)*Math.PI; g.beginPath(); g.moveTo(W2/2,hor-H2*0.32*rise); g.lineTo(W2/2+Math.cos(an)*W2*0.14*rise, hor-H2*0.1*rise+Math.sin(an)*H2*0.12*rise); g.stroke(); }
+    g.fillStyle='#ff3010'; g.beginPath(); g.arc(W2/2-12,hor-H2*0.4*rise,5,0,7); g.arc(W2/2+12,hor-H2*0.4*rise,5,0,7); g.fill();
+  } else if(sc===2){ // night, monsters approach the hunter
+    g.fillStyle='#05060f'; g.fillRect(0,0,W2,H2); g.fillStyle='#0c1410'; g.fillRect(0,hor,W2,H2-hor);
+    g.fillStyle='#dfe'; for(let i=0;i<40;i++) g.fillRect((i*53)%W2,(i*31)%(H2*0.6),2,2);
+    movieFigure(g,W2*0.25,hor-6,30,'#7fd0ff',st*6);
+    for(let i=0;i<3;i++){ const mx=W2*0.9-((st*40+i*60)%(W2*0.5)); movieFigure(g,mx,hor-6,26,'#d04040',st*7+i); }
+  } else if(sc===3){ // black spires rise
+    g.fillStyle='#0a0814'; g.fillRect(0,0,W2,H2); g.fillStyle='#100c1a'; g.fillRect(0,hor,W2,H2-hor);
+    for(let i=0;i<11;i++){ const h=Math.min(1,(st-(i*0.12))/2.5)*(H2*(0.3+0.3*Math.abs(Math.sin(i*1.7)))); if(h<=0)continue;
+      const x=(i+0.5)*W2/11; g.fillStyle='#1a1426'; g.beginPath(); g.moveTo(x-W2*0.04,hor); g.lineTo(x,hor-h); g.lineTo(x+W2*0.04,hor); g.fill(); }
+  } else if(sc===4){ // the hunter fights back
+    g.fillStyle='#0a0610'; g.fillRect(0,0,W2,H2); g.fillStyle='#140a14'; g.fillRect(0,hor,W2,H2-hor);
+    const swing=Math.sin(st*8)*30;
+    movieFigure(g,W2*0.45,hor-6,32,'#9fe0ff',0,swing);
+    g.strokeStyle='#fff'; g.lineWidth=3; g.beginPath(); g.arc(W2*0.45,hor-40,40,-0.5+Math.sin(st*8),0.6+Math.sin(st*8)); g.stroke();
+    for(let i=0;i<2;i++){ const f=(Math.floor(st*8)+i)%2; movieFigure(g,W2*0.62+i*40,hor-6,24, f?'#fff':'#d04040', st*7+i); }
+  } else { // title
+    g.fillStyle='#070608'; g.fillRect(0,0,W2,H2);
+    const gl=g.createRadialGradient(W2/2,H2*0.42,8,W2/2,H2*0.42,H2*0.5); gl.addColorStop(0,'rgba(150,224,112,0.5)'); gl.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gl; g.fillRect(0,0,W2,H2);
+    g.fillStyle='#9fe070'; g.textAlign='center'; g.font='bold '+Math.round(H2*0.18)+'px sans-serif'; g.fillText('RAKO', W2/2, H2*0.48); g.textAlign='left';
+  }
+}
 function playRakoMovie(then){
-  const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; _cineStyle=''; if(!_cineRAF) cineFrame();
+  const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; _cineStyle='movie'; if(!_cineRAF) cineFrame();
   const fill=document.getElementById('cineFill'), pct=document.getElementById('cinePct'), label=document.getElementById('cineLabel'), title=document.getElementById('cineTitle');
   title.textContent='THE STORY OF RAKO';
   const per=3000, total=RAKO_MOVIE.length*per, t0=performance.now(); let done=false;
-  const finish=()=>{ if(done)return; done=true; _movieSkip=null; hideCine(); title.textContent='RAKO'; if(then)then(); };
-  _movieSkip=finish;
-  (function step(){ if(done)return; const el=performance.now()-t0, e=Math.min(1,el/total);
-    fill.style.width=(e*100).toFixed(0)+'%'; pct.textContent='click to skip ▶';
+  const finish=()=>{ if(done)return; done=true; hideCine(); title.textContent='RAKO'; _cineStyle=''; if(then)then(); };
+  (function step(){ if(done)return; const el=performance.now()-t0;
+    fill.style.width=Math.min(100,el/total*100).toFixed(0)+'%'; pct.textContent='';
     label.textContent=RAKO_MOVIE[Math.min(RAKO_MOVIE.length-1,Math.floor(el/per))];
     if(el<total) requestAnimationFrame(step); else finish(); })();
 }
-document.addEventListener('pointerdown',()=>{ if(_movieSkip) _movieSkip(); });
 window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
 
 // ---------- boot ----------
