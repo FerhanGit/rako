@@ -3779,15 +3779,18 @@ function closeAccount(){
   account.name=v||'Hunter'; saveAccount(); refreshChip(); netSyncStats(); showScreen('lobby');
 }
 function openSettings(){ refreshSettingsUI(); showScreen('settings'); }
+function lightLabel(){ const v=settings.light||1; return v<=0.75?'Dark' : v>=1.3?'Bright' : 'Normal'; }
 function refreshSettingsUI(){
   const mb=document.getElementById('musicToggle');
   mb.textContent=settings.music?'ON':'OFF'; mb.classList.toggle('off',!settings.music);
   document.getElementById('qualityToggle').textContent=quality;
   const qd=document.getElementById('qualDesc');
   if(qd) qd.textContent = quality<=100?'100 · blurry' : quality>=500?'500 · good vision' : '250 · normal';
+  const lt=document.getElementById('lightToggle'); if(lt) lt.textContent=lightLabel();
 }
-function applyQuality(q){ quality=q; settings.quality=q; saveSettings();
-  cvs.style.filter = q<=100 ? 'blur(1.5px)' : 'none'; }
+function applyVisualFilter(){ cvs.style.filter = (quality<=100?'blur(1.5px) ':'')+'brightness('+(settings.light||1)+')'; }
+function applyQuality(q){ quality=q; settings.quality=q; saveSettings(); applyVisualFilter(); }
+function cycleLight(){ const v=settings.light||1; settings.light = v<0.9?1 : v<1.2?1.35 : 0.7; saveSettings(); applyVisualFilter(); refreshSettingsUI(); }
 function fmtTime(s){ s=Math.floor(s||0); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), ss=s%60;
   return h>0 ? h+'h '+m+'m' : (m>0 ? m+'m '+ss+'s' : ss+'s'); }
 // only real people on the board — i.e. you (no AI teammates, no fabricated rivals)
