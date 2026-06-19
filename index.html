@@ -596,7 +596,7 @@ const NAMES=['theKiller','xX_Reaper_Xx','NoScope360','ShadowSlayer','ToxicGamer'
 // fog-of-war map grid
 const MAP=50, MCELL=WORLD/MAP;     // 50x50 cells
 let explored=new Uint8Array(MAP*MAP);
-let settings={ music:true, quality:250, kora:false, admin:false, bonushp:false, armor0505:false, lang:'en', platform:'pc' };
+let settings={ music:true, quality:250, kora:false, admin:false, bonushp:false, armor0505:false, lang:'en', platform:'pc', light:1 };
 // strong-armor (code 0505): reduces all incoming damage. helper used at every hurt site.
 function pdmg(d){ return cam.armorReduce ? d*(1-cam.armorReduce) : d; }
 // ---------- languages / i18n ----------
