@@ -4572,7 +4572,7 @@ function playRakoMovie(then){
   const c=document.getElementById('cine'); c.classList.remove('hidden'); resizeCine(); _cineT=0; _cineStyle='movie'; if(!_cineRAF) cineFrame();
   const fill=document.getElementById('cineFill'), pct=document.getElementById('cinePct'), label=document.getElementById('cineLabel'), title=document.getElementById('cineTitle');
   title.textContent='THE STORY OF RAKO';
-  const per=3000, total=RAKO_MOVIE.length*per, t0=performance.now(); let done=false;
+  const per=5000, total=RAKO_MOVIE.length*per, t0=performance.now(); let done=false;
   const finish=()=>{ if(done)return; done=true; hideCine(); title.textContent='RAKO'; _cineStyle=''; if(then)then(); };
   (function step(){ if(done)return; const el=performance.now()-t0;
     fill.style.width=Math.min(100,el/total*100).toFixed(0)+'%'; pct.textContent='';
