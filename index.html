@@ -2161,11 +2161,13 @@ function update(){
   for(let i=objects.length-1;i>=0;i--){
     const o=objects[i];
     if(o.type==='monster' && o.hp<=0){
-      burst(o.x,o.z,o.col,12); SFX.kill();
+      burst(o.x,o.z,o.col,o.champion?40:12); SFX.kill(); if(o.champion){ SFX.rako&&SFX.rako(); shake=Math.max(shake,16); }
       if(Math.random()<0.6) objects.push(food(o.x,o.z));  // monsters drop food
+      const wasChamp=o.champion, champNm=o.bossName;
       objects.splice(i,1);
       if(o.lastHitBy && o.lastHitBy.type==='ally'){ o.lastHitBy.kills++; }   // teammate scored
-      else { kills++; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); gainXP(xpFor(o)); questEvent('monster'); }
+      else { kills++; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); gainXP(xpFor(o)); questEvent('monster');
+        if(wasChamp){ account.gems=(account.gems||0)+25; gainXP(40); addPassXP(20); saveAccount(); flash('👑 You slew the '+champNm+'! +25 💎, +40 XP'); } }
     } else if(o.type==='bunny' && o.hp<=0){
       burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1); questEvent('bunny'); gainXP(1);
       flash("Meat +1 (total "+cam.meat+") — feed a wolf (P) to tame it");
