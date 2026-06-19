@@ -3255,6 +3255,11 @@ function drawMonster(o,p){
     ctx.fillStyle="#000"; ctx.fillRect(x-bw, base-h-6, bw*2, 4);
     ctx.fillStyle="#c03030"; ctx.fillRect(x-bw, base-h-6, bw*2*(o.hp/o.maxHp),4);
   }
+  if(o.champion){
+    ctx.fillStyle='#ffd040'; const cyk=base-h-16, cw2=w*0.5;   // gold crown
+    ctx.beginPath(); ctx.moveTo(x-cw2,cyk); ctx.lineTo(x-cw2,cyk-10); ctx.lineTo(x-cw2*0.5,cyk-4); ctx.lineTo(x,cyk-12); ctx.lineTo(x+cw2*0.5,cyk-4); ctx.lineTo(x+cw2,cyk-10); ctx.lineTo(x+cw2,cyk); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center'; ctx.fillText(o.bossName||'Champion', x, cyk-16); ctx.textAlign='left';
+  }
 }
 // darken a hex color by factor (0..1)
 function shade(hex,f){ const n=parseInt(hex.slice(1),16);
