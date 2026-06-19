@@ -3302,6 +3302,14 @@ function drawWings(){
   ctx.restore();
 }
 
+function xpFor(o){
+  if(o.type==='boss') return 100;
+  const n=o.name;
+  if(n==='Night Stalker') return 7;
+  if(n==='Flying Clutch') return 7;
+  if(n==='Yeti') return 6;
+  return 5;   // default monster
+}
 function gainXP(n){ if(!cam) return; cam.xp=(cam.xp||0)+n;
   while(cam.xp>=cam.xpNext){ cam.xp-=cam.xpNext; cam.level=(cam.level||1)+1; cam.xpNext=Math.floor(cam.xpNext*1.4)+5; levelPerk(); } }
 function levelPerk(){
