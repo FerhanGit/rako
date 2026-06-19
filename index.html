@@ -4262,18 +4262,21 @@ function flappyDraw(){ const m=mg; ctx.fillStyle='#1a2a44'; ctx.fillRect(0,0,W,H
 }
 // ---- RIVALS (igloo building) — get one kill ----
 // RIVALS — first-person shooter: turn with A/D (or ←/→ or mouse), shoot with click/Space, get 1 kill
-function rivalsInit(){ mg={mode:'rivals', yaw:0, foes:[], spawn:0, kills:0, goal:1, dead:false, won:false, cd:0, hp:100, muzzle:0}; }
+function rivalsInit(){ mg={mode:'rivals', px:0, pz:0, yaw:0, foes:[], spawn:0, kills:0, goal:1, dead:false, won:false, cd:0, hp:100, muzzle:0}; }
 function rivalsShoot(){ const m=mg; if(m.dead||m.cd>0)return; m.cd=10; m.muzzle=5; SFX.hit&&SFX.hit();
-  // hit the foe nearest the crosshair (within aim cone), in front of you
   let best=null,bd=0.22;
-  for(const f of m.foes){ const d=Math.abs(angDiff(m.yaw,f.ang)); if(d<bd){ bd=d; best=f; } }
+  for(const f of m.foes){ const ang=Math.atan2(f.z-m.pz,f.x-m.px); const d=Math.abs(angDiff(m.yaw,ang)); if(d<bd){ bd=d; best=f; } }
   if(best){ best.hp-=10; if(best.hp<=0){ m.foes.splice(m.foes.indexOf(best),1); m.kills++;
     if(m.kills>=m.goal && !m.won){ m.won=true; m.dead=true; mgReward('Rivals: first blood'); } } }
 }
 function rivalsUpdate(){ const m=mg; if(m.dead)return; if(m.cd>0)m.cd--; if(m.muzzle>0)m.muzzle--;
-  const ts=0.05; if(keys['a']||keys['arrowleft'])m.yaw-=ts; if(keys['d']||keys['arrowright'])m.yaw+=ts;
-  if(m.foes.length<4 && --m.spawn<=0){ m.spawn=45; m.foes.push({ang:Math.random()*Math.PI*2, dist:9+Math.random()*4, hp:20}); }
-  for(const f of m.foes){ f.dist-=0.018; if(f.dist<1.0){ m.hp-=0.5; } }   // they close in and bite
+  const ts=0.045, sp=0.12;
+  if(keys['a']||keys['arrowleft'])m.yaw-=ts; if(keys['d']||keys['arrowright'])m.yaw+=ts;
+  if(keys['w']||keys['arrowup']){ m.px+=Math.cos(m.yaw)*sp; m.pz+=Math.sin(m.yaw)*sp; }      // move forward
+  if(keys['s']||keys['arrowdown']){ m.px-=Math.cos(m.yaw)*sp; m.pz-=Math.sin(m.yaw)*sp; }    // back
+  if(m.foes.length<4 && --m.spawn<=0){ m.spawn=45; const a=Math.random()*Math.PI*2, d=9+Math.random()*4; m.foes.push({x:m.px+Math.cos(a)*d, z:m.pz+Math.sin(a)*d, hp:20}); }
+  for(const f of m.foes){ const a=Math.atan2(m.pz-f.z,m.px-f.x), dd=Math.hypot(f.x-m.px,f.z-m.pz);
+    if(dd>0.9){ f.x+=Math.cos(a)*0.02; f.z+=Math.sin(a)*0.02; } else { m.hp-=0.5; } }
   if(m.hp<=0){ m.hp=0; m.dead=true; SFX.die&&SFX.die(); }
 }
 function rivalsDraw(){ const m=mg;
@@ -4281,9 +4284,9 @@ function rivalsDraw(){ const m=mg;
   let sky=ctx.createLinearGradient(0,0,0,horizon); sky.addColorStop(0,'#13324a'); sky.addColorStop(1,'#2a5a78'); ctx.fillStyle=sky; ctx.fillRect(0,0,W,horizon);
   let gr=ctx.createLinearGradient(0,horizon,0,H); gr.addColorStop(0,'#243f30'); gr.addColorStop(1,'#0e1c14'); ctx.fillStyle=gr; ctx.fillRect(0,horizon,W,H-horizon);
   const FOVh=Math.PI/3.2, ppd=(W/2)/Math.tan(FOVh);
-  const order=m.foes.slice().sort((a,b)=>b.dist-a.dist);
-  for(const f of order){ const rel=angDiff(m.yaw,f.ang); if(Math.abs(rel)>FOVh+0.3) continue;
-    const sx=W/2+Math.tan(rel)*ppd, size=Math.max(20,(3.2/f.dist)*ppd*0.18), gy=horizon+size*0.5;
+  const list=m.foes.map(f=>({f, ang:Math.atan2(f.z-m.pz,f.x-m.px), dist:Math.hypot(f.x-m.px,f.z-m.pz)})).sort((a,b)=>b.dist-a.dist);
+  for(const o of list){ const rel=angDiff(m.yaw,o.ang); if(Math.abs(rel)>FOVh+0.3) continue;
+    const sx=W/2+Math.tan(rel)*ppd, size=Math.max(20,(3.2/Math.max(0.6,o.dist))*ppd*0.18), gy=horizon+size*0.5;
     ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(sx,gy,size*0.4,size*0.14,0,0,7); ctx.fill();
     ctx.fillStyle='#d04040'; ctx.fillRect(sx-size*0.22,gy-size,size*0.44,size*0.8);
     ctx.beginPath(); ctx.arc(sx,gy-size*1.0,size*0.22,0,7); ctx.fill();
@@ -4294,7 +4297,7 @@ function rivalsDraw(){ const m=mg;
   if(m.muzzle>0){ ctx.fillStyle='#ffd060'; ctx.beginPath(); ctx.arc(W/2,H-92,16,0,7); ctx.fill(); }
   ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(W/2-10,H/2); ctx.lineTo(W/2-3,H/2); ctx.moveTo(W/2+3,H/2); ctx.lineTo(W/2+10,H/2); ctx.moveTo(W/2,H/2-10); ctx.lineTo(W/2,H/2-3); ctx.moveTo(W/2,H/2+3); ctx.lineTo(W/2,H/2+10); ctx.stroke();
   ctx.fillStyle='#400'; ctx.fillRect(16,H-24,200,12); ctx.fillStyle='#e63030'; ctx.fillRect(16,H-24,200*(m.hp/100),12);
-  mgHud('RIVALS (first person)','Get 1 kill — A/D turn, click/Space to shoot', m.dead&&!m.won);
+  mgHud('RIVALS (first person)','1 kill — WASD move, A/D turn, click/Space shoot', m.dead&&!m.won);
   if(m.won){ ctx.fillStyle='#000b'; ctx.fillRect(0,0,W,H); ctx.textAlign='center'; ctx.fillStyle='#7fe0ff'; ctx.font='bold 36px sans-serif'; ctx.fillText('VICTORY! +5 gems',W/2,H/2-6); ctx.fillStyle='#cfe0cf'; ctx.font='16px sans-serif'; ctx.fillText('Q = leave',W/2,H/2+28); ctx.textAlign='left'; }
 }
 // ---- RAKO IN RAKO (spaceship building) — survive the meteor storm ----
