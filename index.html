@@ -481,9 +481,9 @@ const PAID_COLOR_ORDER=['ghost','chess','zebra','rainbow','rainbowzebra','silver
 function passLevel(){ return Math.min(PASS_MAX, Math.floor((account.pass.xp||0)/PASS_PER_LEVEL)); }
 function freeReward(t){ return t===PASS_MAX ? {skin:'sob'} : {gems:10}; }
 function paidReward(t){
-  if(t===PASS_MAX) return {skin:'clown'};
-  if(t>=1 && t<=PAID_COLOR_ORDER.length) return {color:PAID_COLOR_ORDER[t-1], gems:20};
-  return {gems:40};
+  if(t===PASS_MAX) return {skin:'clown', gems:10};
+  if(t>=1 && t<=PAID_COLOR_ORDER.length) return {color:PAID_COLOR_ORDER[t-1], gems:30};   // colour + premium gems + the normal-pass gems too
+  return {gems:50};
 }
 function grantReward(r, track, t){
   if(r.gems){ account.gems=(account.gems||0)+r.gems; }
