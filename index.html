@@ -3809,7 +3809,7 @@ function renderAvatars(){
 }
 function closeAccount(){
   const v=document.getElementById('nameInput').value.trim();
-  account.name=v||'Hunter'; saveAccount(); refreshChip(); netSyncStats(); showScreen('lobby');
+  account.name=v||account.name||randomName(); saveAccount(); refreshChip(); netSyncStats(); showScreen('lobby');
 }
 function openSettings(){ refreshSettingsUI(); showScreen('settings'); }
 function lightLabel(){ const v=settings.light||1; return v<=0.75?'Dark' : v>=1.3?'Bright' : 'Normal'; }
