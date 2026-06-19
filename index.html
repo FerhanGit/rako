@@ -3731,7 +3731,7 @@ function boardRows(list, metric){
   const label= metric==='wins' ? 'MOST WINS' : 'MOST TIME PLAYED';
   let h='<div style="font-weight:bold;color:#8fe070;margin:2px 0 6px">'+label
        +' <span style="color:#9ab09a;font-weight:normal">— you are #'+place+'</span></div>';
-  sorted.slice(0,8).forEach((e,i)=>{ const val= metric==='wins' ? e.wins+' wins' : fmtTime(e.time);
+  sorted.slice(0,15).forEach((e,i)=>{ const val= metric==='wins' ? e.wins+' wins' : fmtTime(e.time);
     h+='<div class="lbRow'+(e.you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+e.name+'</span><span>'+val+'</span></div>'; });
   return h;
 }
