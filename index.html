@@ -593,6 +593,7 @@ const ALLY_COLORS=['#5fa0ff','#ff7f50','#9b5fff','#5fd35f','#ffd040','#ff5f8f'];
 const NAMES=['theKiller','xX_Reaper_Xx','NoScope360','ShadowSlayer','ToxicGamer','Cracked','Sweaty99',
   'DemonLord','vEnoM','SavageKid','MLGpro','DarkAce','NightmareX','SkullCrusher','ProSniper','Vernuus',
   'Kael','Thorn','Onyx','Draeko','Pyre','Nyx','Rook','Zephyr'];
+function randomName(){ return NAMES[Math.floor(Math.random()*NAMES.length)]+Math.floor(Math.random()*1000); }
 // fog-of-war map grid
 const MAP=50, MCELL=WORLD/MAP;     // 50x50 cells
 let explored=new Uint8Array(MAP*MAP);
