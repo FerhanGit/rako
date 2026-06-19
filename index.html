@@ -2029,15 +2029,15 @@ function update(){
       if(Math.random()<0.6) objects.push(food(o.x,o.z));  // monsters drop food
       objects.splice(i,1);
       if(o.lastHitBy && o.lastHitBy.type==='ally'){ o.lastHitBy.kills++; }   // teammate scored
-      else { kills++; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); gainXP(o.type==='boss'?40:3); questEvent('monster'); }
+      else { kills++; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); gainXP(xpFor(o)); questEvent('monster'); }
     } else if(o.type==='bunny' && o.hp<=0){
-      burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1); questEvent('bunny');
+      burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1); questEvent('bunny'); gainXP(1);
       flash("Meat +1 (total "+cam.meat+") — feed a wolf (P) to tame it");
     } else if(o.type==='entity' && o.hp<=0){
-      burst(o.x,o.z,'#7020c0',14); SFX.kill(); objects.splice(i,1); kills++; questEvent('monster');
+      burst(o.x,o.z,'#7020c0',14); SFX.kill(); objects.splice(i,1); kills++; questEvent('monster'); gainXP(5);
     } else if(o.type==='wolf' && o.hp<=0){
       burst(o.x,o.z, o.tamed?'#cfcfff':'#888',12); SFX.kill();
-      if(!o.tamed) questEvent('wolf');
+      if(!o.tamed){ questEvent('wolf'); gainXP(2); }
       if(o.tamed) flash("Your wolf has fallen!");
       objects.splice(i,1);
     } else if(o.type==='bullet' && (o.life<=0 || o.x<0||o.x>WORLD||o.z<0||o.z>WORLD)){ objects.splice(i,1);
