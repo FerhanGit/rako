@@ -3677,7 +3677,7 @@ function renderQuests(targetId){
       '<div style="font-size:11px;color:#9ab09a;margin-top:2px">'+Math.min(q.prog,q.need)+' / '+q.need+'</div></div>'; };
   let h='<div style="font-weight:bold;color:#8fe070;margin:2px 0 4px">'+T('DAILY')+' <span style="font-size:11px;color:#9ab09a;font-weight:normal">— new every day</span></div>';
   h+=account.quests.daily.map(row).join('');
-  h+='<div style="font-weight:bold;color:#ffcf5c;margin:12px 0 4px">WEEKLY <span style="font-size:11px;color:#9ab09a;font-weight:normal">— harder, big reward</span></div>';
+  h+='<div style="font-weight:bold;color:#ffcf5c;margin:12px 0 4px">'+T('WEEKLY')+' <span style="font-size:11px;color:#9ab09a;font-weight:normal">— harder, big reward</span></div>';
   if(account.quests.weekly) h+=row(account.quests.weekly);
   B.innerHTML=h;
 }
