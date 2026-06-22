@@ -4018,7 +4018,7 @@ function showResult(title,body,color){
   document.getElementById('overlay').classList.remove('hidden');
   showScreen('result');
   document.getElementById('resPlay').onclick=()=>start(difficulty);
-  document.getElementById('resLobby').onclick=()=>{ state='menu'; showScreen('lobby'); };
+  document.getElementById('resLobby').onclick=()=>{ state='menu'; playLobbyMusic(); showScreen('lobby'); };
 }
 function buildMatch(won){
   lastMatch=[{name:account.name, kills, you:true}].concat(allies.map(a=>({name:a.name, kills:a.kills})));
