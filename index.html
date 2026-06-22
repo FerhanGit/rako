@@ -4745,7 +4745,7 @@ const DEATH_TITLES=["YOU DIED","SLAIN","DEVOURED","GAME OVER","FALLEN","CONSUMED
 function lose(){ shake=22; SFX.die(); buildMatch(false);
   const msg=DEATH_MSGS[Math.floor(Math.random()*DEATH_MSGS.length)];
   const title=DEATH_TITLES[Math.floor(Math.random()*DEATH_TITLES.length)];
-  showResult(title, msg+"<br><br>"+scoreboardHTML(),"#ff5050,#a000a0"); }
+  showResult(title, msg+"<br><br>"+scoreboardHTML(),"#ff5050,#a000a0", true); }
 
 // ================= CHAT + SECRET CITY + MINIGAMES =================
 let mg=null; const mgMouse={x:W/2,y:H/2};
