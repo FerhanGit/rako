@@ -4366,6 +4366,39 @@ function renderPass(){
   const box=B; box.scrollTop=Math.max(0,(lvl-3)*22);
 }
 function openShop(){ renderShop(); showScreen('shop'); }
+// ---------- CRAFTING BENCH ----------
+const CRAFTS=[
+  {id:'house',    name:'🏠 Bigger & Cooler House', cost:{rock:6,wood:4,meat:2}, desc:'Upgrade your cabin — +25 max HP & a fancier home.'},
+  {id:'sword',    name:'🗡 Stone Sword',           cost:{rock:8,wood:2},        desc:'+6 damage.'},
+  {id:'feast',    name:'🍢 Cook a Feast',          cost:{fish:3,meat:2},        desc:'Cook 4 hearty meals into your food bag.'},
+  {id:'amethyst', name:'💜 Amethyst Skin (secret)',cost:{wood:5,rock:5,amethyst:2}, desc:'Unlock the rare crystal Amethyst skin.'},
+];
+function matCount(k){ return k==='meat'?(cam&&cam.meat||0):(cam&&cam.mats&&cam.mats[k]||0); }
+function spendMat(k,n){ if(k==='meat') cam.meat-=n; else cam.mats[k]-=n; }
+function canCraft(c){ for(const k in c.cost){ if(matCount(k)<c.cost[k]) return false; } return true; }
+function openCraft(){ renderCraft(); document.getElementById('craftPanel').classList.remove('hidden'); }
+function closeCraft(){ document.getElementById('craftPanel').classList.add('hidden'); }
+function renderCraft(){
+  if(!cam) return;
+  document.getElementById('craftMats').textContent='Materials — 🪵 wood '+matCount('wood')+' · 🪨 rock '+matCount('rock')+' · 🐟 fish '+matCount('fish')+' · 🥩 meat '+matCount('meat')+' · 💎 amethyst '+matCount('amethyst');
+  document.getElementById('craftBody').innerHTML=CRAFTS.map((c,i)=>{
+    const ok=canCraft(c), costStr=Object.keys(c.cost).map(k=>c.cost[k]+' '+k).join(' + ');
+    return '<div style="border-bottom:1px solid #2a3a2a;padding:8px 4px;display:flex;align-items:center;gap:10px">'+
+      '<div style="flex:1"><div style="font-weight:bold;color:'+(ok?'#cfe8cf':'#9aa')+'">'+c.name+'</div>'+
+      '<div style="font-size:12px;color:#9ab09a">'+c.desc+'<br>Needs: '+costStr+'</div></div>'+
+      '<button class="craftMake" data-i="'+i+'"'+(ok?'':' disabled')+'>Craft</button></div>'; }).join('');
+  document.querySelectorAll('.craftMake').forEach(b=> b.onclick=()=>craftMake(+b.dataset.i));
+}
+function craftMake(i){
+  const c=CRAFTS[i]; if(!c||!canCraft(c)) return;
+  for(const k in c.cost) spendMat(k,c.cost[k]);
+  SFX.chest&&SFX.chest();
+  if(c.id==='house'){ account.houseLvl=(account.houseLvl||0)+1; saveAccount(); cam.maxHp+=25; cam.hp=cam.maxHp; flash('🏠 Your house is bigger and cooler! +25 max HP (level '+account.houseLvl+')'); }
+  else if(c.id==='sword'){ cam.dmg+=6; flash('🗡 Forged a Stone Sword — +6 damage!'); }
+  else if(c.id==='feast'){ for(let n=0;n<4;n++) cam.food['meat']=(cam.food['meat']||0)+1; flash('🍢 Cooked 4 meals into your food bag (press X to eat).'); }
+  else if(c.id==='amethyst'){ if((account.ownedSkins||[]).indexOf('amethyst')<0) account.ownedSkins.push('amethyst'); account.charSkin='amethyst'; saveAccount(); refreshChip(); netSyncStats(); SFX.win&&SFX.win(); flash('💜 You crafted the AMETHYST skin!'); }
+  renderCraft();
+}
 // ---------- ACHIEVEMENTS ----------
 const ACHIEVEMENTS=[
   { id:'firstblood', icon:'🩸', name:'First Blood',  desc:'Get your first kill.',              reward:10,  cur:()=>account.kills||0,         max:1 },
