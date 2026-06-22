@@ -3997,6 +3997,8 @@ const ACHIEVEMENTS=[
   { id:'titanlord',  icon:'🦣', name:'Titan Lord',    desc:'Defeat 5 champion bosses → unlock the TITAN skin.',        reward:90,  rewardSkin:'titan',     cur:()=>account.champKills||0,max:5 },
   { id:'celestial',  icon:'✨', name:'Celestial',     desc:'Reach RAKO Pass tier 100 → unlock the CELESTIAL skin.',    reward:200, rewardSkin:'celestial', cur:()=>passLevel(),          max:100 },
   { id:'ghostking',  icon:'👻', name:'Reaper',        desc:'Slay 1000 monsters → unlock the PHANTOM skin.',           reward:150, rewardSkin:'phantom',   cur:()=>account.kills||0,     max:1000 },
+  { id:'cyborg',     icon:'🤖', name:'Machine War',   desc:'Slay 300 monsters → unlock the CYBORG skin.',             reward:60,  rewardSkin:'cyborg',    cur:()=>account.kills||0,     max:300 },
+  { id:'angel',      icon:'😇', name:'Ascended',      desc:'Win 25 games → unlock the ANGEL skin.',                   reward:160, rewardSkin:'angel',     cur:()=>account.wins||0,      max:25 },
 ];
 // award any newly-completed achievements; returns the list of fresh ones
 function checkAchievements(silent){
