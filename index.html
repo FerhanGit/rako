@@ -4019,7 +4019,9 @@ function setFavicon(){
   if(!at){ at=document.createElement('link'); at.rel='apple-touch-icon'; document.head.appendChild(at); }
   at.href=url;
 }
-function refreshChip(){ document.getElementById('chipName').textContent=account.name;
+function refreshChip(){
+  const cn=document.getElementById('chipName');
+  cn.innerHTML=(account.club?'<span style="color:'+account.club.color+'">['+esc(account.club.name)+']</span> ':'')+esc(account.name);
   const av=document.querySelector('#acctChip .av');
   if(av){ av.style.borderRadius='50%'; av.textContent=''; av.style.fontSize='0'; applySkinAvatar(av, account.charSkin, account.skin); } }   // profile picture is always your skin
 function hashStr(s){ let h=0; s=s||''; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
