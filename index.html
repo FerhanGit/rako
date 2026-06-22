@@ -1317,7 +1317,8 @@ function grantChest(o, who){
   o.opened=true; burst(o.x,o.z,'#ffe070',16); SFX.chest(); if(!who) questEvent('chest');
   const by = who ? (who+" opened a chest — ") : "";
   let code='sharp';
-  if(o.gold) code='gold';
+  if(o.theme) code='theme:'+o.theme;
+  else if(o.gold) code='gold';
   else if(!o.rako){ const codes=['feast','vitality','sharp','gems','coins','might','bulwark','regen','swift']; code=codes[Math.floor(Math.random()*codes.length)]; }
   applyChestReward(o.rako, code, by);
   if(coop && !who) broadcastChestEvent(o, code);   // co-op: your friend wins the loot too
