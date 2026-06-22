@@ -1319,7 +1319,7 @@ function applyChestReward(rako, code, by){
       case 'coins':    cam.points=(cam.points||0)+200; flash(""+by+"+200 rock points"); break;
       case 'might':    cam.dmg+=8; flash(""+by+"war totem (+8 damage)"); break;
       case 'bulwark':  cam.maxHp+=30; cam.hp=cam.maxHp; flash(""+by+"bulwark charm (+30 max HP)"); break;
-      case 'regen':    cam.hp=cam.maxHp; cam.hunger=cam.maxHunger; flash(""+by+"healing spring (full HP &amp; hunger)"); break;
+      case 'regen':    cam.hp=cam.maxHp; cam.hunger=cam.maxHunger; flash(""+by+"healing spring (full HP and hunger)"); break;
       case 'swift':    cam.boostT=900; flash(""+by+"swift boots — speed boost!"); break;
       default:         cam.dmg+=4; flash(""+by+"sharpening stone (+4 damage)");
     }
