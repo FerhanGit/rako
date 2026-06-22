@@ -4622,6 +4622,12 @@ document.getElementById('musicToggle').onclick=()=>{
 document.getElementById('qualityToggle').onclick=()=>{
   applyQuality(quality===100?250:quality===250?500:100); refreshSettingsUI(); };
 document.getElementById('lightToggle').onclick=()=>cycleLight();
+document.getElementById('sfxToggle').onclick=()=>{ settings.sfx=!(settings.sfx!==false); saveSettings(); if(settings.sfx) SFX.click&&SFX.click(); refreshSettingsUI(); };
+document.getElementById('gameMusicToggle').onclick=()=>{
+  const order=['battle','calm','eerie','off']; const i=order.indexOf(settings.gameMusic||'battle');
+  settings.gameMusic=order[(i+1)%order.length]; saveSettings();
+  if(state==='play') playGameMusic();    // apply live if you're mid-match
+  refreshSettingsUI(); };
 document.getElementById('howToBtn').onclick=()=>document.getElementById('howto').classList.remove('hidden');
 document.getElementById('howToClose').onclick=()=>document.getElementById('howto').classList.add('hidden');
 document.getElementById('howto').addEventListener('mousedown',e=>{ if(e.target.id==='howto') document.getElementById('howto').classList.add('hidden'); });
