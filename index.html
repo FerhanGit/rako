@@ -3210,6 +3210,7 @@ function drawTree(o,p){
 }
 // biome-specific tree dressing: snow caps / lava flames / floating space glow
 function treeBiomeDeco(o,p,bio,x,topY,w){
+  if(bio==='forest' || w<9) return;   // skip plain forest + far/small trees (perf)
   if(bio==='snow'){
     ctx.fillStyle='rgba(255,255,255,0.92)';
     ctx.beginPath(); ctx.ellipse(x,topY,w*0.5,w*0.18,0,0,7); ctx.fill();
