@@ -2160,7 +2160,7 @@ function update(){
     if(ic && !ic.opened) promptTxt="Press E to open the Ice Chest (Ice Sword)";
   }
   if(!promptTxt){
-    const relic=objects.find(o=>(o.type==='pyramid'||o.type==='factory') && dist(o)<4.5);
+    const relic=objects.find(o=>(o.type==='pyramid'||o.type==='factory') && dist(o)<9);
     if(relic) promptTxt = relic.looted ? "" : (relic.type==='pyramid'?"Press E to enter the Pyramid (Desert Relic)":"Press E to enter the Factory (Radioactive Core)");
   }
   if(!promptTxt){
