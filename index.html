@@ -3926,6 +3926,12 @@ const ACHIEVEMENTS=[
   { id:'social',     icon:'🤝', name:'Not Alone',    desc:'Add your first friend.',           reward:25,  cur:()=>(account.friends||[]).length, max:1 },
   { id:'timelord',   icon:'⏳', name:'Time Lord',    desc:'Play for 1 hour total.',           reward:60,  cur:()=>Math.floor(account.timePlayed||0), max:3600 },
   { id:'marathon',   icon:'🏃', name:'Marathon',     desc:'Play for 5 hours total.',          reward:150, cur:()=>Math.floor(account.timePlayed||0), max:18000 },
+  { id:'champ1',     icon:'👑', name:'Giant Slayer',  desc:'Defeat a biome champion boss.',     reward:50,  cur:()=>account.champKills||0,    max:1 },
+  { id:'champ3',     icon:'🛡️', name:'Boss Hunter',   desc:'Defeat all 3 biome champions.',     reward:120, cur:()=>account.champKills||0,    max:3 },
+  { id:'champ10',    icon:'☠️', name:'Champion Bane', desc:'Defeat 10 champion bosses.',        reward:250, cur:()=>account.champKills||0,    max:10 },
+  { id:'explore2',   icon:'🧭', name:'Wanderer',      desc:'Visit 2 different biomes.',         reward:30,  cur:()=>(account.biomes||[]).length, max:2 },
+  { id:'explore4',   icon:'🗺️', name:'Globetrotter',  desc:'Visit all 4 biomes.',               reward:80,  cur:()=>(account.biomes||[]).length, max:4 },
+  { id:'daily7',     icon:'📅', name:'Regular',       desc:'Reach a 7-day login streak.',       reward:100, cur:()=>(account.daily&&account.daily.streak)||0, max:7 },
 ];
 // award any newly-completed achievements; returns the list of fresh ones
 function checkAchievements(silent){
