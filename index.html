@@ -1083,7 +1083,11 @@ function reset(){
   placeIn('space',bld('rocket',10,3), 1);
   placeIn('lava', bld('volcano',14,14), 1);
   placeIn('lava', bld('library',7,8), 1);
+  placeIn('desert', bld('pyramid',13,13), 1);    // enter for the Desert Relic
+  placeIn('poison', bld('factory',8,10), 1);     // enter for the Radioactive Core
   placeIn('snow', (x,z)=>objects.push({type:'icechest',x,z,height:1.2,width:1.4,opened:false}), 1);   // one ice chest
+  placeIn('forest',(x,z)=>objects.push(chest(x,z,false,false,'forest')), 1);   // forest cache
+  placeIn('space', (x,z)=>objects.push(chest(x,z,false,false,'space')), 1);    // space chest
   // food on the ground
   for(let i=0;i<22;i++) objects.push(food(8+Math.random()*(WORLD-16), 16+Math.random()*(WORLD-30)));
   // normal chests
