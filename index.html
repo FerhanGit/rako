@@ -892,14 +892,14 @@ function champAbility(o,d){
 }
 let playerSlowT=0;   // frames of movement-slow from a Frost Titan hit
 const FOODS=[
-  {k:'meat',     hunger:30, hp:8,  name:'Meat'},
-  {k:'apple',    hunger:18, hp:4,  name:'Apple'},
-  {k:'berry',    hunger:12, hp:3,  name:'Berries'},
-  {k:'mushroom', hunger:16, hp:6,  name:'Mushroom'},
-  {k:'carrot',   hunger:14, hp:3,  name:'Carrot'},
-  {k:'fish',     hunger:26, hp:7,  name:'Fish'},
-  {k:'honey',    hunger:22, hp:12, name:'Honey'},
-  {k:'cheese',   hunger:20, hp:5,  name:'Cheese'},
+  {k:'meat',     hunger:20, hp:6,  name:'Meat'},
+  {k:'apple',    hunger:11, hp:3,  name:'Apple'},
+  {k:'berry',    hunger:7,  hp:2,  name:'Berries'},
+  {k:'mushroom', hunger:10, hp:4,  name:'Mushroom'},
+  {k:'carrot',   hunger:9,  hp:2,  name:'Carrot'},
+  {k:'fish',     hunger:17, hp:5,  name:'Fish'},
+  {k:'honey',    hunger:14, hp:8,  name:'Honey'},
+  {k:'cheese',   hunger:13, hp:4,  name:'Cheese'},
 ];
 function food(x,z,kind){ const fk=kind||FOODS[Math.floor(Math.random()*FOODS.length)].k;
   return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6,kind:fk}; }
