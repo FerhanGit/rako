@@ -2433,10 +2433,10 @@ function update(){
 
   // food pickup (coins are collected with E)
   for(const o of objects){
-    if(o.type==='food' && !o.gone && dist(o)<1.4){
+    if(o.type==='food' && !o.gone && dist(o)<1.9){
       const fd=FOODS.find(f=>f.k===o.kind)||FOODS[0];
       o.gone=true; cam.food[o.kind]=(cam.food[o.kind]||0)+1; burst(o.x,o.z,'#ff9050',6); SFX.chest&&SFX.chest();
-      flash("Stored "+fd.name+" — press X to eat ("+foodCount()+" in bag)");
+      flash("Touched "+fd.name+" — stored in your boxes ("+foodCount()+"). Press X to eat.");
     }
   }
 
