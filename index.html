@@ -3770,6 +3770,28 @@ function refreshChip(){ document.getElementById('chipName').textContent=account.
   if(av){ av.style.borderRadius='50%';
     if(account.avatar){ av.style.backgroundImage=''; av.textContent=account.avatar; av.style.background='#1c2a1c'; av.style.fontSize='18px'; }
     else { applySkinAvatar(av, account.charSkin, account.skin); } } }
+function hashStr(s){ let h=0; s=s||''; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
+// each player name maps to a consistent skin (yours is real; others are derived from their name)
+function skinForName(name){
+  if(account.name && name && name.toLowerCase()===account.name.toLowerCase())
+    return { charSkin:account.charSkin||'aster', color:account.skin||'green', me:true };
+  const h=hashStr(name);
+  return { charSkin:ALLY_SKINS[h%ALLY_SKINS.length], color:SKIN_ORDER[(h>>3)%SKIN_ORDER.length] };
+}
+function showProfile(name, stats){
+  const sk=skinForName(name);
+  document.getElementById('profPic').src=skinAvatarURL(sk.charSkin,sk.color);
+  document.getElementById('profName').textContent=name||'?';
+  const skinName=(CHAR_SKINS.find(s=>s.id===sk.charSkin)||{}).name||sk.charSkin;
+  document.getElementById('profSkin').textContent='Skin: '+skinName+' · colour '+sk.color+(sk.me?' (you)':'');
+  let h='';
+  if(sk.me){ h='🏆 Wins: '+(account.wins||0)+'<br>⏱ Time: '+fmtTime(account.timePlayed||0); }
+  else if(stats){ if(stats.wins!=null&&stats.wins!=='') h+='🏆 Wins: '+stats.wins+'<br>';
+    if(stats.time!=null&&stats.time!=='') h+='⏱ Time: '+fmtTime(+stats.time)+'<br>';
+    if(stats.online!=null) h+=(stats.online==='1'||stats.online===true?'🟢 Online':'🔴 Offline'); }
+  document.getElementById('profStats').innerHTML=h||'<span style="color:#9ab09a">A fellow survivor of RAKO.</span>';
+  document.getElementById('profile').classList.remove('hidden');
+}
 function colorLocked(s){ return SPECIAL_COLORS.includes(s) && !(account.pass && account.pass.colors && account.pass.colors.includes(s)); }
 function renderSkins(){
   const G=document.getElementById('skinGrid');
