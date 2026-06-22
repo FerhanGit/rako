@@ -1967,6 +1967,7 @@ function update(){
   if(weather==='snow' && !flying) spd*=0.6;   // snow slows you down
   if(playerSlowT>0){ playerSlowT--; spd*=0.45; }   // chilled by the Frost Titan
   if(sprinting) spd*=1.8;
+  if(cam.superSpeed) spd*=2.5;   // admin super speed
   const fwd={x:Math.sin(cam.yaw), z:Math.cos(cam.yaw)};
   const rgt={x:Math.cos(cam.yaw), z:-Math.sin(cam.yaw)};
   let nx=cam.x, nz=cam.z, moved=false;
