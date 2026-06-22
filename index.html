@@ -852,8 +852,10 @@ function caveMouth(x,z){ return {type:'cave',x,z,height:1.8,width:3.4}; }
 function coin(x,z){ return {type:'coin',x,z,height:0.6,width:0.6,bob:Math.random()*6}; }
 function buyTable(x,z){ return {type:'buytable',x,z,height:1.7,width:2.6}; }
 // AI teammate ("other player")
+const ALLY_SKINS=['aster','pickaxe','sofka','ted','ninja','winterguy','robot','demon','astronaut','king'];
 function makeAlly(name,color,x,z){ return {type:'ally', name, color, x, z, height:1.7, width:1.4,
-   hp:120, maxHp:120, dmg:14, kills:0, atkCd:0, down:false, downT:0}; }
+   hp:120, maxHp:120, dmg:14, kills:0, atkCd:0, down:false, downT:0,
+   charSkin:ALLY_SKINS[Math.floor(Math.random()*ALLY_SKINS.length)]}; }
 // passive bunny — kill with the sword for meat
 function bunny(x,z){ return {type:'bunny', x, z, height:0.7, width:0.9, hp:8, flash:0,
    dir:Math.random()*6.28, hop:Math.random()*60, bob:Math.random()*6}; }
