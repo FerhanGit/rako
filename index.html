@@ -3794,9 +3794,20 @@ function showProfile(name, stats){
     h+='⏱ Time: '+fmtTime(account.timePlayed||0)+'<br>';
     h+='📅 Joined: '+(account.since||'—');
   }
-  else if(stats){ if(stats.wins!=null&&stats.wins!=='') h+='🏆 Wins: '+stats.wins+'<br>';
-    if(stats.time!=null&&stats.time!=='') h+='⏱ Time: '+fmtTime(+stats.time)+'<br>';
-    if(stats.online!=null) h+=(stats.online==='1'||stats.online===true?'🟢 Online':'🔴 Offline'); }
+  else {
+    const hh=hashStr(name);
+    const realWins=(stats&&stats.wins!=null&&stats.wins!=='')?(+stats.wins):null;
+    const realTime=(stats&&stats.time!=null&&stats.time!=='')?(+stats.time):null;
+    const wins = realWins!=null ? realWins : (hh%180);
+    const time = realTime!=null ? realTime : (hh%60000);
+    const tier = hh%101;
+    h ='🎫 RAKO Pass: tier '+tier+(((hh>>9)%4)===0?' ⭐ premium':'')+'<br>';
+    h+='🏆 Wins: '+wins+'<br>';
+    h+='⚔️ Kills: '+(((hh>>4)%1500)+wins*4)+'<br>';
+    h+='💎 Gems: '+(((hh>>7)%4000))+'<br>';
+    h+='⏱ Time: '+fmtTime(time)+'<br>';
+    if(stats&&stats.online!=null) h+=(stats.online==='1'||stats.online===true?'🟢 Online':'🔴 Offline');
+  }
   document.getElementById('profStats').innerHTML=h||'<span style="color:#9ab09a">A fellow survivor of RAKO.</span>';
   document.getElementById('profile').classList.remove('hidden');
 }
