@@ -745,7 +745,7 @@ function blip(freq,dur,type,vol,slideTo){
   o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+dur+0.03);
 }
 function noise(dur,vol,filterFreq){
-  if(!AC) return;
+  if(!AC || settings.sfx===false) return;
   const t=AC.currentTime, n=Math.floor(AC.sampleRate*dur);
   const buf=AC.createBuffer(1,n,AC.sampleRate), d=buf.getChannelData(0);
   for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n);
