@@ -4402,6 +4402,8 @@ async function renderClubs(){
     cb.disabled=true; const r=await netCreateClub(nm,_clubColor,max,min); note(r.msg,r.ok); renderClubs(); };
   document.querySelectorAll('.joinClub').forEach(b=> b.onclick=async()=>{ const cl=clubs.find(c=>c.id===b.dataset.id); if(!cl) return; b.disabled=true; const r=await netJoinClub(cl); note(r.msg,r.ok); renderClubs(); });
   const lc=document.getElementById('leaveClub'); if(lc) lc.onclick=async()=>{ await netLeaveClub(); renderClubs(); };
+  document.querySelectorAll('.cRole').forEach(b=> b.onclick=async()=>{ b.disabled=true; await netSetRole(b.dataset.id,b.dataset.role); renderClubs(); });
+  document.querySelectorAll('.cKick').forEach(b=> b.onclick=async()=>{ b.disabled=true; await netKick(b.dataset.id); renderClubs(); });
   const gg=document.getElementById('giveGems');
   if(gg) gg.onclick=async()=>{ const who=document.getElementById('giftWho').value, amt=Math.floor(+document.getElementById('giftGems').value||0);
     if(amt<1){ note('Enter a gem amount.',false); return; } if((account.gems||0)<amt){ note('Not enough 💎.',false); return; }
