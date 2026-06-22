@@ -4323,19 +4323,26 @@ async function renderClubs(){
     }
     h+='<button id="leaveClub" style="margin-top:14px;background:#5a2a2a">'+(c.owner?'Disband club':'Leave club')+'</button>';
   } else {
-    h+='<div style="font-weight:bold;color:#8fe070;margin:2px 0 6px">Create a club — costs 500 💎 (you have '+(account.gems||0)+')</div>';
-    h+='<input id="clubName" maxlength="18" placeholder="club name" style="width:200px"><br>';
-    h+='<div style="margin:8px 0">Name colour: <span id="clubColors"></span></div>';
-    h+='Max members <input id="clubMax" type="number" min="2" max="50" value="10" style="width:56px"> · Min wins to join <input id="clubMin" type="number" min="0" value="0" style="width:56px"><br>';
-    h+='<button id="createClub" style="margin-top:10px">🏰 Create (500 💎)</button>';
-    h+='<div style="font-weight:bold;color:#8fe070;margin:14px 0 4px">Join a club</div>';
+    h+='<button id="toggleCreate" style="font-size:13px;padding:6px 14px">＋ Create a club (500 💎)</button>';
+    if(_showCreate){
+      h+='<div style="margin-top:10px;border:1px solid #2c5a3a;border-radius:10px;padding:10px;text-align:left">';
+      h+='<div style="font-size:12px;color:#9ab09a;margin-bottom:6px">You have '+(account.gems||0)+' 💎</div>';
+      h+='<input id="clubName" maxlength="18" placeholder="club name" style="width:200px"><br>';
+      h+='<div style="margin:8px 0">Name colour: <span id="clubColors"></span></div>';
+      h+='Max members <input id="clubMax" type="number" min="2" max="50" value="10" style="width:56px"> · Min wins to join <input id="clubMin" type="number" min="0" value="0" style="width:56px"><br>';
+      h+='<button id="createClub" style="margin-top:10px">🏰 Create (500 💎)</button></div>';
+    }
+    h+='<div style="font-weight:bold;color:#8fe070;margin:14px 0 4px">Join a club <span style="font-size:11px;color:#9ab09a;font-weight:normal">— tap a name for members</span></div>';
     if(!clubs.length) h+='<div class="hint" style="font-size:13px">No clubs yet.</div>';
     clubs.forEach(c=>{ const full=c._members>=c.max_members, can=(account.wins||0)>=c.min_wins&&!full;
-      h+='<div class="friendRow"><span>'+clubTag(c.name,c.color)+c._members+'/'+c.max_members+' · '+c.min_wins+' wins</span>'+
+      h+='<div class="friendRow"><span class="clubRow" data-cid="'+c.id+'" style="cursor:pointer">'+clubTag(c.name,c.color)+c._members+'/'+c.max_members+' · '+c.min_wins+' wins</span>'+
         '<button class="joinClub" data-id="'+c.id+'"'+(can?'':' disabled')+'>'+(full?'Full':(can?'Join':'Need '+c.min_wins+' wins'))+'</button></div>'; });
   }
   h+=clubLeaderboardHTML(clubs);
   B.innerHTML=h;
+  _clubsCache=clubs;
+  document.querySelectorAll('.clubRow').forEach(r=> r.onclick=()=>openClubDetail(r.dataset.cid));
+  const tc=document.getElementById('toggleCreate'); if(tc) tc.onclick=()=>{ _showCreate=!_showCreate; renderClubs(); };
   // color swatches
   const cc=document.getElementById('clubColors');
   if(cc){ cc.innerHTML=CLUB_COLORS.map(col=>'<button class="cswatch" data-c="'+col+'" style="width:22px;height:22px;border-radius:50%;padding:0;margin:2px;background:'+col+';border:2px solid '+(_clubColor===col?'#fff':'#333')+'"></button>').join('');
