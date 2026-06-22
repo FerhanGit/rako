@@ -954,6 +954,7 @@ const FOODS=[
   {k:'fish',     hunger:17, hp:5,  name:'Fish'},
   {k:'honey',    hunger:14, hp:8,  name:'Honey'},
   {k:'cheese',   hunger:13, hp:4,  name:'Cheese'},
+  {k:'stew',     hunger:30, hp:10, name:'Stew'},
 ];
 function food(x,z,kind){ const fk=kind||FOODS[Math.floor(Math.random()*FOODS.length)].k;
   return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6,kind:fk}; }
