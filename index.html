@@ -3085,35 +3085,47 @@ function drawTree(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const night=isNight();
   const seed=(o.seed!=null)?o.seed:(o.seed=(Math.abs(o.x*7.13+o.z*3.77))%6.283);
+  const bio=(o.bio!=null)?o.bio:(o.bio=biomeAt(o.x,o.z));
   // half the trees keep the classic triangle look, half use the new realistic design
   if(Math.floor(seed*5)%2===0){
     ctx.fillStyle="#3a2616"; ctx.fillRect(x-w*0.12, base-h*0.35, w*0.24, h*0.35);   // trunk
     const greens=["#1d3d1f","#274f29","#316033"];
     for(let i=0;i<3;i++){ const cy=base-h*0.30 - i*h*0.22, cw=w*(0.85-i*0.18);
       ctx.fillStyle=greens[i]; ctx.beginPath(); ctx.moveTo(x, cy-h*0.30); ctx.lineTo(x-cw, cy); ctx.lineTo(x+cw, cy); ctx.closePath(); ctx.fill(); }
-    return;
+    treeBiomeDeco(o,p,bio,x,base-h*0.95,w); return;
   }
   const sway=Math.sin(time*0.012+seed)*w*0.05;
-  const dark=night?'#0f2210':'#1c3a1d', mid=night?'#18321a':'#2f5e30', lite=night?'#234a26':'#54924a';
-  // ground contact shadow
-  ctx.save(); ctx.globalAlpha*=0.30; ctx.fillStyle='#000';
-  ctx.beginPath(); ctx.ellipse(x, base, w*0.62, w*0.15, 0,0,7); ctx.fill(); ctx.restore();
-  // bark-gradient trunk (tapered)
+  const dark=night?'#0f2210':'#1c3a1d', mid=night?'#19341b':'#2f5e30', lite=night?'#244a27':'#54924a';
+  // ground contact shadow (cheap)
+  ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x, base, w*0.6, w*0.14, 0,0,7); ctx.fill(); ctx.globalAlpha/=0.3;
+  // tapered trunk — two solid tones (NO per-frame gradient)
   const tw=Math.max(1.3,w*0.15), tt=base-h*0.42;
-  let tg; try{ tg=ctx.createLinearGradient(x-tw,0,x+tw,0); tg.addColorStop(0,'#241608'); tg.addColorStop(0.45,'#4a3017'); tg.addColorStop(1,'#1d1308'); }catch(e){ tg='#3a2616'; }
-  ctx.fillStyle=tg;
-  ctx.beginPath(); ctx.moveTo(x-tw,base); ctx.lineTo(x-tw*0.5+sway,tt); ctx.lineTo(x+tw*0.5+sway,tt); ctx.lineTo(x+tw,base); ctx.closePath(); ctx.fill();
-  if(w<5){ ctx.fillStyle=mid; ctx.beginPath(); ctx.ellipse(x+sway, base-h*0.55, w*0.7, h*0.4, 0,0,7); ctx.fill(); return; }   // far-away LOD
-  // canopy: overlapping clumps, lit from the upper-left
+  ctx.fillStyle='#3a2613'; ctx.beginPath(); ctx.moveTo(x-tw,base); ctx.lineTo(x-tw*0.5+sway,tt); ctx.lineTo(x+tw*0.5+sway,tt); ctx.lineTo(x+tw,base); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#241608'; ctx.beginPath(); ctx.moveTo(x-tw,base); ctx.lineTo(x-tw*0.5+sway,tt); ctx.lineTo(x-tw*0.15+sway,tt); ctx.lineTo(x-tw*0.45,base); ctx.closePath(); ctx.fill();  // shaded side
+  if(w<5){ ctx.fillStyle=mid; ctx.beginPath(); ctx.ellipse(x+sway, base-h*0.55, w*0.7, h*0.4, 0,0,7); ctx.fill(); return; }   // far LOD
   const cxr=x+sway, cyr=base-h*0.55;
   const round=(Math.floor(seed*3)%3===0);
-  const clumps = round
-    ? [[0,-0.30,0.50],[-0.40,-0.04,0.42],[0.40,-0.04,0.42],[-0.20,0.18,0.40],[0.20,0.18,0.40],[0,0.02,0.46]]
-    : [[0,-0.46,0.34],[0,-0.20,0.48],[0,0.08,0.60]];
-  ctx.fillStyle=dark;
-  clumps.forEach(c=>{ ctx.beginPath(); ctx.ellipse(cxr+c[0]*w, cyr+c[1]*h, c[2]*w, c[2]*w*0.94, 0,0,7); ctx.fill(); });
-  clumps.forEach(c=>{ ctx.fillStyle=mid; ctx.beginPath(); ctx.ellipse(cxr+c[0]*w-w*0.05, cyr+c[1]*h-w*0.05, c[2]*w*0.8, c[2]*w*0.78, 0,0,7); ctx.fill();
-    ctx.fillStyle=lite; ctx.beginPath(); ctx.ellipse(cxr+c[0]*w-w*0.13, cyr+c[1]*h-w*0.13, c[2]*w*0.42, c[2]*w*0.4, 0,0,7); ctx.fill(); });
+  const clumps = round ? [[0,-0.30,0.50],[-0.38,-0.02,0.42],[0.38,-0.02,0.42],[0,0.12,0.46]]
+                       : [[0,-0.44,0.36],[0,-0.18,0.50],[0,0.08,0.60]];
+  ctx.fillStyle=dark; clumps.forEach(c=>{ ctx.beginPath(); ctx.ellipse(cxr+c[0]*w, cyr+c[1]*h, c[2]*w, c[2]*w*0.94, 0,0,7); ctx.fill(); });
+  ctx.fillStyle=lite; clumps.forEach(c=>{ ctx.beginPath(); ctx.ellipse(cxr+c[0]*w-w*0.12, cyr+c[1]*h-w*0.12, c[2]*w*0.5, c[2]*w*0.48, 0,0,7); ctx.fill(); });
+  treeBiomeDeco(o,p,bio,cxr,cyr-h*0.18,w);
+}
+// biome-specific tree dressing: snow caps / lava flames / floating space glow
+function treeBiomeDeco(o,p,bio,x,topY,w){
+  if(bio==='snow'){
+    ctx.fillStyle='rgba(255,255,255,0.92)';
+    ctx.beginPath(); ctx.ellipse(x,topY,w*0.5,w*0.18,0,0,7); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x-w*0.32,topY+w*0.22,w*0.26,w*0.11,0,0,7); ctx.ellipse(x+w*0.32,topY+w*0.22,w*0.26,w*0.11,0,0,7); ctx.fill();
+  } else if(bio==='lava'){
+    const t=time*0.2+(o.seed||0);
+    for(let i=0;i<3;i++){ const fx=x+(i-1)*w*0.3, fy=topY+Math.sin(t+i)*w*0.08;
+      ctx.fillStyle=(i%2)?'#ff7a1a':'#ffce3a'; ctx.beginPath(); ctx.moveTo(fx,fy-w*0.1); ctx.lineTo(fx-w*0.12,fy+w*0.28); ctx.lineTo(fx+w*0.12,fy+w*0.28); ctx.closePath(); ctx.fill(); }
+  } else if(bio==='space'){
+    const t=time*0.05+(o.seed||0);
+    ctx.fillStyle='rgba(155,95,255,0.55)';
+    for(let i=0;i<3;i++){ const a=t+i*2.1; ctx.beginPath(); ctx.arc(x+Math.cos(a)*w*0.7, topY+Math.sin(a)*w*0.5, Math.max(1,w*0.08),0,7); ctx.fill(); }
+  }
 }
 // jagged gothic cathedral spire (the nightmare city)
 function drawSpire(o,p){
