@@ -1427,7 +1427,7 @@ function libContent(n){
 function renderLibPage(){
   const t=document.getElementById('libText'); t.innerHTML=libContent(_libN);
   document.getElementById('libPage').textContent='Page '+_libN+' / '+LIB_PAGES;
-  if(_libN===LIB_WIN_PAGE) t.querySelectorAll('.liba').forEach(el=> el.onclick=()=>{ closeBook(); flash('📖 The letter blazes gold — RAKO is complete!'); if(typeof win==='function') win(); });
+  if(_libN===LIB_WIN_PAGE) t.querySelectorAll('.liba').forEach(el=> el.onclick=()=>{ closeBook(); account.secretLibWin=true; saveAccount(); flash('📖 The words rearrange themselves — RAKO is complete!'); if(typeof win==='function') win(); });
 }
 function openBook(){ _libN=1; state='lib'; document.getElementById('libpanel').classList.remove('hidden'); renderLibPage(); }
 function closeBook(){ if(state==='lib'){ state='play'; document.getElementById('libpanel').classList.add('hidden'); } }
