@@ -3863,6 +3863,10 @@ function lightLabel(){ const v=settings.light||1; return v<=0.75?'Dark' : v>=1.3
 function refreshSettingsUI(){
   const mb=document.getElementById('musicToggle');
   mb.textContent=settings.music?'ON':'OFF'; mb.classList.toggle('off',!settings.music);
+  const sb=document.getElementById('sfxToggle');
+  if(sb){ sb.textContent=settings.sfx!==false?'ON':'OFF'; sb.classList.toggle('off',settings.sfx===false); }
+  const gm=document.getElementById('gameMusicToggle');
+  if(gm){ const L={calm:'Calm',battle:'Battle',eerie:'Eerie',off:'Off'}; gm.textContent=L[settings.gameMusic||'battle']; gm.classList.toggle('off',settings.gameMusic==='off'); }
   document.getElementById('qualityToggle').textContent=quality;
   const qd=document.getElementById('qualDesc');
   if(qd) qd.textContent = quality<=100?'100 · blurry' : quality>=500?'500 · good vision' : '250 · normal';
