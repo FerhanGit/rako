@@ -3020,6 +3020,14 @@ function drawTree(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const night=isNight();
   const seed=(o.seed!=null)?o.seed:(o.seed=(Math.abs(o.x*7.13+o.z*3.77))%6.283);
+  // half the trees keep the classic triangle look, half use the new realistic design
+  if(Math.floor(seed*5)%2===0){
+    ctx.fillStyle="#3a2616"; ctx.fillRect(x-w*0.12, base-h*0.35, w*0.24, h*0.35);   // trunk
+    const greens=["#1d3d1f","#274f29","#316033"];
+    for(let i=0;i<3;i++){ const cy=base-h*0.30 - i*h*0.22, cw=w*(0.85-i*0.18);
+      ctx.fillStyle=greens[i]; ctx.beginPath(); ctx.moveTo(x, cy-h*0.30); ctx.lineTo(x-cw, cy); ctx.lineTo(x+cw, cy); ctx.closePath(); ctx.fill(); }
+    return;
+  }
   const sway=Math.sin(time*0.012+seed)*w*0.05;
   const dark=night?'#0f2210':'#1c3a1d', mid=night?'#18321a':'#2f5e30', lite=night?'#234a26':'#54924a';
   // ground contact shadow
