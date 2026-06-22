@@ -1032,6 +1032,7 @@ function reset(){
 
   // your home: a wooden cabin in a clearing (the safe zone)
   objects.push({type:'cabin', x:HOME.x, z:HOME.z+3, height:7.5, width:9, solid:true});
+  objects.push({type:'craftbench', x:HOME.x-6, z:HOME.z-1, height:1.4, width:2.4});   // crafting bench by the cabin
 
   // scatter trees over the forest (not inside the city, stronghold, or home)
   for(let i=0;i<1000;i++){
