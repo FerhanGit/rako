@@ -4225,7 +4225,7 @@ function claimDaily(){
 }
 // ---------- CLUBS (guilds) ----------
 const CLUB_COLORS=['#7fe0ff','#ff6b6b','#8fe070','#ffd070','#b06bff','#ff8a3a','#5fd0c0','#ff7fc0','#ffffff','#a0a0a0'];
-let _clubColor='#7fe0ff';
+let _clubColor='#7fe0ff', _showCreate=false, _clubsCache=null;
 function clubTag(clubName,color){ return clubName?'<span style="color:'+(color||'#7fe0ff')+'">['+esc(clubName)+']</span> ':''; }
 async function netMyClub(){ if(!NET.ready) return;
   try{ const r=await netGet('/rako_players?id=eq.'+NET.uid+'&select=club_id'); const cid=r[0]&&r[0].club_id;
