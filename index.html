@@ -3991,16 +3991,32 @@ const STYLE_CHORDS={
   battle:[[110,165,220],[123,185,247],[98,147,196],[130,196,262]],
   eerie: [[123,174,233],[110,155,220],[138,196,261],[103,146,207]],
 };
-let _procStyle='calm';
+let _procStyle='calm', beatTimer=null;
 function startProc(){
   if(!settings.music) return; initAudio(); if(!AC || musicMode==='proc') return;
   musicMode='proc';
   const chords=STYLE_CHORDS[_procStyle]||STYLE_CHORDS.calm; let ci=0;
-  const fast=_procStyle==='battle';
+  const battle=_procStyle==='battle';
   const tick=()=>{ if(musicMode!=='proc'||!settings.music) return;
-    chords[ci%chords.length].forEach(f=>pad(f,fast?2.6:4.2)); ci++; };
-  tick(); procTimer=setInterval(tick,fast?2400:3800);
+    const ch=chords[ci%chords.length]; ch.forEach(f=>pad(f,battle?1.9:4.2));
+    if(battle) musicBass(ch[0]/2); ci++; };
+  tick(); procTimer=setInterval(tick,battle?1900:3800);
+  if(battle){ let bi=0;          // driving drum beat
+    beatTimer=setInterval(()=>{ if(musicMode!=='proc'||!settings.music) return;
+      musicKick(); if(bi%2===1) musicHat(); bi++; },300); }
 }
+// music percussion/bass — NOT gated by Sound-FX so the beat stays with the track
+function musicKick(){ if(!AC) return; const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(130,t); o.frequency.exponentialRampToValueAtTime(45,t+0.14);
+  g.gain.setValueAtTime(0.2,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.2);
+  o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.22); }
+function musicHat(){ if(!AC) return; const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
+  o.type='square'; o.frequency.value=7200; g.gain.setValueAtTime(0.045,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);
+  o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.06); }
+function musicBass(freq){ if(!AC) return; const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
+  o.type='sawtooth'; o.frequency.value=Math.max(40,freq);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.07,t+0.05); g.gain.exponentialRampToValueAtTime(0.0001,t+0.55);
+  o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.6); }
 // lobby = your music.mp3 file (the song you drop in); in-game = chosen procedural style
 function playGameMusic(){ stopMusic(); if(settings.gameMusic==='off'||!settings.music) return; _procStyle=settings.gameMusic; startProc(); }
 function playLobbyMusic(){ if(settings.music) startMusic(); }
