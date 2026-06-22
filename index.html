@@ -1326,6 +1326,7 @@ function grantChest(o, who){
 function applyChestReward(rako, code, by){
   if(code==='gold'){ const g=3+Math.floor(Math.random()*6); account.gems=(account.gems||0)+g; cam.maxHp+=20; cam.hp=cam.maxHp; cam.dmg+=6;
     saveAccount(); refreshChip(); netSyncStats(); SFX.rako&&SFX.rako(); flash(""+by+"💰 GOLDEN CHEST! +"+g+" gems, +20 max HP, +6 damage!"); return; }
+  if(code && code.indexOf('theme:')===0){ applyThemeChest(code.slice(6), by); return; }
   if(rako){ SFX.rako();
     if(!cam.hasPet){ cam.hasPet=true; cam.flyCd=0; flash(""+by+"RAKO CHEST! Skyling pet unlocked — you can FLY!"); }
     else if(!cam.hasCrystal){ cam.hasCrystal=true; cam.crystalCd=0; flash(""+by+"RAKO CHEST! Time Crystal — FREEZE every enemy!"); }
