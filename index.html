@@ -5420,6 +5420,8 @@ window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
 
 // ---------- boot ----------
 loadData(); refreshChip(); applyQuality(quality); setFavicon();
+// once online, load your club and claim any gifts waiting for you
+setTimeout(async()=>{ try{ if(!NET.ready) await ensurePlayer(); await netMyClub(); await netCheckGifts(); refreshChip(); }catch(e){} }, 1800);
 refreshQuests();
 // normalise the pass on older saves, then auto-claim anything earned
 if(account.kills==null) account.kills=0;
