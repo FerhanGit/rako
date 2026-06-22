@@ -4510,12 +4510,15 @@ function claimDaily(){
   const today=new Date().toLocaleDateString();
   if(account.daily.last===today){ if(b){ b.textContent='⏳ Come back tomorrow!'; } flash('🎁 Already claimed today — come back tomorrow!'); return; }
   account.daily.streak=(account.daily.streak||0)+1;
-  const jp=jackpotInfo().isJackpot, reward=jp?15:4;
+  account.lottoSpins=0;   // a new day resets the lottery spin price
+  const streak=account.daily.streak;
+  const base=Math.min(4+(streak-1)*2, 30);            // longer streak → bigger daily reward
+  const jp=jackpotInfo().isJackpot, reward=jp?base+20:base;
   account.gems=(account.gems||0)+reward; account.daily.last=today;
   saveAccount(); refreshChip(); netSyncStats(); checkAchievements();
-  const msg = jp ? '🎰 JACKPOT! +15 DAILY GEMS · '+account.daily.streak+'-day streak!'
-                 : '🎁 +4 DAILY GEMS · '+account.daily.streak+'-day streak!';
-  if(b){ b.textContent=jp?'🎰 +15 DAILY GEMS!':'🎁 +4 DAILY GEMS!'; b.disabled=true; }
+  const msg = jp ? '🎰 JACKPOT! +'+reward+' DAILY GEMS · '+streak+'-day streak!'
+                 : '🎁 +'+reward+' DAILY GEMS · '+streak+'-day streak!';
+  if(b){ b.textContent=(jp?'🎰 +':'🎁 +')+reward+' GEMS!'; b.disabled=true; }
   flash(msg);
 }
 // ---------- CLUBS (guilds) ----------
