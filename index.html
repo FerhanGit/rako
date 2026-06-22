@@ -4486,10 +4486,10 @@ function spinLottery(){
   SFX.chest&&SFX.chest();
   setTimeout(()=>{ _lottoSpinning=false; sp.disabled=false; sp.textContent='🎰 SPIN — '+lottoCost()+' 💎';
     if(outcome==='none') res.textContent='😞 Nothing this time — try again!';
-    else if(outcome==='g50'){ account.gems+=50; res.textContent='🎉 You won 50 💎!'; }
-    else if(outcome==='g85'){ account.gems+=85; res.textContent='🎉 You won 85 💎!'; }
+    else if(outcome==='g50'){ account.gems+=50; res.textContent='🎉 You won 50 💎!'; lottoConfetti(); SFX.win&&SFX.win(); }
+    else if(outcome==='g85'){ account.gems+=85; res.textContent='🎉 You won 85 💎!'; lottoConfetti(); SFX.win&&SFX.win(); }
     else { if((account.ownedSkins||[]).indexOf('pumper')<0) account.ownedSkins.push('pumper'); account.charSkin='pumper';
-      res.innerHTML='<span style="color:#ffd24a">🕵️ JACKPOT! You won the PUMPER skin!</span>'; SFX.win&&SFX.win(); }
+      res.innerHTML='<span style="color:#ffd24a">🕵️ JACKPOT! You won the PUMPER skin!</span>'; lottoConfetti(); lottoConfetti(); SFX.win&&SFX.win(); }
     saveAccount(); refreshChip(); netSyncStats();
   }, 3300);
 }
