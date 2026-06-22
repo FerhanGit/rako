@@ -3786,7 +3786,14 @@ function showProfile(name, stats){
   const skinName=(CHAR_SKINS.find(s=>s.id===sk.charSkin)||{}).name||sk.charSkin;
   document.getElementById('profSkin').textContent='Skin: '+skinName+' · colour '+sk.color+(sk.me?' (you)':'');
   let h='';
-  if(sk.me){ h='🏆 Wins: '+(account.wins||0)+'<br>⏱ Time: '+fmtTime(account.timePlayed||0); }
+  if(sk.me){
+    h ='🎫 RAKO Pass: tier '+passLevel()+(account.pass&&account.pass.paid?' ⭐ premium':'')+'<br>';
+    h+='🏆 Wins: '+(account.wins||0)+'<br>';
+    h+='⚔️ Kills: '+(account.kills||0)+'<br>';
+    h+='💎 Gems: '+(account.gems||0)+'<br>';
+    h+='⏱ Time: '+fmtTime(account.timePlayed||0)+'<br>';
+    h+='📅 Joined: '+(account.since||'—');
+  }
   else if(stats){ if(stats.wins!=null&&stats.wins!=='') h+='🏆 Wins: '+stats.wins+'<br>';
     if(stats.time!=null&&stats.time!=='') h+='⏱ Time: '+fmtTime(+stats.time)+'<br>';
     if(stats.online!=null) h+=(stats.online==='1'||stats.online===true?'🟢 Online':'🔴 Offline'); }
