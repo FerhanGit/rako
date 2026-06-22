@@ -1072,6 +1072,8 @@ function reset(){
   for(let i=0;i<22;i++) objects.push(food(8+Math.random()*(WORLD-16), 16+Math.random()*(WORLD-30)));
   // normal chests
   for(let i=0;i<13;i++) objects.push(chest(10+Math.random()*(WORLD-20), 20+Math.random()*(WORLD-40), false));
+  // Golden chests — rare; big gems + a power boost
+  for(let i=0;i<3;i++) objects.push(chest(10+Math.random()*(WORLD-20), 25+Math.random()*(WORLD-45), false, true));
   // Rako chest — VERY rare: just one, hidden deep in the forest
   objects.push(chest(20+Math.random()*(WORLD-40), 95+Math.random()*(WORLD-115), true));
   // holes in the ground — rare; fall in for damage (jump over them!)
