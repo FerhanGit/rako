@@ -1063,7 +1063,7 @@ function reset(){
   for(let i=0;i<16;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34);
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6) continue; objects.push(makeMonster(x,z,5)); }
   // Sky Wraiths (tier 23) — flying, hostile day & night
-  for(let i=0;i<12;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34);
+  for(let i=0;i<7;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34);
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,23)); }
   // Night Stalkers (tier 6) — only dangerous at night; freeze when you look at them
   for(let i=0;i<10;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-40);
