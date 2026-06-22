@@ -4067,10 +4067,12 @@ function showProfile(name, data){
   document.getElementById('profStats').innerHTML=h||'<span style="color:#9ab09a">A fellow survivor of RAKO.</span>';
   document.getElementById('profile').classList.remove('hidden');
 }
-// clickable player name (opens their profile) — plain text, no emphasis
+// clickable player name (opens their profile), prefixed by their club tag
 function pn(name,data){
-  const info=encodeURIComponent(JSON.stringify(data||{}));
-  return '<span class="pn" data-pname="'+esc(name)+'" data-info="'+info+'" style="cursor:pointer">'+esc(name)+'</span>';
+  data=data||{};
+  const info=encodeURIComponent(JSON.stringify(data));
+  const tag = data.clubName ? '<span style="color:'+(data.clubColor||'#7fe0ff')+'">['+esc(data.clubName)+']</span> ' : '';
+  return tag+'<span class="pn" data-pname="'+esc(name)+'" data-info="'+info+'" style="cursor:pointer">'+esc(name)+'</span>';
 }
 function colorLocked(s){ return SPECIAL_COLORS.includes(s) && !(account.pass && account.pass.colors && account.pass.colors.includes(s)); }
 function renderSkins(){
