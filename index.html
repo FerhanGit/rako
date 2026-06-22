@@ -3032,6 +3032,25 @@ function drawCharacter(g, x, y, r, id, col, f){
     g.fillStyle='#46e0c0'; g.beginPath(); g.arc(x-headR*0.3,headY,headR*0.13,0,7); g.arc(x+headR*0.3,headY,headR*0.13,0,7); g.fill();  // glowing eyes
     g.restore(); return;
   }
+  if(id==='pumper'){
+    g.fillStyle='#2a2a30'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.62,0,0,7); g.fill();   // dark trousers
+    g.fillStyle=col; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();          // shirt (chosen colour)
+    g.fillStyle='#3a2a18'; g.fillRect(x-r*0.5,y-r*0.05,r,r*0.12);                                  // belt
+    // cosmetic shotgun slung across the body (NOT a usable weapon)
+    g.strokeStyle='#5a3a1a'; g.lineWidth=Math.max(2,r*0.16); g.lineCap='round';
+    g.beginPath(); g.moveTo(x-r*0.7,y+r*0.35); g.lineTo(x+r*0.75,y-r*0.45); g.stroke();
+    g.strokeStyle='#2b2b33'; g.lineWidth=Math.max(2,r*0.12);
+    g.beginPath(); g.moveTo(x+r*0.2,y-r*0.18); g.lineTo(x+r*0.78,y-r*0.46); g.stroke();            // barrel
+    g.fillStyle=skin; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();                            // head
+    // sunglasses
+    g.fillStyle='#111'; g.fillRect(x-headR*0.7,headY-headR*0.05,headR*1.4,headR*0.34);
+    g.fillStyle='#3a6a9a'; g.fillRect(x-headR*0.6,headY,headR*0.4,headR*0.16); g.fillRect(x+headR*0.2,headY,headR*0.4,headR*0.16);  // lens shine
+    // detective hat (fedora)
+    g.fillStyle='#3b2f24'; g.beginPath(); g.ellipse(x,headY-headR*0.7,headR*1.35,headR*0.32,0,0,7); g.fill();   // brim
+    g.fillRect(x-headR*0.8,headY-headR*1.5,headR*1.6,headR*0.85);                                  // crown
+    g.fillStyle='#241b12'; g.fillRect(x-headR*0.8,headY-headR*0.95,headR*1.6,headR*0.22);          // band
+    g.restore(); return;
+  }
   if(id==='pickaxe'){
     g.strokeStyle='#7a4a22'; g.lineWidth=Math.max(2,r*0.18); g.beginPath(); g.moveTo(x+r*0.9,y+r*0.5); g.lineTo(x+r*1.25,y-r*1.0); g.stroke();
     g.strokeStyle='#cfd0d8'; g.lineWidth=Math.max(3,r*0.28); g.beginPath(); g.arc(x+r*1.25,y-r*1.05,r*0.45,-0.7,0.7); g.stroke();
