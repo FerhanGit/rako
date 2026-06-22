@@ -4368,21 +4368,27 @@ function openAch(){ checkAchievements(true); renderAch(); showScreen('ach'); }
 // ---------- LOTTERY WHEEL ----------
 const LOTTO_WEDGES=['none','g50','none','g85','none','g50','none','pumper'];
 const LOTTO_COLORS=['#39463a','#2f8f3f','#39463a','#3a6a9a','#39463a','#2f8f3f','#39463a','#c79a18'];
+const LOTTO_LABEL={none:'✕',g50:'50💎',g85:'85💎',pumper:'🕵️'};
 let _lottoSpinning=false, _lottoAngle=0;
+function lottoCost(){ return 30 + 15*(account.lottoSpins||0); }
 function openLottery(){
   const seg=360/LOTTO_WEDGES.length, stops=[];
   for(let i=0;i<LOTTO_WEDGES.length;i++) stops.push(LOTTO_COLORS[i]+' '+(i*seg)+'deg '+((i+1)*seg)+'deg');
   const wh=document.getElementById('lottoWheel'); wh.style.background='conic-gradient('+stops.join(',')+')';
+  // prize labels printed on each wedge (children rotate with the wheel)
+  let lab=''; for(let i=0;i<LOTTO_WEDGES.length;i++){ const ang=i*seg+seg/2;
+    lab+='<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate('+ang+'deg) translateY(-78px);font-size:13px;font-weight:bold;color:#fff;text-shadow:0 1px 2px #000">'+LOTTO_LABEL[LOTTO_WEDGES[i]]+'</span>'; }
+  wh.innerHTML=lab;
   wh.style.transition='none'; wh.style.transform='rotate('+(_lottoAngle%360)+'deg)';
   document.getElementById('lottoResult').textContent='';
-  const sp=document.getElementById('lottoSpin'); sp.disabled=false; sp.textContent='🎰 SPIN — 30 💎';
+  const sp=document.getElementById('lottoSpin'); sp.disabled=false; sp.textContent='🎰 SPIN — '+lottoCost()+' 💎';
   showScreen('lottery');
 }
 function spinLottery(){
   if(_lottoSpinning) return;
-  const res=document.getElementById('lottoResult');
-  if((account.gems||0)<30){ res.textContent='Not enough gems — you need 30 💎.'; return; }
-  account.gems-=30; saveAccount(); refreshChip(); netSyncStats();
+  const res=document.getElementById('lottoResult'); const cost=lottoCost();
+  if((account.gems||0)<cost){ res.textContent='Not enough gems — you need '+cost+' 💎.'; return; }
+  account.gems-=cost; account.lottoSpins=(account.lottoSpins||0)+1; saveAccount(); refreshChip(); netSyncStats();
   const roll=Math.random()*100;
   const outcome = roll<60?'none' : roll<90?'g50' : roll<99?'g85' : 'pumper';
   const idxs=[]; LOTTO_WEDGES.forEach((w,i)=>{ if(w===outcome) idxs.push(i); });
