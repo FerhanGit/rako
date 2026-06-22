@@ -4073,15 +4073,19 @@ function renderAch(){
   document.getElementById('achCount').textContent=done+' / '+ACHIEVEMENTS.length;
   B.innerHTML=ACHIEVEMENTS.map(a=>{
     const unlocked=account.ach.indexOf(a.id)>=0;
+    const hidden=a.secret && !unlocked;   // secret & not yet earned → reveal nothing
     const cur=Math.min(a.cur(),a.max), pct=Math.floor(cur/a.max*100);
+    const nm=hidden?'??? — Secret':(a.name+(unlocked?' ✓':''));
+    const ds=hidden?'A hidden achievement. Discover it on your own…':(a.desc+' · reward '+a.reward+' 💎');
+    const ic=hidden?'❓':a.icon;
     return '<div style="display:flex;align-items:center;gap:12px;padding:8px 6px;border-bottom:1px solid #2a3a2a;'+(unlocked?'':'opacity:.85')+'">'+
-      '<div style="font-size:30px;width:40px;text-align:center;'+(unlocked?'':'filter:grayscale(1) brightness(.7)')+'">'+a.icon+'</div>'+
+      '<div style="font-size:30px;width:40px;text-align:center;'+(unlocked?'':'filter:grayscale(1) brightness(.7)')+'">'+ic+'</div>'+
       '<div style="flex:1;text-align:left">'+
-        '<div style="font-weight:bold;color:'+(unlocked?'#8fe070':'#cfe0cf')+'">'+a.name+(unlocked?' ✓':'')+'</div>'+
-        '<div style="font-size:12px;color:#9ab09a">'+a.desc+' · reward '+a.reward+' 💎</div>'+
-        '<div style="height:6px;background:#1a241a;border-radius:4px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+(unlocked?'#5fd05f':'#3a6a9a')+'"></div></div>'+
+        '<div style="font-weight:bold;color:'+(unlocked?'#8fe070':(hidden?'#b0a0d0':'#cfe0cf'))+'">'+nm+'</div>'+
+        '<div style="font-size:12px;color:#9ab09a">'+ds+'</div>'+
+        (hidden?'' : '<div style="height:6px;background:#1a241a;border-radius:4px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+(unlocked?'#5fd05f':'#3a6a9a')+'"></div></div>')+
       '</div>'+
-      '<div style="font-size:12px;color:#9ab09a;width:64px;text-align:right">'+(unlocked?'DONE':cur+'/'+a.max)+'</div>'+
+      '<div style="font-size:12px;color:#9ab09a;width:64px;text-align:right">'+(unlocked?'DONE':(hidden?'???':cur+'/'+a.max))+'</div>'+
     '</div>'; }).join('');
 }
 function renderShop(){
