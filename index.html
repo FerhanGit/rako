@@ -4756,6 +4756,8 @@ document.getElementById('freeGems').onclick=()=>{ const b=document.getElementByI
   }); };
 document.getElementById('btnQuests').onclick=()=>openQuests();
 document.getElementById('questsBack').onclick=()=>showScreen('lobby');
+document.getElementById('btnAch').onclick=()=>openAch();
+document.getElementById('achBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnPass').onclick=()=>openPass();
 document.getElementById('passBack').onclick=()=>showScreen('lobby');
 document.getElementById('passBuy').onclick=()=>{ if(buyPremiumPass()){ SFX.win&&SFX.win(); flash('🎟 Premium RAKO Pass unlocked!'); renderPass(); } else { flash('Need 1000 💎 for the premium pass.'); SFX.hurt&&SFX.hurt(); } };
