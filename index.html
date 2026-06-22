@@ -3791,13 +3791,15 @@ function blankAvatarURL(){
   g.beginPath(); g.ellipse(36,62,20,16,0,Math.PI,0); g.fill();                       // shoulders silhouette
   return c.toDataURL();
 }
-function showProfile(name, stats){
-  const sk=skinForName(name);
+function showProfile(name, data){
+  data=data||{};
+  const sk=skinForName(name,data);
   document.getElementById('profPic').src = sk.known ? skinAvatarURL(sk.charSkin,sk.color) : blankAvatarURL();
   document.getElementById('profName').textContent=name||'?';
   if(sk.known){ const skinName=(CHAR_SKINS.find(s=>s.id===sk.charSkin)||{}).name||sk.charSkin;
     document.getElementById('profSkin').textContent='Skin: '+skinName+' · colour '+sk.color+(sk.me?' (you)':''); }
   else document.getElementById('profSkin').textContent='No skin shared';
+  const val=(v)=> (v==null||v==='') ? '—' : v;
   let h='';
   if(sk.me){
     h ='🎫 RAKO Pass: tier '+passLevel()+(account.pass&&account.pass.paid?' ⭐ premium':'')+'<br>';
@@ -3807,12 +3809,13 @@ function showProfile(name, stats){
     h+='⏱ Time: '+fmtTime(account.timePlayed||0)+'<br>';
     h+='📅 Joined: '+(account.since||'—');
   }
-  else {   // only the real stats the server actually reports
-    const realWins=(stats&&stats.wins!=null&&stats.wins!=='')?(+stats.wins):null;
-    const realTime=(stats&&stats.time!=null&&stats.time!=='')?(+stats.time):null;
-    h ='🏆 Wins: '+(realWins!=null?realWins:'—')+'<br>';
-    h+='⏱ Time: '+(realTime!=null?fmtTime(realTime):'—')+'<br>';
-    if(stats&&stats.online!=null) h+=(stats.online==='1'||stats.online===true?'🟢 Online':'🔴 Offline');
+  else {   // real stats the server stored for this player
+    h ='🎫 RAKO Pass: tier '+val(data.tier)+'<br>';
+    h+='🏆 Wins: '+val(data.wins)+'<br>';
+    h+='⚔️ Kills: '+val(data.kills)+'<br>';
+    h+='💎 Gems: '+val(data.gems)+'<br>';
+    h+='⏱ Time: '+((data.time==null||data.time==='')?'—':fmtTime(+data.time))+'<br>';
+    if(data.online!=null) h+=(data.online===true||data.online==='1'||data.online===1?'🟢 Online':'🔴 Offline');
   }
   document.getElementById('profStats').innerHTML=h||'<span style="color:#9ab09a">A fellow survivor of RAKO.</span>';
   document.getElementById('profile').classList.remove('hidden');
