@@ -1413,9 +1413,10 @@ const LIB_LINES=[
 let _libN=1;
 function libContent(n){
   if(n===LIB_WIN_PAGE){
-    let html="<p>The ink on this page shimmers and stirs...</p><p>Somewhere in this very sentence, a single letter holds the way out. Click the right one.</p><p style='font-size:22px;line-height:1.9'>";
-    for(const ch of "and so the aether at last awaits a wanderer brave and patient"){
-      if(ch==='a') html+="<span class='liba' style='cursor:pointer'>a</span>";   // normal-looking 'a', no colour cue
+    // looks like an ordinary lore page — the secret is that every 'a' is quietly clickable
+    let html="<p>Whoever reads to the very end may rewrite the end.</p><p style='font-size:18px;line-height:1.9'>";
+    for(const ch of "and so the aether at last awaits a wanderer brave and patient, and the way home was always written in the small letters"){
+      if(ch==='a') html+="<span class='liba'>a</span>";   // no cursor, no colour — truly hidden
       else html+=(ch===' '?'&nbsp;':ch);
     }
     return html+"</p>";
