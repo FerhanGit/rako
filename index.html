@@ -1345,6 +1345,16 @@ function applyChestReward(rako, code, by){
     }
   }
 }
+// themed biome chests — each gives its own hand-picked loot
+function applyThemeChest(th, by){
+  by=by||''; SFX.chest&&SFX.chest();
+  const gem=(n)=>{ account.gems=(account.gems||0)+n; saveAccount(); refreshChip(); netSyncStats(); };
+  if(th==='desert'){ cam.dmg+=10; cam.hp=cam.maxHp; gem(15); flash(""+by+"🏺 DESERT RELIC! +10 damage, full heal, +15 💎"); }
+  else if(th==='radioactive'){ cam.maxHp+=40; cam.hp=cam.maxHp; cam.rpg=(cam.rpg||0)+2; gem(15); flash(""+by+"☢ RADIOACTIVE CORE! +40 max HP, 2 RPG rockets, +15 💎"); }
+  else if(th==='forest'){ cam.hunger=cam.maxHunger; cam.hp=Math.min(cam.maxHp,cam.hp+40); cam.maxHp+=10; gem(8); flash(""+by+"🌲 FOREST CACHE! Full hunger, +40 HP, +10 max HP, +8 💎"); }
+  else if(th==='space'){ cam.hasCrystal=true; cam.crystalCd=0; cam.dmg+=8; gem(12); flash(""+by+"🌌 SPACE CHEST! Time Crystal + +8 damage, +12 💎"); }
+  else { cam.dmg+=4; flash(""+by+"a strange chest (+4 damage)"); }
+}
 function broadcastChestEvent(o, code){
   _myEvt={ code:'chest|'+(o.rako?1:0)+'|'+code+'|'+o.x.toFixed(1)+'|'+o.z.toFixed(1), t:Date.now() };
   netPresenceWrite();
