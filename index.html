@@ -735,7 +735,7 @@ function initAudio(){
   if(AC && AC.state==='suspended') AC.resume();
 }
 function blip(freq,dur,type,vol,slideTo){
-  if(!AC) return;
+  if(!AC || settings.sfx===false) return;
   const t=AC.currentTime, o=AC.createOscillator(), g=AC.createGain();
   o.type=type||'square'; o.frequency.setValueAtTime(freq,t);
   if(slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20,slideTo), t+dur);
