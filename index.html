@@ -3991,7 +3991,7 @@ function resetInviteUI(){ waitingInvite=null;
 
 // ---------- lobby screens ----------
 function showScreen(name){
-  ['Start','Lobby','Account','Play','Settings','Result','Code','Party','Leader','Friends','Skin','Shop','Quests','Pass','Ach'].forEach(s=>
+  ['Start','Lobby','Account','Play','Settings','Result','Code','Party','Leader','Friends','Skin','Shop','Quests','Pass','Ach','Clubs'].forEach(s=>
     document.getElementById('scr'+s).classList.toggle('hidden', s.toLowerCase()!==name));
   if(name==='lobby') refreshDailyBtn();
 }
