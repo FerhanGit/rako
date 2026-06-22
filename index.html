@@ -880,7 +880,18 @@ function champAbility(o,d){
   }
 }
 let playerSlowT=0;   // frames of movement-slow from a Frost Titan hit
-function food(x,z){ return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6}; }
+const FOODS=[
+  {k:'meat',     hunger:30, hp:8,  name:'Meat'},
+  {k:'apple',    hunger:18, hp:4,  name:'Apple'},
+  {k:'berry',    hunger:12, hp:3,  name:'Berries'},
+  {k:'mushroom', hunger:16, hp:6,  name:'Mushroom'},
+  {k:'carrot',   hunger:14, hp:3,  name:'Carrot'},
+  {k:'fish',     hunger:26, hp:7,  name:'Fish'},
+  {k:'honey',    hunger:22, hp:12, name:'Honey'},
+  {k:'cheese',   hunger:20, hp:5,  name:'Cheese'},
+];
+function food(x,z,kind){ const fk=kind||FOODS[Math.floor(Math.random()*FOODS.length)].k;
+  return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6,kind:fk}; }
 function chest(x,z,rako){ return {type:'chest',x,z,height:1.1,width:1.3,opened:false,rako:!!rako}; }
 function makeBoss(){ const d=DIFF[difficulty], hp=Math.round(100000*d.hp);
   return {type:'boss',x:BOSS.x,z:BOSS.z,height:26,width:11,hp,maxHp:hp,
