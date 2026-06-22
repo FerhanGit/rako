@@ -4909,6 +4909,7 @@ loadData(); refreshChip(); applyQuality(quality);
 refreshQuests();
 // normalise the pass on older saves, then auto-claim anything earned
 if(account.kills==null) account.kills=0;
+if(!Array.isArray(account.ach)) account.ach=[];
 if(!account.pass) account.pass={xp:0,paid:false,claimedFree:[],claimedPaid:[],colors:[]};
 account.pass.claimedFree=account.pass.claimedFree||[]; account.pass.claimedPaid=account.pass.claimedPaid||[]; account.pass.colors=account.pass.colors||[];
 if(!account._movieTest){ account._movieTest=true; account.adGift=false; saveAccount(); }   // one-time: restore the free gems so the movie can be re-tested
