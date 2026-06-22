@@ -502,14 +502,19 @@ const BIOME_PAL={
   snow:  {skyTop:'#9fb6c8',skyBot:'#eef4fa',grTop:'#f2f6fb',grBot:'#c4d4e2', grass:'#dfe9f2'},   // white
   lava:  {skyTop:'#5a2418',skyBot:'#c4441a',grTop:'#d4581a',grBot:'#7a2606', grass:'#ff8a2a'},   // orange
   space: {skyTop:'#0a0820',skyBot:'#1a1040',grTop:'#6a2eaa',grBot:'#2a1450', grass:'#9b5fff'},   // purple
+  desert:{skyTop:'#e9b96a',skyBot:'#f6e0a8',grTop:'#e7c878',grBot:'#b8923e', grass:'#e8cf8a'},   // sandy
+  poison:{skyTop:'#34402a',skyBot:'#6a7a3a',grTop:'#5a7a32',grBot:'#33441e', grass:'#8fca4a'},   // sickly green
 };
-const BIOME_LABEL={forest:'🌲 Cursed Forest',snow:'❄ Frozen Wastes',lava:'🌋 Lava Fields',space:'🌌 The Void'};
+const BIOME_LABEL={forest:'🌲 Cursed Forest',snow:'❄ Frozen Wastes',lava:'🌋 Lava Fields',space:'🌌 The Void',desert:'🏜 Scorched Desert',poison:'☠ Poison Swamp'};
 let curBiome='forest';
 function biomeAt(x,z){
   if(z>WORLD*0.80) return 'space';     // far depths = the void
-  if(x<WORLD*0.26) return 'snow';      // west = frozen
-  if(x>WORLD*0.74) return 'lava';      // east = volcanic
-  return 'forest';
+  if(x<WORLD*0.24) return 'snow';      // west = frozen
+  if(x>WORLD*0.76) return 'lava';      // east = volcanic
+  if(z>WORLD*0.52){                    // deeper-middle splits into desert & swamp
+    return (x<WORLD*0.5) ? 'desert' : 'poison';
+  }
+  return 'forest';                     // the near/start area
 }
 const HOME={x:100, z:12, r:6};   // safe cabin area
 const BOSS={x:100, z:186};        // the God of the End, deep in the nightmare city
