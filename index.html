@@ -4488,7 +4488,7 @@ async function renderLeaderboard(){
     if((byWins&&byWins.length)||(byTime&&byTime.length)){ const me=(account.name||'').toLowerCase();
       const board=(title,rows,fmt)=>{ let h='<div style="font-weight:bold;color:#8fe070;margin:8px 0 6px">'+title+'</div>';
         (rows||[]).slice(0,15).forEach((e,i)=>{ const you=e.name&&e.name.toLowerCase()===me;
-          h+='<div class="lbRow'+(you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+pn(e.name,{wins:e.wins,time:e.best_score,skin:e.skin,charSkin:e.char_skin,kills:e.kills,gems:e.gems,tier:e.tier})+'</span><span>'+fmt(e)+'</span></div>'; });
+          h+='<div class="lbRow'+(you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+pn(e.name,{wins:e.wins,time:e.best_score,skin:e.skin,charSkin:e.char_skin,kills:e.kills,gems:e.gems,tier:e.tier,clubName:e.club_name,clubColor:e.club_color})+'</span><span>'+fmt(e)+'</span></div>'; });
         return h; };
       body.innerHTML = '<div style="display:flex;gap:18px;flex-wrap:wrap">'+
         '<div style="flex:1;min-width:200px">'+board('🌍 MOST WINS', byWins, e=>(e.wins||0)+' wins')+'</div>'+
