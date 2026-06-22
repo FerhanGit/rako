@@ -3667,7 +3667,7 @@ async function netPresenceWrite(){ if(!coop||!NET.ready) return;
 async function netPresenceRead(){ if(!coop||!NET.ready||!coopFriendObj) return;
   try{ const r=await netGet('/rako_presence?session_id=eq.'+coop.sessionId+'&player_id=eq.'+coop.friendId+'&select=x,z,yaw,skin,msg,msg_t,evt,evt_t,updated_at');
     if(r.length){ const f=r[0]; coopFriendObj.x=HOME.x+(+f.x); coopFriendObj.z=HOME.z+(+f.z); coopFriendObj.yaw=+f.yaw;
-      coopFriendObj.skin=f.skin||'green'; coopFriendObj.color=skinSolid(coopFriendObj.skin);
+      { const parts=(f.skin||'green').split('~'); coopFriendObj.skin=parts[0]||'green'; coopFriendObj.charSkin=parts[1]||'aster'; coopFriendObj.color=skinSolid(coopFriendObj.skin); }
       coopFriendObj.stale = Date.now()-new Date(f.updated_at).getTime() > 10000;
       if(f.msg && f.msg_t && f.msg_t!==coopFriendObj.msgT){ coopFriendObj.msgT=f.msg_t; coopFriendObj.msg=f.msg; coopFriendObj.msgShow=320; pushChat(coop.friendName, f.msg); }
       if(f.evt && f.evt_t && f.evt_t!==coopFriendObj.evtT){ coopFriendObj.evtT=f.evt_t; applyFriendEvent(f.evt); } } }catch(e){} }
