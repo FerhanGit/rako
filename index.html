@@ -2384,6 +2384,7 @@ function draw(){
   else { sky.addColorStop(0, mix(BP.skyTop,'#0d1e2a',k)); sky.addColorStop(1, mix(BP.skyBot,'#2a4a3a',k)); }
   ctx.fillStyle=sky; ctx.fillRect(-14,-280,W+28,H/2+280);
   if(!flying && k>0.02) drawNightSky(k);
+  drawSunMoon();
   // ground (darker at night)
   const gr=ctx.createLinearGradient(0,H/2,0,H);
   gr.addColorStop(0, mix(BP.grTop,'#0a0a10',k*0.72)); gr.addColorStop(1, mix(BP.grBot,'#06060a',k*0.72));   // keep the biome colour readable even at night
