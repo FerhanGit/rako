@@ -2278,7 +2278,7 @@ function houseAttack(){
   let best=null, bd=70;
   for(const m of houseMobs){ const d=Math.hypot(housePos.x-m.x,housePos.y-m.y); if(d<bd){ bd=d; best=m; } }
   if(best){ SFX.swing(); best.hp-=Math.max(20,cam.dmg); best.flash=6;
-    if(best.hp<=0){ houseMobs.splice(houseMobs.indexOf(best),1); kills++; SFX.hurt();
+    if(best.hp<=0){ houseMobs.splice(houseMobs.indexOf(best),1); kills++; account.kills=(account.kills||0)+1; SFX.hurt();
       if(!houseMobs.length && houseWave>=HOUSE_MAX_WAVES){ houseBreached=false; flash("You survived the siege! The EXIT is clear — press E to leave."); }
       else if(!houseMobs.length){ flash("Wave cleared — brace for the next one!"); } } }
 }
