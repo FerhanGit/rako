@@ -3840,12 +3840,13 @@ function showProfile(name, data){
     h+='⏱ Time: '+fmtTime(account.timePlayed||0)+'<br>';
     h+='📅 Joined: '+(account.since||'—');
   }
-  else {   // real stats the server stored for this player
-    h ='🎫 RAKO Pass: tier '+val(data.tier)+'<br>';
-    h+='🏆 Wins: '+val(data.wins)+'<br>';
-    h+='⚔️ Kills: '+val(data.kills)+'<br>';
-    h+='💎 Gems: '+val(data.gems)+'<br>';
-    h+='⏱ Time: '+((data.time==null||data.time==='')?'—':fmtTime(+data.time))+'<br>';
+  else {   // real stats the server stored — 0 for anything they haven't done yet
+    const num=(v)=> (v==null||v==='') ? 0 : (+v||0);
+    h ='🎫 RAKO Pass: tier '+num(data.tier)+'<br>';
+    h+='🏆 Wins: '+num(data.wins)+'<br>';
+    h+='⚔️ Kills: '+num(data.kills)+'<br>';
+    h+='💎 Gems: '+num(data.gems)+'<br>';
+    h+='⏱ Time: '+fmtTime(num(data.time))+'<br>';
     if(data.online!=null) h+=(data.online===true||data.online==='1'||data.online===1?'🟢 Online':'🔴 Offline');
   }
   document.getElementById('profStats').innerHTML=h||'<span style="color:#9ab09a">A fellow survivor of RAKO.</span>';
