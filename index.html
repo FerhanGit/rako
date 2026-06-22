@@ -4057,15 +4057,24 @@ function jackpotInfo(){   // one random day each week pays the jackpot
   const jackpotDay=((weekNum*1103515245+12345)>>>8)%7, dow=((dayNum%7)+7)%7;
   return { isJackpot: dow===jackpotDay };
 }
-function claimDaily(){
+function refreshDailyBtn(){
+  const b=document.getElementById('btnDaily'); if(!b) return;
   const today=new Date().toLocaleDateString();
-  if(account.daily.last===today){ flash('🎁 Already claimed today — come back tomorrow!'); return; }
+  if(account.daily && account.daily.last===today){ b.textContent='✓ Daily claimed today'; b.disabled=true; }
+  else { b.textContent='🎁 DAILY REWARD'; b.disabled=false; }
+}
+function claimDaily(){
+  const b=document.getElementById('btnDaily');
+  const today=new Date().toLocaleDateString();
+  if(account.daily.last===today){ if(b){ b.textContent='⏳ Come back tomorrow!'; } flash('🎁 Already claimed today — come back tomorrow!'); return; }
   account.daily.streak=(account.daily.streak||0)+1;
   const jp=jackpotInfo().isJackpot, reward=jp?15:4;
   account.gems=(account.gems||0)+reward; account.daily.last=today;
   saveAccount(); refreshChip(); netSyncStats(); checkAchievements();
-  flash(jp ? '🎰 JACKPOT DAY! +15 💎 · '+account.daily.streak+'-day streak!'
-           : '🎁 Daily reward: +4 💎 · '+account.daily.streak+'-day streak!');
+  const msg = jp ? '🎰 JACKPOT! +15 DAILY GEMS · '+account.daily.streak+'-day streak!'
+                 : '🎁 +4 DAILY GEMS · '+account.daily.streak+'-day streak!';
+  if(b){ b.textContent=jp?'🎰 +15 DAILY GEMS!':'🎁 +4 DAILY GEMS!'; b.disabled=true; }
+  flash(msg);
 }
 function renderAch(){
   const B=document.getElementById('achBody'); if(!B) return;
