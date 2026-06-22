@@ -855,6 +855,7 @@ function makeMonster(x,z,tier){
     {n:'IShowSpeed',   c:'#ff3030',hp:80, dmg:18,spd:0.16, h:1.9,w:1.6, always:true},  // 20 celeb
     {n:'Ronaldo',      c:'#ffffff',hp:110,dmg:22,spd:0.15, h:2.1,w:1.6, always:true},  // 21 celeb
     {n:'Messi',        c:'#75aadb',hp:70, dmg:20,spd:0.18, h:1.6,w:1.4, always:true},  // 22 celeb
+    {n:'Sky Wraith',   c:'#b07bff',hp:60, dmg:18,spd:0.13, h:1.6,w:1.9, fly:true, always:true},  // 23 — flying, day & night
   ];
   const t=T[Math.min(tier,T.length-1)], d=DIFF[difficulty];
   const hp=Math.round(t.hp*d.hp);
