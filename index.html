@@ -2192,7 +2192,7 @@ function update(){
       burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1); questEvent('bunny'); gainXP(1);
       flash("Meat +1 (total "+cam.meat+") — feed a wolf (P) to tame it");
     } else if(o.type==='entity' && o.hp<=0){
-      burst(o.x,o.z,'#7020c0',14); SFX.kill(); objects.splice(i,1); kills++; questEvent('monster'); gainXP(5);
+      burst(o.x,o.z,'#7020c0',14); SFX.kill(); objects.splice(i,1); kills++; account.kills=(account.kills||0)+1; questEvent('monster'); gainXP(5);
     } else if(o.type==='wolf' && o.hp<=0){
       burst(o.x,o.z, o.tamed?'#cfcfff':'#888',12); SFX.kill();
       if(!o.tamed){ questEvent('wolf'); gainXP(2); }
