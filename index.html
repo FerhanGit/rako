@@ -3661,7 +3661,7 @@ async function onlineFriends(){ if(!NET.ready) return [];
 async function onlineRespond(id,accept){ try{ await netPatch('/rako_friend_requests?id=eq.'+id,{status:accept?'accepted':'declined'}); }catch(e){} }
 async function onlineUnfriend(reqId){ try{ await netDelete('/rako_friend_requests?id=eq.'+reqId); }catch(e){} }
 async function onlineLeaderboard(){ if(!NET.ready) return null;
-  try{ return await netGet('/rako_players?select=name,wins,best_score&order=wins.desc,best_score.desc&limit=20'); }catch(e){ return null; } }
+  try{ return await netGet('/rako_players?select=name,wins,best_score,skin,char_skin,kills,gems,tier&order=wins.desc,best_score.desc&limit=20'); }catch(e){ return null; } }
 let _reqCount=0;
 async function pollRequests(){ if(!NET.ready || (state!=='menu'&&state!=='over')) return;
   try{ const inc=await onlineIncoming(); const n=inc.length; _reqCount=n;
