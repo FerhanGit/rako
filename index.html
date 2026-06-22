@@ -4265,10 +4265,10 @@ const CLUB_COLORS=['#7fe0ff','#ff6b6b','#8fe070','#ffd070','#b06bff','#ff8a3a','
 let _clubColor='#7fe0ff', _showCreate=false, _clubsCache=null;
 function clubTag(clubName,color){ return clubName?'<span style="color:'+(color||'#7fe0ff')+'">['+esc(clubName)+']</span> ':''; }
 async function netMyClub(){ if(!NET.ready) return;
-  try{ const r=await netGet('/rako_players?id=eq.'+NET.uid+'&select=club_id'); const cid=r[0]&&r[0].club_id;
+  try{ const r=await netGet('/rako_players?id=eq.'+NET.uid+'&select=club_id,club_role'); const cid=r[0]&&r[0].club_id;
     if(!cid){ account.club=null; saveAccount(); return; }
     const c=await netGet('/rako_clubs?id=eq.'+cid+'&select=*');
-    if(c.length){ const cl=c[0]; account.club={id:cl.id,name:cl.name,color:cl.color,max:cl.max_members,minWins:cl.min_wins,ownerId:cl.owner_id,owner:cl.owner_id===NET.uid}; }
+    if(c.length){ const cl=c[0], owner=cl.owner_id===NET.uid; account.club={id:cl.id,name:cl.name,color:cl.color,max:cl.max_members,minWins:cl.min_wins,ownerId:cl.owner_id,owner:owner,role:owner?'owner':((r[0]&&r[0].club_role)||'member')}; }
     else { account.club=null; await netPatch('/rako_players?id=eq.'+NET.uid,{club_id:null,club_name:null,club_color:null}); }
     saveAccount(); refreshChip(); }catch(e){} }
 async function netClubList(){ try{
