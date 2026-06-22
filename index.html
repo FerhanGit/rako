@@ -2868,6 +2868,26 @@ function drawCharacter(g, x, y, r, id, col, f){
     g.fillStyle='#1a1f28'; g.beginPath(); g.arc(x-headR*0.32,y-r*0.18,headR*0.2,0,7); g.arc(x+headR*0.32,y-r*0.18,headR*0.2,0,7); g.fill();  // hollow eyes
     g.restore(); g.restore(); return;
   }
+  if(id==='cyborg'){
+    g.fillStyle='#55606a'; g.beginPath(); g.ellipse(x,y+r*0.32,r*0.7,r*0.55,0,0,7); g.fill();      // legs
+    g.fillStyle='#8a929a'; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();     // metal body
+    g.fillStyle='#2a2f34'; g.fillRect(x-r*0.5,y-r*0.12,r*1.0,r*0.12);                               // chest seam
+    g.fillStyle='#33ff88'; g.beginPath(); g.arc(x,y-r*0.05,r*0.1,0,7); g.fill();                    // core light
+    g.fillStyle='#cfd6dc'; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();                       // metal head
+    g.fillStyle='#222'; g.fillRect(x-headR*0.7,headY-headR*0.12,headR*1.4,headR*0.34);              // visor
+    g.fillStyle='#ff3030'; g.beginPath(); g.arc(x+headR*0.32,headY+headR*0.05,headR*0.13,0,7); g.fill(); // red eye
+    g.restore(); return;
+  }
+  if(id==='angel'){
+    g.fillStyle='rgba(255,255,255,0.9)';                                                            // wings
+    g.beginPath(); g.ellipse(x-r*0.72,y-r*0.1,r*0.5,r*0.82,0.5,0,7); g.ellipse(x+r*0.72,y-r*0.1,r*0.5,r*0.82,-0.5,0,7); g.fill();
+    g.fillStyle='#f0ead0'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.7,r*0.6,0,0,7); g.fill();        // robe lower
+    g.fillStyle='#fbf6e2'; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.74,r*0.7,0,0,7); g.fill();       // robe
+    g.fillStyle=skin; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();                            // head
+    g.strokeStyle='#ffd84a'; g.lineWidth=Math.max(2,r*0.08); g.beginPath(); g.ellipse(x,headY-headR*1.25,headR*0.7,headR*0.25,0,0,7); g.stroke();  // halo
+    g.fillStyle='#333'; g.beginPath(); g.arc(x-headR*0.3,headY,headR*0.1,0,7); g.arc(x+headR*0.3,headY,headR*0.1,0,7); g.fill();
+    g.restore(); return;
+  }
   if(id==='pickaxe'){
     g.strokeStyle='#7a4a22'; g.lineWidth=Math.max(2,r*0.18); g.beginPath(); g.moveTo(x+r*0.9,y+r*0.5); g.lineTo(x+r*1.25,y-r*1.0); g.stroke();
     g.strokeStyle='#cfd0d8'; g.lineWidth=Math.max(3,r*0.28); g.beginPath(); g.arc(x+r*1.25,y-r*1.05,r*0.45,-0.7,0.7); g.stroke();
