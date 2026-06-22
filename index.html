@@ -3894,9 +3894,7 @@ function applySkinAvatar(el,charSkin,colorSkin){
 }
 function refreshChip(){ document.getElementById('chipName').textContent=account.name;
   const av=document.querySelector('#acctChip .av');
-  if(av){ av.style.borderRadius='50%';
-    if(account.avatar){ av.style.backgroundImage=''; av.textContent=account.avatar; av.style.background='#1c2a1c'; av.style.fontSize='18px'; }
-    else { applySkinAvatar(av, account.charSkin, account.skin); } } }
+  if(av){ av.style.borderRadius='50%'; av.textContent=''; av.style.fontSize='0'; applySkinAvatar(av, account.charSkin, account.skin); } }   // profile picture is always your skin
 function hashStr(s){ let h=0; s=s||''; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
 // yours is real; others come from the skin the server stored — default skin is Aster
 function skinForName(name,data){
