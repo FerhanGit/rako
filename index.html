@@ -1410,21 +1410,73 @@ function applyThemeChest(th, by){
   else if(th==='space'){ cam.hasCrystal=true; cam.crystalCd=0; cam.dmg+=8; gem(12); flash(""+by+"🌌 SPACE CHEST! Time Crystal + +8 damage, +12 💎"); }
   else { cam.dmg+=4; flash(""+by+"a strange chest (+4 damage)"); }
 }
-// walk-in interior for the pyramid / factory
+// walk-in decorated interior for the pyramid / factory (top-down, like the cabin)
 let _roomObj=null;
 function enterRoom(o){
-  _roomObj=o; SFX.door&&SFX.door(); const pyr=o.type==='pyramid';
-  document.getElementById('roomArt').textContent = pyr?'🏺':'☢';
-  document.getElementById('roomTitle').textContent = pyr?'Inside the Pyramid':'Inside the Factory';
-  document.getElementById('roomDesc').innerHTML = pyr
-    ? 'Torchlit sandstone halls lined with hieroglyphs. A golden relic rests on the altar.'
-    : 'Humming machines and bubbling green vats. A radioactive core pulses inside its containment.';
-  const loot=document.getElementById('roomLoot');
-  if(o.looted){ loot.textContent='Already taken'; loot.disabled=true; }
-  else { loot.textContent = pyr?'Take the Desert Relic':'Extract the Radioactive Core'; loot.disabled=false; }
-  document.getElementById('roomPanel').classList.remove('hidden');
+  _roomObj=o; outsidePos={x:cam.x,z:cam.z,yaw:cam.yaw};
+  scene='room'; housePos={x:houseRect.x+houseRect.w/2, y:houseRect.y+houseRect.h-50}; cam.hface=1;
+  if(document.pointerLockElement) document.exitPointerLock();
+  SFX.door&&SFX.door();
+  flash(o.type==='pyramid' ? '🏺 Inside the Pyramid — take the relic from the altar, then reach the EXIT (bottom) and press E.'
+                           : '☢ Inside the Factory — grab the core, then reach the EXIT (bottom) and press E.');
 }
-function leaveRoom(){ document.getElementById('roomPanel').classList.add('hidden'); _roomObj=null; }
+function roomCenterNear(){ const R=houseRect; return Math.hypot(housePos.x-(R.x+R.w/2),housePos.y-(R.y+R.h/2))<62; }
+function roomAtDoor(){ const R=houseRect; return Math.abs(housePos.x-(R.x+R.w/2))<48 && housePos.y>R.y+R.h-56; }
+function updateRoom(){
+  const sp=2.7, R=houseRect, m=20; let nx=housePos.x, ny=housePos.y;
+  if(keys['w']||keys['arrowup']) ny-=sp;
+  if(keys['s']||keys['arrowdown']) ny+=sp;
+  if(keys['a']||keys['arrowleft']){ nx-=sp; cam.hface=-1; }
+  if(keys['d']||keys['arrowright']){ nx+=sp; cam.hface=1; }
+  housePos.x=Math.max(R.x+m,Math.min(R.x+R.w-m,nx));
+  housePos.y=Math.max(R.y+m,Math.min(R.y+R.h-m,ny));
+  cam.hp=Math.min(cam.maxHp,cam.hp+0.1);   // safe inside
+  const chest=_roomObj && !_roomObj.looted && roomCenterNear();
+  promptTxt = chest ? (_roomObj.type==='pyramid'?'Press E to take the Desert Relic':'Press E to extract the Radioactive Core')
+            : roomAtDoor() ? 'Press E to step back outside' : '';
+}
+function roomInteract(){
+  if(_roomObj && !_roomObj.looted && roomCenterNear()){ _roomObj.looted=true; applyThemeChest(_roomObj.type==='pyramid'?'desert':'radioactive',''); return; }
+  if(roomAtDoor()){ scene='forest'; if(outsidePos){ cam.x=outsidePos.x; cam.z=Math.max(1,outsidePos.z-0.6); cam.yaw=outsidePos.yaw; } cam.eyeH=0.55; SFX.door&&SFX.door(); flash('You step back outside.'); }
+  else flash('Walk to the EXIT (bottom) and press E to leave.');
+}
+function drawRoom(){
+  const R=houseRect, pyr=_roomObj&&_roomObj.type==='pyramid';
+  ctx.fillStyle='#05060a'; ctx.fillRect(0,0,W,H);
+  ctx.save(); if(shake>0) ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
+  if(pyr){
+    ctx.fillStyle='#3a2a12'; ctx.fillRect(R.x-16,R.y-16,R.w+32,R.h+32);
+    ctx.fillStyle='#c79a4e'; ctx.fillRect(R.x,R.y,R.w,R.h);
+    ctx.strokeStyle='#a87c34'; ctx.lineWidth=2;
+    for(let yy=R.y+30;yy<R.y+R.h;yy+=30){ctx.beginPath();ctx.moveTo(R.x,yy);ctx.lineTo(R.x+R.w,yy);ctx.stroke();}
+    for(let xx=R.x+50;xx<R.x+R.w;xx+=50){ctx.beginPath();ctx.moveTo(xx,R.y);ctx.lineTo(xx,R.y+R.h);ctx.stroke();}
+    ctx.lineWidth=14; ctx.strokeStyle='#8a5e28'; ctx.strokeRect(R.x+7,R.y+7,R.w-14,R.h-14);
+    ctx.fillStyle='#7a5420'; ctx.font='22px serif'; ctx.textAlign='center';
+    ['𓂀','𓆣','𓁹','𓊪','𓇳'].forEach((gl,i)=>ctx.fillText(gl, R.x+70+i*((R.w-140)/4), R.y+34));
+    [[R.x+28,R.y+40],[R.x+R.w-28,R.y+40]].forEach(t=>{ ctx.fillStyle='#3a2410'; ctx.fillRect(t[0]-3,t[1],6,34); ctx.fillStyle='#ff9a30'; ctx.beginPath(); ctx.arc(t[0],t[1],8+Math.sin(time*0.3)*2,0,7); ctx.fill(); });
+  } else {
+    ctx.fillStyle='#1a2018'; ctx.fillRect(R.x-16,R.y-16,R.w+32,R.h+32);
+    ctx.fillStyle='#566052'; ctx.fillRect(R.x,R.y,R.w,R.h);
+    ctx.strokeStyle='#3e463c'; ctx.lineWidth=2;
+    for(let yy=R.y+34;yy<R.y+R.h;yy+=34){ctx.beginPath();ctx.moveTo(R.x,yy);ctx.lineTo(R.x+R.w,yy);ctx.stroke();}
+    for(let xx=R.x+44;xx<R.x+R.w;xx+=44){ctx.beginPath();ctx.moveTo(xx,R.y);ctx.lineTo(xx,R.y+R.h);ctx.stroke();}
+    ctx.lineWidth=14; ctx.strokeStyle='#3a423a'; ctx.strokeRect(R.x+7,R.y+7,R.w-14,R.h-14);
+    [[R.x+50,R.y+70],[R.x+R.w-60,R.y+90]].forEach(v=>{ ctx.fillStyle='#2a3326'; ctx.fillRect(v[0]-18,v[1]-30,36,60); ctx.fillStyle='rgba(160,240,80,'+(0.5+0.3*Math.sin(time*0.2))+')'; ctx.fillRect(v[0]-14,v[1]-24,28,48); });
+    ctx.strokeStyle='#6a7264'; ctx.lineWidth=6; ctx.beginPath(); ctx.moveTo(R.x+20,R.y+22); ctx.lineTo(R.x+R.w-20,R.y+22); ctx.stroke();
+  }
+  const cx=R.x+R.w/2, cy=R.y+R.h/2;
+  if(_roomObj && !_roomObj.looted){
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(cx,cy+18,30,8,0,0,7); ctx.fill();   // altar shadow
+    ctx.fillStyle=pyr?'#d4a838':'#3a4a2a'; ctx.fillRect(cx-26,cy-14,52,30);
+    ctx.fillStyle=pyr?'#ffe680':'#7aa83a'; ctx.fillRect(cx-26,cy-28,52,16);
+    ctx.fillStyle=pyr?('rgba(255,240,150,'+(0.5+0.3*Math.sin(time*0.15))+')'):('rgba(180,255,90,'+(0.5+0.35*Math.sin(time*0.2))+')');
+    ctx.beginPath(); ctx.arc(cx,cy-2,11,0,7); ctx.fill();
+  } else { ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font='14px sans-serif'; ctx.textAlign='center'; ctx.fillText('(empty)',cx,cy); }
+  ctx.fillStyle='#0a0a0a'; ctx.fillRect(cx-34,R.y+R.h-14,68,14);
+  ctx.fillStyle='#ffd86a'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center'; ctx.fillText('EXIT',cx,R.y+R.h-3);
+  drawHousePlayer();
+  ctx.restore();
+}
 function broadcastChestEvent(o, code){
   _myEvt={ code:'chest|'+(o.rako?1:0)+'|'+code+'|'+o.x.toFixed(1)+'|'+o.z.toFixed(1), t:Date.now() };
   netPresenceWrite();
