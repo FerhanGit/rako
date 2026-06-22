@@ -3648,11 +3648,13 @@ function drawChest(o,p){
     }
     return;
   }
-  const body=o.opened?'#3a2a18':'#7a5a2a';
+  const gold=o.gold;
+  const body=o.opened?(gold?'#6a5410':'#3a2a18'):(gold?'#e8b830':'#7a5a2a');
   ctx.fillStyle=body; ctx.fillRect(x-w*0.5, base-h*0.6, w, h*0.6);
   if(!o.opened){
-    ctx.fillStyle='#9a7a3a'; ctx.fillRect(x-w*0.55, base-h, w*1.1, h*0.42);
-    ctx.fillStyle="#2a1a08"; ctx.fillRect(x-w*0.08, base-h*0.62, w*0.16, h*0.2); // lock
+    ctx.fillStyle=gold?'#ffe680':'#9a7a3a'; ctx.fillRect(x-w*0.55, base-h, w*1.1, h*0.42);
+    ctx.fillStyle=gold?'#7a5a10':"#2a1a08"; ctx.fillRect(x-w*0.08, base-h*0.62, w*0.16, h*0.2); // lock
+    if(gold){ ctx.fillStyle='rgba(255,240,150,'+(0.4+0.3*Math.sin(time*0.15))+')'; ctx.fillRect(x-w*0.5, base-h, w, h*0.05); }  // shimmer
   }
 }
 function drawFood(o,p){
