@@ -3776,10 +3776,11 @@ function refreshChip(){ document.getElementById('chipName').textContent=account.
     if(account.avatar){ av.style.backgroundImage=''; av.textContent=account.avatar; av.style.background='#1c2a1c'; av.style.fontSize='18px'; }
     else { applySkinAvatar(av, account.charSkin, account.skin); } } }
 function hashStr(s){ let h=0; s=s||''; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
-// we only truly know YOUR skin; everyone else's is unknown unless the server shares it
-function skinForName(name){
+// yours is real; others come from the skin the server stored for them
+function skinForName(name,data){
   if(account.name && name && name.toLowerCase()===account.name.toLowerCase())
     return { charSkin:account.charSkin||'aster', color:account.skin||'green', me:true, known:true };
+  if(data && data.charSkin) return { charSkin:data.charSkin, color:data.skin||'green', known:true };
   return { known:false };
 }
 // blank placeholder picture for players whose skin we don't have
