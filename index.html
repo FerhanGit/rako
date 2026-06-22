@@ -1061,7 +1061,7 @@ function reset(){
   spawnInBiome('desert',[24,25,26], 20);    // sand wurm, scorpion, mummy
   spawnInBiome('poison',[27,28,29], 20);    // swamp hag, toxic ooze, plague brute
   // one champion boss per biome
-  [['snow',[15,16],'Frost Titan','#e8f4ff'],['lava',[18],'Inferno Colossus','#ff5a1a'],['space',[9],'Void Sovereign','#b15cff']].forEach(arr=>{
+  [['snow',[15,16],'Frost Titan','#e8f4ff'],['lava',[18],'Inferno Colossus','#ff5a1a'],['space',[9],'Void Sovereign','#b15cff'],['desert',[24],'Dune Pharaoh','#e8c878'],['poison',[29],'Plague Lord','#6e9a3a']].forEach(arr=>{
     const bio=arr[0],tiers=arr[1],nm=arr[2],col=arr[3];
     for(let tries=0;tries<900;tries++){ const x=Math.random()*WORLD,z=Math.random()*WORLD;
       if(biomeAt(x,z)!==bio||inCity(x,z)||Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+8) continue;
