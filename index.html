@@ -4097,6 +4097,37 @@ function renderShop(){
     card.appendChild(btn);
     G.appendChild(card);
   }
+  renderBundle(G, col, m, cw, ch, cr);
+}
+// a RARE shop bundle: 2 skins for 10% off the combined price (only some days)
+function todayBundle(){
+  const dayNum=Math.floor(new Date().getTime()/86400000);
+  const h=(dayNum*2654435761)>>>0;
+  if(h%10>=3) return null;   // ~30% of days have a bundle
+  const pool=CHAR_SKINS.filter(s=>s.price>0 && !s.code && !s.passReq && !s.achReq && !account.ownedSkins.includes(s.id));
+  if(pool.length<2) return null;
+  const i=h%pool.length; let j=(h>>4)%pool.length; if(j===i) j=(j+1)%pool.length;
+  const a=pool[i], b=pool[j], price=Math.floor((a.price+b.price)*0.9);
+  return {a,b,price};
+}
+function renderBundle(G, col, m, cw, ch, cr){
+  const bun=todayBundle(); if(!bun) return;
+  const card=document.createElement('div');
+  card.style.cssText='width:'+(cw*1.6)+'px;border:2px solid #ffcf5c;border-radius:12px;padding:'+(m?'5px':'8px')+';background:#16210f;text-align:center';
+  const title=document.createElement('div'); title.style.cssText='font-weight:bold;color:#ffcf5c;font-size:'+(m?'13px':'16px'); title.textContent='✨ RARE BUNDLE — 10% OFF'; card.appendChild(title);
+  const row=document.createElement('div'); row.style.cssText='display:flex;justify-content:center;gap:6px';
+  [bun.a,bun.b].forEach(sk=>{ const cv=document.createElement('canvas'); cv.width=m?52:70; cv.height=ch; cv.style.cssText='display:block';
+    drawCharacter(cv.getContext('2d'),cv.width/2,ch*0.62,cr,sk.id,col,1); row.appendChild(cv); });
+  card.appendChild(row);
+  const nm=document.createElement('div'); nm.style.cssText='font-size:'+(m?'11px':'13px')+';margin-top:2px'; nm.textContent=bun.a.name+' + '+bun.b.name; card.appendChild(nm);
+  const btn=document.createElement('button'); btn.className='closeBtn'; btn.style.cssText='width:100%;margin-top:4px;background:#7a5a1a;font-size:'+(m?'12px':'14px');
+  btn.textContent='BUY BOTH — '+bun.price+' 💎';
+  btn.onclick=()=>{ if((account.gems||0)>=bun.price){ account.gems-=bun.price;
+      [bun.a,bun.b].forEach(sk=>{ if(account.ownedSkins.indexOf(sk.id)<0) account.ownedSkins.push(sk.id); });
+      saveAccount(); refreshChip(); SFX.chest&&SFX.chest(); flash('✨ Bundle unlocked: '+bun.a.name+' + '+bun.b.name+'!'); renderShop(); netSyncStats(); }
+    else { btn.textContent='not enough 💎'; SFX.hurt&&SFX.hurt(); setTimeout(renderShop,900); } };
+  card.appendChild(btn);
+  G.insertBefore(card, G.firstChild);
 }
 function openAccount(){
   if(state!=='menu' && state!=='over') return;
