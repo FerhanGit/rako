@@ -4720,7 +4720,7 @@ document.getElementById('howToClose').onclick=()=>document.getElementById('howto
 document.getElementById('profClose').onclick=()=>document.getElementById('profile').classList.add('hidden');
 document.getElementById('profile').addEventListener('mousedown',e=>{ if(e.target.id==='profile') document.getElementById('profile').classList.add('hidden'); });
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('.pn');
-  if(t) showProfile(t.dataset.pname,{wins:t.dataset.wins,time:t.dataset.time,online:t.dataset.online}); });
+  if(t){ let d={}; try{ d=JSON.parse(decodeURIComponent(t.dataset.info||'{}')); }catch(e2){} showProfile(t.dataset.pname,d); } });
 document.getElementById('howto').addEventListener('mousedown',e=>{ if(e.target.id==='howto') document.getElementById('howto').classList.add('hidden'); });
 // secret codes
 document.getElementById('secretBtn').onclick=()=>{
