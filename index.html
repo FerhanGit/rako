@@ -5178,7 +5178,7 @@ function playRakoMovie(then){
 window.addEventListener('resize',()=>{ if(_cineRAF) resizeCine(); });
 
 // ---------- boot ----------
-loadData(); refreshChip(); applyQuality(quality);
+loadData(); refreshChip(); applyQuality(quality); setFavicon();
 refreshQuests();
 // normalise the pass on older saves, then auto-claim anything earned
 if(account.kills==null) account.kills=0;
