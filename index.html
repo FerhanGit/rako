@@ -3023,7 +3023,12 @@ function drawSunMoon(){
   if(cam && cam.flyTime>0) return;
   const c=time%CYCLE, horizon=H/2;
   const isSun = c<DAY_LEN, frac = isSun ? c/DAY_LEN : (c-DAY_LEN)/NIGHT_LEN;
-  const sx=W*(0.12+0.76*frac), sy=horizon - Math.sin(frac*Math.PI)*(horizon*0.72)+8;
+  // anchor to a fixed world bearing so it stays put when you turn (moon opposite the sun)
+  const az=(isSun?0:Math.PI)+(frac-0.5)*1.3;
+  let rel=az-cam.yaw; while(rel>Math.PI)rel-=2*Math.PI; while(rel<-Math.PI)rel+=2*Math.PI;
+  if(Math.cos(rel)<=0.15) return;                 // behind you — not on screen
+  const sx=W/2+FOCAL*Math.tan(rel), sy=horizon - Math.sin(frac*Math.PI)*(horizon*0.72)+8;
+  if(sx<-W||sx>W*2) return;
   const R=Math.max(14,W*0.032);
   ctx.save();
   if(isSun){
