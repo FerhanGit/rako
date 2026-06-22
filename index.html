@@ -5041,6 +5041,13 @@ document.getElementById('buy').addEventListener('mousedown',e=>{ if(e.target.id=
 document.getElementById('admin').addEventListener('mousedown',e=>{ if(e.target.id==='admin') closeAdmin(); });
 // honor autoplay policy: kick off music on the first user gesture
 addEventListener('pointerdown',()=>{ if(settings.music && !musicMode) startMusic(); });
+// stop the music whenever RAKO isn't the open/active tab; resume when you come back
+let _bgPaused=false;
+function pauseForBg(){ if(musicMode){ stopMusic(); _bgPaused=true; } }
+function resumeFromBg(){ if(_bgPaused){ _bgPaused=false; if(settings.music){ if(state==='play') playGameMusic(); else playLobbyMusic(); } } }
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) pauseForBg(); else resumeFromBg(); });
+addEventListener('blur', pauseForBg);
+addEventListener('focus', resumeFromBg);
 
 // ---------- cinematic loading / searching screen ----------
 function drawCineBg(g,t){
