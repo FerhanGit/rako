@@ -1395,6 +1395,9 @@ function interact(){
   if(sc){ openStronghold(sc); return; }
   const ic=objects.find(o=>o.type==='icechest' && dist(o)<3);
   if(ic){ openIceChest(ic); return; }
+  const relic=objects.find(o=>(o.type==='pyramid'||o.type==='factory') && dist(o)<4.5);
+  if(relic){ if(relic.looted){ flash(relic.type==='pyramid'?'🏺 The pyramid is empty now.':'☢ The factory core is spent.'); }
+    else { relic.looted=true; SFX.door&&SFX.door(); applyThemeChest(relic.type==='pyramid'?'desert':'radioactive',''); } return; }
   const bd=objects.find(o=>['rocket','igloo','spaceship','volcano','library'].includes(o.type) && dist(o)<4);
   if(bd){ enterBuilding(bd); return; }
   const cv=objects.find(o=>o.type==='cave' && dist(o)<3.5);
