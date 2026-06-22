@@ -56,6 +56,14 @@
   .screen{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
   .screen .sub{font-size:17px;max-width:560px;line-height:1.6;color:#cfe0cf;}
   #overlay .alt{background:#26432a;box-shadow:0 4px 0 #15301a;}
+  #lobbyGrid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:stretch;max-width:600px;margin:16px auto 4px;}
+  #lobbyGrid button.tile{margin:0;flex:1 1 120px;min-width:120px;max-width:170px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:5px;padding:16px 8px;font-size:24px;line-height:1;border-radius:14px;
+    background:linear-gradient(155deg,#244a2c,#16301c);box-shadow:0 4px 0 #0e2413;letter-spacing:0;border:1px solid #2f5a38;transition:transform .08s,box-shadow .08s,border-color .12s;}
+  #lobbyGrid button.tile span{font-size:12px;font-weight:700;letter-spacing:1px;color:#cfe8cf;}
+  #lobbyGrid button.tile:hover{border-color:#5fd06a;transform:translateY(-2px);box-shadow:0 6px 0 #0e2413;}
+  #lobbyGrid button.tile:active{transform:translateY(3px);box-shadow:0 1px 0 #0e2413;}
+  #btnPlay{min-width:260px;}
   #acctChip{position:fixed;top:14px;left:14px;display:flex;align-items:center;gap:8px;
     background:#14241aee;border:1px solid #4a7;border-radius:30px;padding:6px 16px 6px 8px;
     cursor:pointer;z-index:11;font-size:15px;color:#eaf0ea;}
