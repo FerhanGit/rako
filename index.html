@@ -4164,9 +4164,23 @@ function renderBundle(G, col, m, cw, ch, cr){
 function openAccount(){
   if(state!=='menu' && state!=='over') return;
   document.getElementById('nameInput').value=account.name;
-  document.getElementById('statWins').textContent=account.wins;
-  document.getElementById('statSince').textContent=account.since||'—';
-  renderAvatars();
+  // profile picture = your character skin
+  document.getElementById('acctPic').src=skinAvatarURL(account.charSkin,account.skin);
+  const skinName=(CHAR_SKINS.find(s=>s.id===account.charSkin)||{}).name||account.charSkin||'Aster';
+  document.getElementById('acctSkin').textContent='Skin: '+skinName+' · colour '+(account.skin||'green');
+  const row=(label,val)=>'<div class="stat" style="display:flex;justify-content:space-between"><span>'+label+'</span><b>'+val+'</b></div>';
+  document.getElementById('acctStats').innerHTML=
+    row('🎫 RAKO Pass tier', passLevel()+(account.pass&&account.pass.paid?' ⭐':''))+
+    row('🏆 Wins', account.wins||0)+
+    row('⚔️ Kills', account.kills||0)+
+    row('👑 Champions defeated', account.champKills||0)+
+    row('💎 Gems', account.gems||0)+
+    row('👕 Skins owned', (account.ownedSkins||[]).length+' / '+CHAR_SKINS.length)+
+    row('🎖️ Achievements', (account.ach||[]).length+' / '+ACHIEVEMENTS.length)+
+    row('🧭 Biomes visited', (account.biomes||[]).length+' / 4')+
+    row('🔥 Daily streak', (account.daily&&account.daily.streak||0)+' days')+
+    row('⏱ Time played', fmtTime(account.timePlayed||0))+
+    row('📅 Playing since', account.since||'—');
   showScreen('account');
 }
 function renderAvatars(){
