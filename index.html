@@ -1376,6 +1376,21 @@ function applyThemeChest(th, by){
   else if(th==='space'){ cam.hasCrystal=true; cam.crystalCd=0; cam.dmg+=8; gem(12); flash(""+by+"🌌 SPACE CHEST! Time Crystal + +8 damage, +12 💎"); }
   else { cam.dmg+=4; flash(""+by+"a strange chest (+4 damage)"); }
 }
+// walk-in interior for the pyramid / factory
+let _roomObj=null;
+function enterRoom(o){
+  _roomObj=o; SFX.door&&SFX.door(); const pyr=o.type==='pyramid';
+  document.getElementById('roomArt').textContent = pyr?'🏺':'☢';
+  document.getElementById('roomTitle').textContent = pyr?'Inside the Pyramid':'Inside the Factory';
+  document.getElementById('roomDesc').innerHTML = pyr
+    ? 'Torchlit sandstone halls lined with hieroglyphs. A golden relic rests on the altar.'
+    : 'Humming machines and bubbling green vats. A radioactive core pulses inside its containment.';
+  const loot=document.getElementById('roomLoot');
+  if(o.looted){ loot.textContent='Already taken'; loot.disabled=true; }
+  else { loot.textContent = pyr?'Take the Desert Relic':'Extract the Radioactive Core'; loot.disabled=false; }
+  document.getElementById('roomPanel').classList.remove('hidden');
+}
+function leaveRoom(){ document.getElementById('roomPanel').classList.add('hidden'); _roomObj=null; }
 function broadcastChestEvent(o, code){
   _myEvt={ code:'chest|'+(o.rako?1:0)+'|'+code+'|'+o.x.toFixed(1)+'|'+o.z.toFixed(1), t:Date.now() };
   netPresenceWrite();
