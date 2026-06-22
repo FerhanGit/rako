@@ -1446,6 +1446,7 @@ function openNearbyChest(){
 function interact(){
   if(state!=='play') return;
   if(scene==='interior'){ tryExitCabin(); return; }
+  if(scene==='room'){ roomInteract(); return; }
   if(scene==='library'){ libraryInteract(); return; }
   if(scene==='cave'){ caveInteract(); return; }
   if(scene==='hub'){ hubInteract(); return; }
