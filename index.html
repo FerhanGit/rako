@@ -4469,9 +4469,16 @@ function openCraft(){ renderCraft(); document.getElementById('craftPanel').class
 function closeCraft(){ document.getElementById('craftPanel').classList.add('hidden'); }
 function renderCraft(){
   if(!cam) return;
-  document.getElementById('craftMats').textContent='Materials — 🪵 wood '+matCount('wood')+' · 🪨 rock '+matCount('rock')+' · 🐟 fish '+matCount('fish')+' · 🥩 meat '+matCount('meat')+' · 💎 amethyst '+matCount('amethyst');
+  // Minecraft-style item grid — every food + material you hold, as slots
+  const slots=[];
+  for(const f of FOODS){ const n=(cam.food&&cam.food[f.k])||0; if(n>0) slots.push({icon:FOOD_EMOJI[f.k]||'🍴',n}); }
+  [['🪵',matCount('wood')],['🪨',matCount('rock')],['🐟',matCount('fish')],['🥩',matCount('meat')],['💎',matCount('amethyst')]].forEach(m=>{ if(m[1]>0) slots.push({icon:m[0],n:m[1]}); });
+  while(slots.length<8) slots.push(null);   // pad to a tidy grid
+  document.getElementById('craftMats').innerHTML='<div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:2px 0 6px">'+
+    slots.map(s=>'<div style="width:38px;height:38px;border:2px solid #3a5a3a;border-radius:6px;background:#0c1810;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:17px">'+
+      (s?(s.icon+'<span style="font-size:10px;color:#cfe8cf">'+s.n+'</span>'):'')+'</div>').join('')+'</div>';
   document.getElementById('craftBody').innerHTML=CRAFTS.map((c,i)=>{
-    const ok=canCraft(c), costStr=Object.keys(c.cost).map(k=>c.cost[k]+' '+k).join(' + ');
+    const ok=canCraft(c), costStr=Object.keys(c.cost).map(k=>c.cost[k]+' '+k.replace('food:','')).join(' + ');
     return '<div style="border-bottom:1px solid #2a3a2a;padding:8px 4px;display:flex;align-items:center;gap:10px">'+
       '<div style="flex:1"><div style="font-weight:bold;color:'+(ok?'#cfe8cf':'#9aa')+'">'+c.name+'</div>'+
       '<div style="font-size:12px;color:#9ab09a">'+c.desc+'<br>Needs: '+costStr+'</div></div>'+
