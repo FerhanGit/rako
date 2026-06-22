@@ -4348,8 +4348,15 @@ async function renderClubs(){
     h+='<div style="font-size:24px;font-weight:bold">'+clubTag(c.name,c.color)+(c.owner?'<span style="color:#ffd070;font-size:14px">(owner)</span>':'')+'</div>';
     h+='<div class="hint" style="font-size:12px">'+members.length+'/'+c.max+' members · need '+c.minWins+' wins to join</div>';
     h+='<div style="font-weight:bold;color:#8fe070;margin:8px 0 4px">Members</div>';
-    members.forEach(m=>{ const isOwner=m.id===c.ownerId, you=m.id===NET.uid;
-      h+='<div class="friendRow"><span>'+esc(m.name)+(you?' (you)':'')+(isOwner?' <span style="color:#ffd070">(owner)</span>':'')+' · '+(m.wins||0)+' wins</span></div>'; });
+    const myRole=c.role||(c.owner?'owner':'member');
+    members.forEach(m=>{ const isOwner=m.id===c.ownerId, you=m.id===NET.uid, role=isOwner?'owner':(m.club_role||'member');
+      const badge = isOwner?' <span style="color:#ffd070">(owner)</span>' : (role==='officer'?' <span style="color:#7fe0ff">(officer)</span>':'');
+      let manage='';
+      if(!you && !isOwner){
+        if(myRole==='owner'){ manage='<button class="cRole" data-id="'+m.id+'" data-role="'+(role==='officer'?'member':'officer')+'" style="font-size:11px;padding:2px 6px">'+(role==='officer'?'Demote':'Officer')+'</button> <button class="cKick" data-id="'+m.id+'" style="font-size:11px;padding:2px 6px;background:#5a2a2a">Kick</button>'; }
+        else if(myRole==='officer' && role==='member'){ manage='<button class="cKick" data-id="'+m.id+'" style="font-size:11px;padding:2px 6px;background:#5a2a2a">Kick</button>'; }
+      }
+      h+='<div class="friendRow"><span>'+esc(m.name)+(you?' (you)':'')+badge+' · '+(m.wins||0)+' wins</span><span>'+manage+'</span></div>'; });
     const others=members.filter(m=>m.id!==NET.uid);
     if(others.length){
       h+='<div style="font-weight:bold;color:#8fe070;margin:12px 0 4px">Trade / Gift a member</div>';
