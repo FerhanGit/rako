@@ -3265,6 +3265,24 @@ function drawCabin(p){
   ctx.fillStyle="#cfe8d0"; ctx.font=`${Math.max(8,h*0.06)}px sans-serif`;
   ctx.textAlign="center"; ctx.fillText("HOME", x, wallTop-h*0.04); ctx.textAlign="left";
 }
+function drawPyramid(o,p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.fillStyle='#c79a4e'; ctx.beginPath(); ctx.moveTo(x,base-h); ctx.lineTo(x-w*0.55,base); ctx.lineTo(x+w*0.55,base); ctx.closePath(); ctx.fill();   // sand body
+  ctx.fillStyle='#a87c34'; ctx.beginPath(); ctx.moveTo(x,base-h); ctx.lineTo(x,base); ctx.lineTo(x+w*0.55,base); ctx.closePath(); ctx.fill();        // shaded right face
+  ctx.strokeStyle='rgba(90,60,20,0.4)'; ctx.lineWidth=Math.max(1,w*0.02);                                                                            // brick courses
+  for(let i=1;i<6;i++){ const yy=base-h*(i/6), ww=w*0.55*(1-i/6); ctx.beginPath(); ctx.moveTo(x-ww,yy); ctx.lineTo(x+ww,yy); ctx.stroke(); }
+  ctx.fillStyle='#2a1c08'; ctx.fillRect(x-w*0.08, base-h*0.26, w*0.16, h*0.26);                                                                       // dark entrance
+  if(o.looted){ ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.moveTo(x,base-h); ctx.lineTo(x-w*0.55,base); ctx.lineTo(x+w*0.55,base); ctx.closePath(); ctx.fill(); }
+}
+function drawFactory(o,p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.fillStyle='#566052'; ctx.fillRect(x-w*0.5, base-h*0.7, w, h*0.7);                       // main block
+  ctx.fillStyle='#3e463c'; ctx.fillRect(x-w*0.5, base-h*0.7, w, h*0.12);                       // roof trim
+  ctx.fillStyle='#6a7264'; ctx.fillRect(x+w*0.18, base-h, w*0.18, h*0.32);                      // chimney
+  // toxic smoke
+  ctx.fillStyle='rgba(140,200,80,0.4)'; for(let i=0;i<3;i++){ const sy=base-h-h*0.1*i+Math.sin(time*0.05+i)*4; ctx.beginPath(); ctx.arc(x+w*0.27,sy,w*0.1+i*w*0.03,0,7); ctx.fill(); }
+  ctx.fillStyle='#caff5a'; for(let r=0;r<2;r++) for(let c=0;c<3;c++) ctx.fillRect(x-w*0.36+c*w*0.26, base-h*0.55+r*h*0.22, w*0.14, h*0.12);   // glowing windows
+  ctx.fillStyle='#2a2e26'; ctx.fillRect(x-w*0.09, base-h*0.3, w*0.18, h*0.3);                   // door
+  ctx.fillStyle='#caff5a'; ctx.font=`bold ${Math.max(8,h*0.07)}px sans-serif`; ctx.textAlign='center'; ctx.fillText('☢', x, base-h*0.78); ctx.textAlign='left';
+}
 function drawIgloo(p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const g=ctx.createLinearGradient(0,base-h,0,base); g.addColorStop(0,'#fbfdff'); g.addColorStop(1,'#cfe0ee');
   ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,base,w*0.5,Math.PI,0); ctx.fill(); ctx.fillRect(x-w*0.5,base-2,w,2);
