@@ -4553,6 +4553,7 @@ function leaveToLobby(){
   ['inv','trade','buy','admin'].forEach(id=>document.getElementById(id).classList.add('hidden'));
   document.getElementById('topbar').classList.add('hidden');
   document.getElementById('overlay').classList.remove('hidden');
+  playLobbyMusic();   // back to the lobby track (your music.mp3)
   showScreen('lobby');
 }
 
