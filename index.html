@@ -4482,7 +4482,8 @@ function craftMake(i){
   const c=CRAFTS[i]; if(!c||!canCraft(c)) return;
   for(const k in c.cost) spendMat(k,c.cost[k]);
   SFX.chest&&SFX.chest();
-  if(c.id==='house'){ account.houseLvl=(account.houseLvl||0)+1; saveAccount(); cam.maxHp+=25; cam.hp=cam.maxHp; flash('🏠 Your house is bigger and cooler! +25 max HP (level '+account.houseLvl+')'); }
+  if(c.id==='stew'){ cam.food['stew']=(cam.food['stew']||0)+1; flash('🍲 Cooked a Hearty Stew into your food bag (press X to eat).'); }
+  else if(c.id==='house'){ account.houseLvl=(account.houseLvl||0)+1; saveAccount(); cam.maxHp+=25; cam.hp=cam.maxHp; flash('🏠 Your house is bigger and cooler! +25 max HP (level '+account.houseLvl+')'); }
   else if(c.id==='sword'){ cam.dmg+=6; flash('🗡 Forged a Stone Sword — +6 damage!'); }
   else if(c.id==='feast'){ for(let n=0;n<4;n++) cam.food['meat']=(cam.food['meat']||0)+1; flash('🍢 Cooked 4 meals into your food bag (press X to eat).'); }
   else if(c.id==='amethyst'){ if((account.ownedSkins||[]).indexOf('amethyst')<0) account.ownedSkins.push('amethyst'); account.charSkin='amethyst'; saveAccount(); refreshChip(); netSyncStats(); SFX.win&&SFX.win(); flash('💜 You crafted the AMETHYST skin!'); }
