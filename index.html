@@ -2174,6 +2174,10 @@ function update(){
     if(tt) promptTxt="Press E to open the Trade Table";
   }
   if(!promptTxt){
+    const cbn=objects.find(o=>o.type==='craftbench' && dist(o)<3.5);
+    if(cbn) promptTxt="Press E to open the Crafting Bench";
+  }
+  if(!promptTxt){
     const bt=objects.find(o=>o.type==='buytable' && dist(o)<3);
     if(bt) promptTxt="Press E to open the Buy Table ("+(cam.coins||0)+" coins)";
   }
