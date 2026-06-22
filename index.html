@@ -3689,7 +3689,7 @@ function startCoop(mode, friendName, friendId, sessionId){
   pendingCoopSeed=hashSeed(sessionId);   // both players seed from the same session -> ONE shared world
   start(mode, 0);   // no AI bot — your friend is a real remote player
   coop={ sessionId:sessionId, friendId:friendId, friendName:friendName };
-  coopFriendObj={ type:'remote', x:cam.x, z:cam.z, yaw:0, name:friendName, color:'#40c0ff',
+  coopFriendObj={ type:'remote', x:cam.x, z:cam.z, yaw:0, name:friendName, color:'#40c0ff', charSkin:'aster',
     height:1.7, width:1.4, hp:100, maxHp:100, msg:'', msgT:0, msgShow:0, stale:false };
   objects.push(coopFriendObj); _presW=_presR=0;
   const ib=document.getElementById('inviteBanner'); if(ib) ib.classList.add('hidden');
