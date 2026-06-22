@@ -3896,8 +3896,8 @@ function applySkinAvatar(el,charSkin,colorSkin){
 // site logo / favicon — the RAKO character (purple Aster), shown in browser tabs, bookmarks & search results
 function setFavicon(){
   const c=document.createElement('canvas'); c.width=c.height=64; const g=c.getContext('2d');
-  g.fillStyle='#14182a'; if(g.roundRect){ g.beginPath(); g.roundRect(0,0,64,64,13); g.fill(); } else g.fillRect(0,0,64,64);
-  try{ drawCharacter(g,32,45,18,'aster','#9b30c0',1); }catch(e){}
+  g.fillStyle='#0b0c12'; if(g.roundRect){ g.beginPath(); g.roundRect(0,0,64,64,12); g.fill(); } else g.fillRect(0,0,64,64);
+  try{ drawCharacter(g,32,47,21,'aster','#9b30c0',1); }catch(e){}
   const url=c.toDataURL('image/png');
   let link=document.querySelector('link[rel~="icon"]');
   if(!link){ link=document.createElement('link'); link.rel='icon'; document.head.appendChild(link); }
