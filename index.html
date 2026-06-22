@@ -3994,7 +3994,7 @@ function renderShop(){
   const m=mobileOn, cw=m?108:150, ch=m?70:96, cr=m?18:24;
   for(const sk of CHAR_SKINS){
     if(sk.id==='aura' && !account.ownedSkins.includes('aura')) continue;   // Aura only shows once you own it (code 0505)
-    const owned=account.ownedSkins.includes(sk.id) || (sk.price===0 && !sk.code && !sk.passReq);
+    const owned=account.ownedSkins.includes(sk.id) || (sk.price===0 && !sk.code && !sk.passReq && !sk.achReq);
     const sel=account.charSkin===sk.id;
     const card=document.createElement('div');
     card.style.cssText='width:'+cw+'px;border:2px solid '+(sel?'#7fe070':'#2c5a3a')+';border-radius:12px;padding:'+(m?'5px':'8px')+';background:#0c1810;text-align:center';
