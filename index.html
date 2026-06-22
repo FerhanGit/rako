@@ -3016,22 +3016,31 @@ function drawVignette(){
   ctx.fillStyle=g; ctx.fillRect(-14,-14,W+28,H+28);
 }
 
-function drawTree(p){
+function drawTree(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
-  // trunk
-  ctx.fillStyle="#3a2616"; ctx.fillRect(x-w*0.12, base-h*0.35, w*0.24, h*0.35);
-  // canopy (3 stacked triangles)
-  const greens=["#1d3d1f","#274f29","#316033"];
-  for(let i=0;i<3;i++){
-    const cy=base-h*0.30 - i*h*0.22;
-    const cw=w*(0.85-i*0.18);
-    ctx.fillStyle=greens[i];
-    ctx.beginPath();
-    ctx.moveTo(x, cy-h*0.30);
-    ctx.lineTo(x-cw, cy);
-    ctx.lineTo(x+cw, cy);
-    ctx.closePath(); ctx.fill();
-  }
+  const night=isNight();
+  const seed=(o.seed!=null)?o.seed:(o.seed=(Math.abs(o.x*7.13+o.z*3.77))%6.283);
+  const sway=Math.sin(time*0.012+seed)*w*0.05;
+  const dark=night?'#0f2210':'#1c3a1d', mid=night?'#18321a':'#2f5e30', lite=night?'#234a26':'#54924a';
+  // ground contact shadow
+  ctx.save(); ctx.globalAlpha*=0.30; ctx.fillStyle='#000';
+  ctx.beginPath(); ctx.ellipse(x, base, w*0.62, w*0.15, 0,0,7); ctx.fill(); ctx.restore();
+  // bark-gradient trunk (tapered)
+  const tw=Math.max(1.3,w*0.15), tt=base-h*0.42;
+  let tg; try{ tg=ctx.createLinearGradient(x-tw,0,x+tw,0); tg.addColorStop(0,'#241608'); tg.addColorStop(0.45,'#4a3017'); tg.addColorStop(1,'#1d1308'); }catch(e){ tg='#3a2616'; }
+  ctx.fillStyle=tg;
+  ctx.beginPath(); ctx.moveTo(x-tw,base); ctx.lineTo(x-tw*0.5+sway,tt); ctx.lineTo(x+tw*0.5+sway,tt); ctx.lineTo(x+tw,base); ctx.closePath(); ctx.fill();
+  if(w<5){ ctx.fillStyle=mid; ctx.beginPath(); ctx.ellipse(x+sway, base-h*0.55, w*0.7, h*0.4, 0,0,7); ctx.fill(); return; }   // far-away LOD
+  // canopy: overlapping clumps, lit from the upper-left
+  const cxr=x+sway, cyr=base-h*0.55;
+  const round=(Math.floor(seed*3)%3===0);
+  const clumps = round
+    ? [[0,-0.30,0.50],[-0.40,-0.04,0.42],[0.40,-0.04,0.42],[-0.20,0.18,0.40],[0.20,0.18,0.40],[0,0.02,0.46]]
+    : [[0,-0.46,0.34],[0,-0.20,0.48],[0,0.08,0.60]];
+  ctx.fillStyle=dark;
+  clumps.forEach(c=>{ ctx.beginPath(); ctx.ellipse(cxr+c[0]*w, cyr+c[1]*h, c[2]*w, c[2]*w*0.94, 0,0,7); ctx.fill(); });
+  clumps.forEach(c=>{ ctx.fillStyle=mid; ctx.beginPath(); ctx.ellipse(cxr+c[0]*w-w*0.05, cyr+c[1]*h-w*0.05, c[2]*w*0.8, c[2]*w*0.78, 0,0,7); ctx.fill();
+    ctx.fillStyle=lite; ctx.beginPath(); ctx.ellipse(cxr+c[0]*w-w*0.13, cyr+c[1]*h-w*0.13, c[2]*w*0.42, c[2]*w*0.4, 0,0,7); ctx.fill(); });
 }
 // jagged gothic cathedral spire (the nightmare city)
 function drawSpire(o,p){
