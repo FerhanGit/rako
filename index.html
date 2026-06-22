@@ -3899,7 +3899,7 @@ function renderShop(){
     const ds=document.createElement('div'); ds.style.cssText='font-size:'+(m?'10px':'11px')+';color:#9ab09a;min-height:'+(m?'34px':'30px')+';margin:2px 0'; ds.textContent=sk.desc; card.appendChild(ds);
     const btn=document.createElement('button'); btn.className='closeBtn'; btn.style.cssText='width:100%;margin-top:4px;font-size:'+(m?'12px':'14px');
     if(sel){ btn.textContent=T('✓ SELECTED'); btn.style.background='#2f6f3f'; }
-    else if(owned){ btn.textContent=T('SELECT'); btn.onclick=()=>{ account.charSkin=sk.id; saveAccount(); renderShop(); }; }
+    else if(owned){ btn.textContent=T('SELECT'); btn.onclick=()=>{ account.charSkin=sk.id; saveAccount(); refreshChip(); renderShop(); netSyncStats(); }; }
     else if(sk.code){ btn.textContent='🔒 code '+sk.code.toUpperCase(); btn.style.background='#3a2a5a'; btn.disabled=true; }
     else if(sk.passReq){ btn.textContent='🔒 '+(sk.passReq==='paid'?'Premium Pass T100':'Pass T100'); btn.style.background='#3a2a5a'; btn.disabled=true; }
     else { btn.textContent=T('BUY')+' '+sk.price+' 💎';
