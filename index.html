@@ -3772,12 +3772,20 @@ function refreshChip(){ document.getElementById('chipName').textContent=account.
     if(account.avatar){ av.style.backgroundImage=''; av.textContent=account.avatar; av.style.background='#1c2a1c'; av.style.fontSize='18px'; }
     else { applySkinAvatar(av, account.charSkin, account.skin); } } }
 function hashStr(s){ let h=0; s=s||''; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
-// each player name maps to a consistent skin (yours is real; others are derived from their name)
+// we only truly know YOUR skin; everyone else's is unknown unless the server shares it
 function skinForName(name){
   if(account.name && name && name.toLowerCase()===account.name.toLowerCase())
-    return { charSkin:account.charSkin||'aster', color:account.skin||'green', me:true };
-  const h=hashStr(name);
-  return { charSkin:ALLY_SKINS[h%ALLY_SKINS.length], color:SKIN_ORDER[(h>>3)%SKIN_ORDER.length] };
+    return { charSkin:account.charSkin||'aster', color:account.skin||'green', me:true, known:true };
+  return { known:false };
+}
+// blank placeholder picture for players whose skin we don't have
+function blankAvatarURL(){
+  const c=document.createElement('canvas'); c.width=c.height=72; const g=c.getContext('2d');
+  g.fillStyle='#222a22'; g.fillRect(0,0,72,72);
+  g.fillStyle='#3c4a3c'; g.beginPath(); g.arc(36,30,12,0,7); g.fill();              // head
+  g.beginPath(); g.ellipse(36,62,20,16,0,Math.PI,0); g.fill();                       // shoulders
+  g.fillStyle='#6a7a6a'; g.font='bold 26px sans-serif'; g.textAlign='center'; g.fillText('?',36,40);
+  return c.toDataURL();
 }
 function showProfile(name, stats){
   const sk=skinForName(name);
