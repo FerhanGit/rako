@@ -1681,6 +1681,22 @@ const ADMIN_ACTIONS=[
   {nm:'Spawn King',   fn(){ if(objects.find(o=>o.type==='boss'&&o.alive)){ flash('King already alive'); return; } objects.push(makeBoss()); flash('King spawned at the heart of the forest'); }},
   {nm:'Kill the King', fn(){ const b=objects.find(o=>o.type==='boss'&&o.alive); if(b){ b.hp=0; flash('King slain'); } else flash('No King'); }},
   {nm:'Ban all monsters',fn(){ let n=0; for(let i=objects.length-1;i>=0;i--){ if(objects[i].type==='monster'){ objects.splice(i,1); n++; } } flash('Banned '+n+' monsters from the realm'); }},
+  // ---- economy / progression powers ----
+  {nm:'+1000 gems',  fn(){ account.gems=(account.gems||0)+1000; saveAccount(); refreshChip(); netSyncStats(); flash('+1000 💎'); }},
+  {nm:'Unlock ALL skins',fn(){ account.ownedSkins=CHAR_SKINS.map(s=>s.id); saveAccount(); flash('All '+CHAR_SKINS.length+' skins unlocked'); }},
+  {nm:'Unlock ALL achievements',fn(){ account.ach=ACHIEVEMENTS.map(a=>a.id); ACHIEVEMENTS.forEach(a=>{ if(a.rewardSkin && account.ownedSkins.indexOf(a.rewardSkin)<0) account.ownedSkins.push(a.rewardSkin); }); saveAccount(); refreshChip(); flash('All achievements unlocked'); }},
+  {nm:'Max RAKO Pass (T100 + premium)',fn(){ account.pass.xp=PASS_MAX*PASS_PER_LEVEL; account.pass.paid=true; saveAccount(); netSyncStats(); flash('Pass maxed — tier '+PASS_MAX+', premium'); }},
+  {nm:'+1 win',      fn(){ account.wins=(account.wins||0)+1; saveAccount(); checkAchievements(); netSyncStats(); flash('+1 win'); }},
+  {nm:'+100 kills',  fn(){ account.kills=(account.kills||0)+100; saveAccount(); checkAchievements(); netSyncStats(); flash('+100 kills'); }},
+  // ---- spawning / world ----
+  {nm:'Spawn biome champion',fn(){ const f=frontPos(8); const b=biomeAt(cam.x,cam.z); const map={snow:[15,'Frost Titan','#e8f4ff'],lava:[18,'Inferno Colossus','#ff5a1a'],space:[9,'Void Sovereign','#b15cff'],forest:[5,'Forest Tyrant','#6fae5f']}; const m=map[b]||map.forest; objects.push(makeBiomeBoss(f.x,f.z,m[0],m[1],m[2])); flash('Champion spawned: '+m[1]); }},
+  {nm:'Spawn every food',fn(){ FOODS.forEach((fd,i)=>{ const f=frontPos(3+i*1.2); objects.push(food(f.x,f.z,fd.k)); }); flash('Spawned all '+FOODS.length+' foods'); }},
+  // ---- teleport ----
+  {nm:'TP → Home',   fn(){ cam.x=HOME.x; cam.z=HOME.z+3; flash('Teleported home'); }},
+  {nm:'TP → Snow',   fn(){ cam.x=WORLD*0.12; cam.z=WORLD*0.5; flash('Teleported to the Frozen Wastes'); }},
+  {nm:'TP → Lava',   fn(){ cam.x=WORLD*0.88; cam.z=WORLD*0.5; flash('Teleported to the Lava Fields'); }},
+  {nm:'TP → Void',   fn(){ cam.x=WORLD*0.5; cam.z=WORLD*0.9; flash('Teleported to the Void'); }},
+  {nm:'Super speed', fn(){ cam.superSpeed=!cam.superSpeed; flash('Super speed '+(cam.superSpeed?'ON':'OFF')); }},
 ];
 function openAdmin(){
   if(state!=='play' || inSecretArea()) return;
