@@ -4045,6 +4045,28 @@ function levelPerk(){
   SFX.win&&SFX.win(); burst(cam.x,cam.z,'#ffe070',18);
   flash("⭐ LEVEL UP! Lv "+cam.level+" — +12 max HP, +2.5 damage"+(cam.level%3===0?", +10 hunger":""));
 }
+// storage boxes (bottom-left): your stored food + crafting materials
+function drawInvBoxes(){
+  if(!cam) return;
+  const items=[
+    {icon:'🍖', n:foodCount(),                       lbl:'X'},
+    {icon:'🪵', n:(cam.mats&&cam.mats.wood)||0},
+    {icon:'🪨', n:(cam.mats&&cam.mats.rock)||0},
+    {icon:'🐟', n:(cam.mats&&cam.mats.fish)||0},
+    {icon:'🥩', n:cam.meat||0},
+    {icon:'💎', n:(cam.mats&&cam.mats.amethyst)||0},
+  ];
+  const bw=38, gap=5, x0=12, y=H-50;
+  ctx.textAlign='center';
+  for(let i=0;i<items.length;i++){ const it=items[i], x=x0+i*(bw+gap);
+    ctx.fillStyle='#0c1810dd'; ctx.fillRect(x,y,bw,bw);
+    ctx.strokeStyle='#3a6a3a'; ctx.lineWidth=2; ctx.strokeRect(x,y,bw,bw);
+    ctx.font='17px sans-serif'; ctx.fillStyle='#fff'; ctx.fillText(it.icon, x+bw/2, y+21);
+    ctx.font='bold 12px sans-serif'; ctx.fillStyle= it.n>0?'#cfe8cf':'#566'; ctx.fillText(''+it.n, x+bw/2, y+bw-4);
+    if(it.lbl){ ctx.fillStyle='#7fe0a0'; ctx.font='9px sans-serif'; ctx.fillText(it.lbl, x+bw-7, y+10); }
+  }
+  ctx.textAlign='left';
+}
 function drawWeaponBar(){
   const all=[
     {key:'LMB', icon: cam.hasIceSword?'❄':'🗡', own:true},
