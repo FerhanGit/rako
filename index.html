@@ -3946,7 +3946,8 @@ function checkAchievements(silent){
   const fresh=[];
   ACHIEVEMENTS.forEach(a=>{ if(account.ach.indexOf(a.id)<0 && a.cur()>=a.max){
     account.ach.push(a.id); account.gems=(account.gems||0)+a.reward; fresh.push(a);
-    if(!silent) flash('🏆 '+a.name+' unlocked! +'+a.reward+' 💎'); } });
+    if(a.rewardSkin && (account.ownedSkins||[]).indexOf(a.rewardSkin)<0) account.ownedSkins.push(a.rewardSkin);
+    if(!silent) flash('🏆 '+a.name+' unlocked! +'+a.reward+' 💎'+(a.rewardSkin?' & a new skin!':'')); } });
   if(fresh.length){ saveAccount(); refreshChip(); }
   return fresh;
 }
