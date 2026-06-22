@@ -1299,19 +1299,30 @@ function grantChest(o, who){
   o.opened=true; burst(o.x,o.z,'#ffe070',16); SFX.chest(); if(!who) questEvent('chest');
   const by = who ? (who+" opened a chest — ") : "";
   let code='sharp';
-  if(!o.rako){ const roll=Math.random(); code = roll<0.4?'feast':(roll<0.7?'vitality':'sharp'); }
+  if(o.gold) code='gold';
+  else if(!o.rako){ const codes=['feast','vitality','sharp','gems','coins','might','bulwark','regen','swift']; code=codes[Math.floor(Math.random()*codes.length)]; }
   applyChestReward(o.rako, code, by);
   if(coop && !who) broadcastChestEvent(o, code);   // co-op: your friend wins the loot too
 }
 function applyChestReward(rako, code, by){
+  if(code==='gold'){ const g=120+Math.floor(Math.random()*180); account.gems=(account.gems||0)+g; cam.maxHp+=20; cam.hp=cam.maxHp; cam.dmg+=6;
+    saveAccount(); refreshChip(); netSyncStats(); SFX.rako&&SFX.rako(); flash(""+by+"💰 GOLDEN CHEST! +"+g+" gems, +20 max HP, +6 damage!"); return; }
   if(rako){ SFX.rako();
     if(!cam.hasPet){ cam.hasPet=true; cam.flyCd=0; flash(""+by+"RAKO CHEST! Skyling pet unlocked — you can FLY!"); }
     else if(!cam.hasCrystal){ cam.hasCrystal=true; cam.crystalCd=0; flash(""+by+"RAKO CHEST! Time Crystal — FREEZE every enemy!"); }
     else { cam.maxHp+=25; cam.hp=cam.maxHp; cam.dmg+=6; flash(""+by+"Rako Chest! Power grows (+25 max HP, +6 damage)!"); }
   } else {
-    if(code==='feast'){ cam.hunger=cam.maxHunger; cam.hp=Math.min(cam.maxHp,cam.hp+30); flash(""+by+"a feast! (+hunger, +30 HP)"); }
-    else if(code==='vitality'){ cam.maxHp+=15; cam.hp+=15; flash(""+by+"vitality charm (+15 max HP)"); }
-    else { cam.dmg+=4; flash(""+by+"sharpening stone (+4 damage)"); }
+    switch(code){
+      case 'feast':    cam.hunger=cam.maxHunger; cam.hp=Math.min(cam.maxHp,cam.hp+30); flash(""+by+"a feast! (+hunger, +30 HP)"); break;
+      case 'vitality': cam.maxHp+=15; cam.hp+=15; flash(""+by+"vitality charm (+15 max HP)"); break;
+      case 'gems':     { const g=10+Math.floor(Math.random()*30); account.gems=(account.gems||0)+g; saveAccount(); refreshChip(); netSyncStats(); flash(""+by+"a pouch of "+g+" 💎!"); } break;
+      case 'coins':    cam.points=(cam.points||0)+200; flash(""+by+"+200 rock points"); break;
+      case 'might':    cam.dmg+=8; flash(""+by+"war totem (+8 damage)"); break;
+      case 'bulwark':  cam.maxHp+=30; cam.hp=cam.maxHp; flash(""+by+"bulwark charm (+30 max HP)"); break;
+      case 'regen':    cam.hp=cam.maxHp; cam.hunger=cam.maxHunger; flash(""+by+"healing spring (full HP &amp; hunger)"); break;
+      case 'swift':    cam.boostT=900; flash(""+by+"swift boots — speed boost!"); break;
+      default:         cam.dmg+=4; flash(""+by+"sharpening stone (+4 damage)");
+    }
   }
 }
 function broadcastChestEvent(o, code){
