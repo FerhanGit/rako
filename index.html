@@ -4023,7 +4023,7 @@ async function renderFriends(){
   }
   h+='<div style="font-weight:bold;color:#8fe070;margin:10px 0 4px">Your friends</div>';
   if(!friends.length) h+='<div class="hint" style="font-size:15px;color:#c0c8c0">No friends yet — type a name above and press Add.</div>';
-  else h+=friends.map(f=>'<div class="friendRow"><span>'+pn(f.name,null,null,f.online)+' '+(f.online?'🟢':'🔴')+'</span><button class="rm" data-rid="'+f.reqId+'">Remove</button></div>').join('');
+  else h+=friends.map(f=>'<div class="friendRow"><span>'+pn(f.name,{online:f.online,skin:f.skin,charSkin:f.charSkin,kills:f.kills,gems:f.gems,tier:f.tier,wins:f.wins,time:f.time})+' '+(f.online?'🟢':'🔴')+'</span><button class="rm" data-rid="'+f.reqId+'">Remove</button></div>').join('');
   L.innerHTML=h;
   L.querySelectorAll('button.acc').forEach(b=> b.onclick=async()=>{ await onlineRespond(b.dataset.id,true); renderFriends(); pollRequests(); });
   L.querySelectorAll('button.dec').forEach(b=> b.onclick=async()=>{ await onlineRespond(b.dataset.id,false); renderFriends(); pollRequests(); });
