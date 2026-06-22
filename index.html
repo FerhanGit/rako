@@ -5674,9 +5674,7 @@ document.getElementById('gameMusicToggle').onclick=()=>{
 document.getElementById('howToBtn').onclick=()=>document.getElementById('howto').classList.remove('hidden');
 document.getElementById('howToClose').onclick=()=>document.getElementById('howto').classList.add('hidden');
 document.getElementById('profClose').onclick=()=>document.getElementById('profile').classList.add('hidden');
-document.getElementById('roomLeave').onclick=leaveRoom;
 document.getElementById('craftClose').onclick=closeCraft;
-document.getElementById('roomLoot').onclick=()=>{ const o=_roomObj; if(!o||o.looted) return; o.looted=true; applyThemeChest(o.type==='pyramid'?'desert':'radioactive',''); const b=document.getElementById('roomLoot'); b.textContent='Taken!'; b.disabled=true; };
 document.getElementById('profile').addEventListener('mousedown',e=>{ if(e.target.id==='profile') document.getElementById('profile').classList.add('hidden'); });
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('.pn');
   if(t){ let d={}; try{ d=JSON.parse(decodeURIComponent(t.dataset.info||'{}')); }catch(e2){} showProfile(t.dataset.pname,d); } });
