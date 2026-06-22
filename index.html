@@ -4483,7 +4483,7 @@ async function renderLeaderboard(){
   if(NET.ready){ await netSyncStats();
     const [byWins,byTime]=await Promise.all([
       onlineLeaderboard(),
-      netGet('/rako_players?select=name,wins,best_score,skin,char_skin,kills,gems,tier&order=best_score.desc,wins.desc&limit=15').catch(()=>null)
+      netGet('/rako_players?select=name,wins,best_score,skin,char_skin,kills,gems,tier,club_name,club_color&order=best_score.desc,wins.desc&limit=15').catch(()=>null)
     ]);
     if((byWins&&byWins.length)||(byTime&&byTime.length)){ const me=(account.name||'').toLowerCase();
       const board=(title,rows,fmt)=>{ let h='<div style="font-weight:bold;color:#8fe070;margin:8px 0 6px">'+title+'</div>';
