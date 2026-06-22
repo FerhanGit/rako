@@ -3792,6 +3792,12 @@ function showProfile(name, stats){
   document.getElementById('profStats').innerHTML=h||'<span style="color:#9ab09a">A fellow survivor of RAKO.</span>';
   document.getElementById('profile').classList.remove('hidden');
 }
+// clickable player name (opens their profile)
+function pn(name,wins,time,online){
+  return '<span class="pn" data-pname="'+esc(name)+'"'+(wins!=null?' data-wins="'+wins+'"':'')+
+    (time!=null?' data-time="'+time+'"':'')+(online!=null?' data-online="'+(online?1:0)+'"':'')+
+    ' style="cursor:pointer;text-decoration:underline dotted #6a8a6a">'+esc(name)+'</span>';
+}
 function colorLocked(s){ return SPECIAL_COLORS.includes(s) && !(account.pass && account.pass.colors && account.pass.colors.includes(s)); }
 function renderSkins(){
   const G=document.getElementById('skinGrid');
