@@ -1203,6 +1203,7 @@ addEventListener('keydown',e=>{
   if(k==='p') petWolf();
   if(k==='b') firePistol();
   if(k==='c') activatePoison();
+  if(k==='x') eatStored();
   if(k==='escape'){ if(state==='inv') toggleInventory(); else if(state==='trade') closeTrade(); else if(state==='buy') closeBuy(); else if(state==='admin') closeAdmin(); else if(state==='map') toggleMap(); }
 });
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
