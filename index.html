@@ -3892,6 +3892,19 @@ function applySkinAvatar(el,charSkin,colorSkin){
   el.textContent=''; el.style.backgroundImage='url('+skinAvatarURL(charSkin,colorSkin)+')';
   el.style.backgroundSize='cover'; el.style.backgroundPosition='center';
 }
+// site logo / favicon — the RAKO character (purple Aster), shown in browser tabs, bookmarks & search results
+function setFavicon(){
+  const c=document.createElement('canvas'); c.width=c.height=64; const g=c.getContext('2d');
+  g.fillStyle='#14182a'; if(g.roundRect){ g.beginPath(); g.roundRect(0,0,64,64,13); g.fill(); } else g.fillRect(0,0,64,64);
+  try{ drawCharacter(g,32,45,18,'aster','#9b30c0',1); }catch(e){}
+  const url=c.toDataURL('image/png');
+  let link=document.querySelector('link[rel~="icon"]');
+  if(!link){ link=document.createElement('link'); link.rel='icon'; document.head.appendChild(link); }
+  link.type='image/png'; link.href=url;
+  let at=document.querySelector('link[rel="apple-touch-icon"]');
+  if(!at){ at=document.createElement('link'); at.rel='apple-touch-icon'; document.head.appendChild(at); }
+  at.href=url;
+}
 function refreshChip(){ document.getElementById('chipName').textContent=account.name;
   const av=document.querySelector('#acctChip .av');
   if(av){ av.style.borderRadius='50%'; av.textContent=''; av.style.fontSize='0'; applySkinAvatar(av, account.charSkin, account.skin); } }   // profile picture is always your skin
