@@ -3986,7 +3986,7 @@ async function renderFriends(){
   if(!NET.ready) await ensurePlayer();
   if(!NET.ready){   // offline fallback to the old local list
     if(!account.friends.length){ L.innerHTML='<div class="hint" style="font-size:16px;color:#c0c8c0">Offline — connect to the internet to add real friends.</div>'; return; }
-    L.innerHTML=account.friends.map((f,i)=>'<div class="friendRow"><span>'+esc(f)+'</span><button data-i="'+i+'">Remove</button></div>').join('');
+    L.innerHTML=account.friends.map((f,i)=>'<div class="friendRow"><span>'+pn(f)+'</span><button data-i="'+i+'">Remove</button></div>').join('');
     L.querySelectorAll('button[data-i]').forEach(b=> b.onclick=()=>{ account.friends.splice(+b.dataset.i,1); saveAccount(); renderFriends(); });
     return;
   }
