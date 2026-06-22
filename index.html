@@ -3998,7 +3998,7 @@ function boardRows(list, metric){
   let h='<div style="font-weight:bold;color:#8fe070;margin:2px 0 6px">'+label
        +' <span style="color:#9ab09a;font-weight:normal">— you are #'+place+'</span></div>';
   sorted.slice(0,15).forEach((e,i)=>{ const val= metric==='wins' ? e.wins+' wins' : fmtTime(e.time);
-    h+='<div class="lbRow'+(e.you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+pn(e.name,e.wins,e.time)+'</span><span>'+val+'</span></div>'; });
+    h+='<div class="lbRow'+(e.you?' you':'')+'"><span><span class="r">'+(i+1)+'.</span> '+pn(e.name,{wins:e.wins,time:e.time})+'</span><span>'+val+'</span></div>'; });
   return h;
 }
 async function renderFriends(){
