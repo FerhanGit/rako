@@ -4201,6 +4201,120 @@ function claimDaily(){
   if(b){ b.textContent=jp?'🎰 +15 DAILY GEMS!':'🎁 +4 DAILY GEMS!'; b.disabled=true; }
   flash(msg);
 }
+// ---------- CLUBS (guilds) ----------
+const CLUB_COLORS=['#7fe0ff','#ff6b6b','#8fe070','#ffd070','#b06bff','#ff8a3a','#5fd0c0','#ff7fc0','#ffffff','#a0a0a0'];
+let _clubColor='#7fe0ff';
+function clubTag(clubName,color){ return clubName?'<span style="color:'+(color||'#7fe0ff')+'">['+esc(clubName)+']</span> ':''; }
+async function netMyClub(){ if(!NET.ready) return;
+  try{ const r=await netGet('/rako_players?id=eq.'+NET.uid+'&select=club_id'); const cid=r[0]&&r[0].club_id;
+    if(!cid){ account.club=null; saveAccount(); return; }
+    const c=await netGet('/rako_clubs?id=eq.'+cid+'&select=*');
+    if(c.length){ const cl=c[0]; account.club={id:cl.id,name:cl.name,color:cl.color,max:cl.max_members,minWins:cl.min_wins,ownerId:cl.owner_id,owner:cl.owner_id===NET.uid}; }
+    else { account.club=null; await netPatch('/rako_players?id=eq.'+NET.uid,{club_id:null,club_name:null,club_color:null}); }
+    saveAccount(); refreshChip(); }catch(e){} }
+async function netClubList(){ try{
+    const clubs=await netGet('/rako_clubs?select=*&order=created_at.desc&limit=60');
+    const players=await netGet('/rako_players?club_id=not.is.null&select=club_id,wins');
+    const cnt={}, wn={}; players.forEach(p=>{ cnt[p.club_id]=(cnt[p.club_id]||0)+1; wn[p.club_id]=(wn[p.club_id]||0)+(p.wins||0); });
+    clubs.forEach(c=>{ c._members=cnt[c.id]||0; c._wins=wn[c.id]||0; }); return clubs; }catch(e){ return []; } }
+async function netClubMembers(cid){ try{ return await netGet('/rako_players?club_id=eq.'+cid+'&select=id,name,wins,char_skin,skin&order=wins.desc'); }catch(e){ return []; } }
+async function netCreateClub(name,color,max,minWins){
+  if((account.gems||0)<500) return {ok:false,msg:'You need 500 💎'};
+  if(account.club) return {ok:false,msg:'Leave your current club first'};
+  try{ const made=await netPost('/rako_clubs',{name:name,color:color,max_members:max,min_wins:minWins,owner_id:NET.uid});
+    const cl=made[0]; account.gems-=500;
+    await netPatch('/rako_players?id=eq.'+NET.uid,{club_id:cl.id,club_name:cl.name,club_color:cl.color});
+    account.club={id:cl.id,name:cl.name,color:cl.color,max:cl.max_members,minWins:cl.min_wins,ownerId:NET.uid,owner:true};
+    saveAccount(); refreshChip(); netSyncStats(); return {ok:true,msg:'Club created!'};
+  }catch(e){ return {ok:false,msg:'Could not create club'}; } }
+async function netJoinClub(cl){
+  if(account.club) return {ok:false,msg:'Leave your current club first'};
+  if((account.wins||0)<(cl.min_wins||0)) return {ok:false,msg:'Need '+cl.min_wins+' wins to join'};
+  const mem=await netClubMembers(cl.id); if(mem.length>=cl.max_members) return {ok:false,msg:'Club is full'};
+  try{ await netPatch('/rako_players?id=eq.'+NET.uid,{club_id:cl.id,club_name:cl.name,club_color:cl.color});
+    account.club={id:cl.id,name:cl.name,color:cl.color,max:cl.max_members,minWins:cl.min_wins,ownerId:cl.owner_id,owner:cl.owner_id===NET.uid};
+    saveAccount(); refreshChip(); netSyncStats(); return {ok:true,msg:'Joined '+cl.name+'!'};
+  }catch(e){ return {ok:false,msg:'Could not join'}; } }
+async function netLeaveClub(){
+  if(!account.club) return; const wasOwner=account.club.owner, cid=account.club.id;
+  try{ await netPatch('/rako_players?id=eq.'+NET.uid,{club_id:null,club_name:null,club_color:null});
+    if(wasOwner){ await netPatch('/rako_players?club_id=eq.'+cid,{club_id:null,club_name:null,club_color:null}); await netDelete('/rako_clubs?id=eq.'+cid); }
+  }catch(e){}
+  account.club=null; saveAccount(); refreshChip(); netSyncStats(); }
+async function netGift(toId,kind,value){ try{ await netPost('/rako_gifts',{to_id:toId,from_name:account.name,kind:kind,value:''+value}); return true; }catch(e){ return false; } }
+async function netCheckGifts(){ if(!NET.ready) return;
+  try{ const gs=await netGet('/rako_gifts?to_id=eq.'+NET.uid+'&select=*'); if(!gs.length) return; const got=[];
+    for(const g of gs){ if(g.kind==='gems'){ account.gems=(account.gems||0)+(+g.value||0); got.push((g.from_name||'A friend')+' → +'+g.value+' 💎'); }
+      else if(g.kind==='skin'){ if((account.ownedSkins||[]).indexOf(g.value)<0) account.ownedSkins.push(g.value); const nm=(CHAR_SKINS.find(s=>s.id===g.value)||{}).name||g.value; got.push((g.from_name||'A friend')+' → '+nm+' skin'); }
+      await netDelete('/rako_gifts?id=eq.'+g.id); }
+    saveAccount(); refreshChip(); netSyncStats(); if(got.length) flash('🎁 Club gift: '+got.join(' · ')); }catch(e){} }
+function clubLeaderboardHTML(clubs){
+  const sorted=clubs.slice().sort((a,b)=>b._wins-a._wins).slice(0,15);
+  let h='<div style="font-weight:bold;color:#8fe070;margin:14px 0 4px">🏆 CLUB LEADERBOARD</div>';
+  if(!sorted.length) return h+'<div class="hint" style="font-size:13px">No clubs yet — be the first to build one!</div>';
+  sorted.forEach((c,i)=>{ h+='<div class="lbRow"><span><span class="r">'+(i+1)+'.</span> '+clubTag(c.name,c.color)+'</span><span>'+c._wins+' wins · '+c._members+'👥</span></div>'; });
+  return h;
+}
+async function openClubs(){ showScreen('clubs'); const B=document.getElementById('clubBody'); B.innerHTML='<div class="hint">Loading clubs…</div>'; if(!NET.ready) await ensurePlayer(); await netMyClub(); renderClubs(); }
+async function renderClubs(){
+  const B=document.getElementById('clubBody'); if(!B) return;
+  if(!NET.ready){ B.innerHTML='<div class="hint" style="font-size:15px">Offline — connect to the internet to use clubs.</div>'; return; }
+  const clubs=await netClubList();
+  let h='';
+  if(account.club){
+    const c=account.club, members=await netClubMembers(c.id);
+    h+='<div style="font-size:24px;font-weight:bold">'+clubTag(c.name,c.color)+(c.owner?'<span style="color:#ffd070;font-size:14px">(owner)</span>':'')+'</div>';
+    h+='<div class="hint" style="font-size:12px">'+members.length+'/'+c.max+' members · need '+c.minWins+' wins to join</div>';
+    h+='<div style="font-weight:bold;color:#8fe070;margin:8px 0 4px">Members</div>';
+    members.forEach(m=>{ const isOwner=m.id===c.ownerId, you=m.id===NET.uid;
+      h+='<div class="friendRow"><span>'+esc(m.name)+(you?' (you)':'')+(isOwner?' <span style="color:#ffd070">(owner)</span>':'')+' · '+(m.wins||0)+' wins</span></div>'; });
+    const others=members.filter(m=>m.id!==NET.uid);
+    if(others.length){
+      h+='<div style="font-weight:bold;color:#8fe070;margin:12px 0 4px">Trade / Gift a member</div>';
+      h+='<select id="giftWho" style="min-width:140px">'+others.map(m=>'<option value="'+m.id+'">'+esc(m.name)+'</option>').join('')+'</select>';
+      h+='<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center">';
+      h+='<input id="giftGems" type="number" min="1" placeholder="gems" style="width:80px"><button id="giveGems">Give 💎</button>';
+      const giftable=(account.ownedSkins||[]).filter(s=>s!=='aster');
+      if(giftable.length){ h+='<select id="giftSkin">'+giftable.map(s=>{const nm=(CHAR_SKINS.find(k=>k.id===s)||{}).name||s; return '<option value="'+s+'">'+nm+'</option>';}).join('')+'</select><button id="giveSkin">Give skin</button>'; }
+      h+='</div>';
+    }
+    h+='<button id="leaveClub" style="margin-top:14px;background:#5a2a2a">'+(c.owner?'Disband club':'Leave club')+'</button>';
+  } else {
+    h+='<div style="font-weight:bold;color:#8fe070;margin:2px 0 6px">Create a club — costs 500 💎 (you have '+(account.gems||0)+')</div>';
+    h+='<input id="clubName" maxlength="18" placeholder="club name" style="width:200px"><br>';
+    h+='<div style="margin:8px 0">Name colour: <span id="clubColors"></span></div>';
+    h+='Max members <input id="clubMax" type="number" min="2" max="50" value="10" style="width:56px"> · Min wins to join <input id="clubMin" type="number" min="0" value="0" style="width:56px"><br>';
+    h+='<button id="createClub" style="margin-top:10px">🏰 Create (500 💎)</button>';
+    h+='<div style="font-weight:bold;color:#8fe070;margin:14px 0 4px">Join a club</div>';
+    if(!clubs.length) h+='<div class="hint" style="font-size:13px">No clubs yet.</div>';
+    clubs.forEach(c=>{ const full=c._members>=c.max_members, can=(account.wins||0)>=c.min_wins&&!full;
+      h+='<div class="friendRow"><span>'+clubTag(c.name,c.color)+c._members+'/'+c.max_members+' · '+c.min_wins+' wins</span>'+
+        '<button class="joinClub" data-id="'+c.id+'"'+(can?'':' disabled')+'>'+(full?'Full':(can?'Join':'Need '+c.min_wins+' wins'))+'</button></div>'; });
+  }
+  h+=clubLeaderboardHTML(clubs);
+  B.innerHTML=h;
+  // color swatches
+  const cc=document.getElementById('clubColors');
+  if(cc){ cc.innerHTML=CLUB_COLORS.map(col=>'<button class="cswatch" data-c="'+col+'" style="width:22px;height:22px;border-radius:50%;padding:0;margin:2px;background:'+col+';border:2px solid '+(_clubColor===col?'#fff':'#333')+'"></button>').join('');
+    cc.querySelectorAll('.cswatch').forEach(b=> b.onclick=()=>{ _clubColor=b.dataset.c; renderClubs(); }); }
+  const note=(m,ok)=>{ const d=document.createElement('div'); d.className='hint'; d.style.cssText='font-size:14px;margin:6px 0;color:'+(ok?'#8fe070':'#e0a060'); d.textContent=m; B.prepend(d); };
+  const cb=document.getElementById('createClub');
+  if(cb) cb.onclick=async()=>{ const nm=(document.getElementById('clubName').value||'').trim();
+    if(nm.length<2){ note('Pick a club name.',false); return; }
+    const max=Math.max(2,Math.min(50,+document.getElementById('clubMax').value||10));
+    const min=Math.max(0,+document.getElementById('clubMin').value||0);
+    cb.disabled=true; const r=await netCreateClub(nm,_clubColor,max,min); note(r.msg,r.ok); renderClubs(); };
+  document.querySelectorAll('.joinClub').forEach(b=> b.onclick=async()=>{ const cl=clubs.find(c=>c.id===b.dataset.id); if(!cl) return; b.disabled=true; const r=await netJoinClub(cl); note(r.msg,r.ok); renderClubs(); });
+  const lc=document.getElementById('leaveClub'); if(lc) lc.onclick=async()=>{ await netLeaveClub(); renderClubs(); };
+  const gg=document.getElementById('giveGems');
+  if(gg) gg.onclick=async()=>{ const who=document.getElementById('giftWho').value, amt=Math.floor(+document.getElementById('giftGems').value||0);
+    if(amt<1){ note('Enter a gem amount.',false); return; } if((account.gems||0)<amt){ note('Not enough 💎.',false); return; }
+    account.gems-=amt; saveAccount(); refreshChip(); netSyncStats(); await netGift(who,'gems',amt); note('Sent '+amt+' 💎!',true); renderClubs(); };
+  const gs2=document.getElementById('giveSkin');
+  if(gs2) gs2.onclick=async()=>{ const who=document.getElementById('giftWho').value, sk=document.getElementById('giftSkin').value;
+    if(!sk) return; account.ownedSkins=account.ownedSkins.filter(s=>s!==sk); if(account.charSkin===sk) account.charSkin='aster';
+    saveAccount(); refreshChip(); netSyncStats(); await netGift(who,'skin',sk); note('Gifted your '+sk+' skin!',true); renderClubs(); };
+}
 function renderAch(){
   const B=document.getElementById('achBody'); if(!B) return;
   const done=account.ach.length;
