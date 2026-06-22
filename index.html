@@ -1445,6 +1445,7 @@ function interact(){
   if(cn){ cn.gone=true; cam.coins=(cam.coins||0)+1; burst(cn.x,cn.z,'#ffd040',6); SFX.eat();
     flash("Collected a coin (total "+cam.coins+") — stored in your inventory"); return; }
   if(objects.find(o=>o.type==='buytable' && dist(o)<3)){ openBuy(); return; }
+  if(objects.find(o=>o.type==='craftbench' && dist(o)<3.5)){ openCraft(); return; }
   if(objects.find(o=>o.type==='tradetable' && dist(o)<3)){ openTrade(); return; }
   const rc=objects.find(o=>o.type==='rockychest' && dist(o)<3);
   if(rc){ mineRock(rc); return; }
