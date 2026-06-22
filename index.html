@@ -1308,7 +1308,7 @@ function grantChest(o, who){
   if(coop && !who) broadcastChestEvent(o, code);   // co-op: your friend wins the loot too
 }
 function applyChestReward(rako, code, by){
-  if(code==='gold'){ const g=120+Math.floor(Math.random()*180); account.gems=(account.gems||0)+g; cam.maxHp+=20; cam.hp=cam.maxHp; cam.dmg+=6;
+  if(code==='gold'){ const g=3+Math.floor(Math.random()*6); account.gems=(account.gems||0)+g; cam.maxHp+=20; cam.hp=cam.maxHp; cam.dmg+=6;
     saveAccount(); refreshChip(); netSyncStats(); SFX.rako&&SFX.rako(); flash(""+by+"💰 GOLDEN CHEST! +"+g+" gems, +20 max HP, +6 damage!"); return; }
   if(rako){ SFX.rako();
     if(!cam.hasPet){ cam.hasPet=true; cam.flyCd=0; flash(""+by+"RAKO CHEST! Skyling pet unlocked — you can FLY!"); }
