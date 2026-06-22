@@ -2222,9 +2222,10 @@ function update(){
   // food pickup (coins are collected with E)
   for(const o of objects){
     if(o.type==='food' && !o.gone && dist(o)<1.4){
-      o.gone=true; cam.hunger=Math.min(cam.maxHunger,cam.hunger+30);
-      cam.hp=Math.min(cam.maxHp,cam.hp+8); burst(o.x,o.z,'#ff9050',8); SFX.eat();
-      flash("Ate food (+hunger, +HP)");
+      const fd=FOODS.find(f=>f.k===o.kind)||FOODS[0];
+      o.gone=true; cam.hunger=Math.min(cam.maxHunger,cam.hunger+fd.hunger);
+      cam.hp=Math.min(cam.maxHp,cam.hp+fd.hp); burst(o.x,o.z,'#ff9050',8); SFX.eat();
+      flash("Ate "+fd.name+" (+"+fd.hunger+" hunger, +"+fd.hp+" HP)");
     }
   }
 
