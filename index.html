@@ -3980,14 +3980,24 @@ function startMusic(){
   else musicMode='file';
 }
 function stopMusic(){ try{ bgm.pause(); }catch(e){} stopProc(); musicMode=null; }
+const STYLE_CHORDS={
+  calm:  [[196,247,294],[174.6,220,262],[164.8,196,247],[146.8,185,220]],
+  battle:[[110,165,220],[123,185,247],[98,147,196],[130,196,262]],
+  eerie: [[123,174,233],[110,155,220],[138,196,261],[103,146,207]],
+};
+let _procStyle='calm';
 function startProc(){
   if(!settings.music) return; initAudio(); if(!AC || musicMode==='proc') return;
   musicMode='proc';
-  const chords=[[196,247,294],[174.6,220,262],[164.8,196,247],[146.8,185,220]]; let ci=0;
+  const chords=STYLE_CHORDS[_procStyle]||STYLE_CHORDS.calm; let ci=0;
+  const fast=_procStyle==='battle';
   const tick=()=>{ if(musicMode!=='proc'||!settings.music) return;
-    chords[ci%chords.length].forEach(f=>pad(f,4.2)); ci++; };
-  tick(); procTimer=setInterval(tick,3800);
+    chords[ci%chords.length].forEach(f=>pad(f,fast?2.6:4.2)); ci++; };
+  tick(); procTimer=setInterval(tick,fast?2400:3800);
 }
+// lobby = your music.mp3 file (the song you drop in); in-game = chosen procedural style
+function playGameMusic(){ stopMusic(); if(settings.gameMusic==='off'||!settings.music) return; _procStyle=settings.gameMusic; startProc(); }
+function playLobbyMusic(){ if(settings.music) startMusic(); }
 function stopProc(){ if(procTimer){ clearInterval(procTimer); procTimer=null; } if(musicMode==='proc') musicMode=null; }
 function pad(freq,dur){ if(!AC) return; const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
   o.type='sine'; o.frequency.value=freq;
