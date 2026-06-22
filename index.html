@@ -3005,7 +3005,7 @@ function groundPt(wx,wz){
 }
 // the sun arcs across the sky by day, the moon by night — both tied to the day/night clock
 function drawSunMoon(){
-  if(flying) return;
+  if(cam && cam.flyTime>0) return;
   const c=time%CYCLE, horizon=H/2;
   const isSun = c<DAY_LEN, frac = isSun ? c/DAY_LEN : (c-DAY_LEN)/NIGHT_LEN;
   const sx=W*(0.12+0.76*frac), sy=horizon - Math.sin(frac*Math.PI)*(horizon*0.72)+8;
