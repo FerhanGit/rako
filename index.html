@@ -2353,9 +2353,8 @@ function update(){
   for(const o of objects){
     if(o.type==='food' && !o.gone && dist(o)<1.4){
       const fd=FOODS.find(f=>f.k===o.kind)||FOODS[0];
-      o.gone=true; cam.hunger=Math.min(cam.maxHunger,cam.hunger+fd.hunger);
-      cam.hp=Math.min(cam.maxHp,cam.hp+fd.hp); burst(o.x,o.z,'#ff9050',8); SFX.eat();
-      flash("Ate "+fd.name+" (+"+fd.hunger+" hunger, +"+fd.hp+" HP)");
+      o.gone=true; cam.food[o.kind]=(cam.food[o.kind]||0)+1; burst(o.x,o.z,'#ff9050',6); SFX.chest&&SFX.chest();
+      flash("Stored "+fd.name+" — press X to eat ("+foodCount()+" in bag)");
     }
   }
 
