@@ -3636,7 +3636,9 @@ async function ensurePlayer(){
   }catch(e){ NET.ready=false; }
 }
 async function netSyncStats(){ if(!NET.ready) return; try{
-  await netPatch('/rako_players?id=eq.'+NET.uid,{name:account.name,wins:account.wins,best_score:Math.floor(account.timePlayed||0),last_seen:new Date().toISOString()}); }catch(e){} }
+  await netPatch('/rako_players?id=eq.'+NET.uid,{name:account.name,wins:account.wins,best_score:Math.floor(account.timePlayed||0),
+    skin:account.skin||'green',char_skin:account.charSkin||'aster',kills:account.kills||0,gems:account.gems||0,tier:passLevel(),
+    last_seen:new Date().toISOString()}); }catch(e){} }
 async function onlineSendRequest(name){
   if(!NET.ready) await ensurePlayer();
   if(!NET.ready) return {ok:false,msg:'You appear to be offline — friends need an internet connection.'};
