@@ -3093,6 +3093,17 @@ function drawCharacter(g, x, y, r, id, col, f){
     g.fillStyle='#241b12'; g.fillRect(x-headR*0.8,headY-headR*0.95,headR*1.6,headR*0.22);          // band
     g.restore(); return;
   }
+  if(id==='amethyst'){
+    g.save(); g.globalAlpha*=0.45; g.fillStyle='#b06bff'; g.beginPath(); g.arc(x,y-r*0.1,r*1.05,0,7); g.fill(); g.restore();   // crystal glow
+    g.fillStyle='#5a2a8a'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.76,r*0.6,0,0,7); g.fill();      // legs
+    g.fillStyle='#8a3fd0'; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();     // body
+    // faceted crystal shards
+    g.fillStyle='#c79bff'; for(let k=-1;k<=1;k++){ g.beginPath(); g.moveTo(x+k*r*0.34,y-r*0.5); g.lineTo(x+k*r*0.34-r*0.12,y-r*0.05); g.lineTo(x+k*r*0.34+r*0.12,y-r*0.05); g.closePath(); g.fill(); }
+    g.fillStyle='#a86fe8'; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();                       // head
+    g.fillStyle='#e9d4ff'; g.beginPath(); g.moveTo(x,headY-headR*1.4); g.lineTo(x-headR*0.5,headY-headR*0.6); g.lineTo(x+headR*0.5,headY-headR*0.6); g.closePath(); g.fill();  // crystal crown
+    g.fillStyle='#2a1040'; g.beginPath(); g.arc(x-headR*0.3,headY,headR*0.12,0,7); g.arc(x+headR*0.3,headY,headR*0.12,0,7); g.fill();
+    g.restore(); return;
+  }
   if(id==='pickaxe'){
     g.strokeStyle='#7a4a22'; g.lineWidth=Math.max(2,r*0.18); g.beginPath(); g.moveTo(x+r*0.9,y+r*0.5); g.lineTo(x+r*1.25,y-r*1.0); g.stroke();
     g.strokeStyle='#cfd0d8'; g.lineWidth=Math.max(3,r*0.28); g.beginPath(); g.arc(x+r*1.25,y-r*1.05,r*0.45,-0.7,0.7); g.stroke();
