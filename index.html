@@ -4456,6 +4456,14 @@ const LOTTO_COLORS=['#39463a','#2f8f3f','#39463a','#3a6a9a','#39463a','#2f8f3f',
 const LOTTO_LABEL={none:'✕',g50:'50💎',g85:'85💎',pumper:'🕵️'};
 let _lottoSpinning=false, _lottoAngle=0;
 function lottoCost(){ return 30 + 15*(account.lottoSpins||0); }
+function lottoConfetti(){
+  const ems=['🎉','✨','💎','🎊','⭐'];
+  for(let i=0;i<16;i++){ const s=document.createElement('span'); s.textContent=ems[i%ems.length];
+    s.style.cssText='position:fixed;left:'+(42+Math.random()*16)+'%;top:32%;font-size:'+(16+Math.random()*16)+'px;pointer-events:none;z-index:30;transition:transform 1.5s ease-out,opacity 1.5s';
+    document.body.appendChild(s);
+    requestAnimationFrame(()=>{ s.style.transform='translate('+((Math.random()-0.5)*460)+'px,'+(220+Math.random()*220)+'px) rotate('+((Math.random()-0.5)*420)+'deg)'; s.style.opacity='0'; });
+    setTimeout(()=>s.remove(),1600); }
+}
 function openLottery(){
   const seg=360/LOTTO_WEDGES.length, stops=[];
   for(let i=0;i<LOTTO_WEDGES.length;i++) stops.push(LOTTO_COLORS[i]+' '+(i*seg)+'deg '+((i+1)*seg)+'deg');
