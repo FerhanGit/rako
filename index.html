@@ -3655,9 +3655,11 @@ async function onlineSendRequest(name){
 async function onlineIncoming(){ if(!NET.ready) return [];
   try{ return await netGet('/rako_friend_requests?to_id=eq.'+NET.uid+'&status=eq.pending&select=id,from:rako_players!from_id(name)'); }catch(e){ return []; } }
 async function onlineFriends(){ if(!NET.ready) return [];
-  try{ const rows=await netGet('/rako_friend_requests?or=(from_id.eq.'+NET.uid+',to_id.eq.'+NET.uid+')&status=eq.accepted&select=id,from_id,to_id,a:rako_players!from_id(name,last_seen),b:rako_players!to_id(name,last_seen)');
-    return rows.map(r=>{ const mine=r.from_id===NET.uid, other=mine?r.b:r.a;
-      return {reqId:r.id, id: mine? r.to_id : r.from_id, name: other&&other.name, online: other&&isOnline(other.last_seen)}; }).filter(x=>x.name); }catch(e){ return []; } }
+  try{ const cols='(name,last_seen,wins,best_score,skin,char_skin,kills,gems,tier)';
+    const rows=await netGet('/rako_friend_requests?or=(from_id.eq.'+NET.uid+',to_id.eq.'+NET.uid+')&status=eq.accepted&select=id,from_id,to_id,a:rako_players!from_id'+cols+',b:rako_players!to_id'+cols);
+    return rows.map(r=>{ const mine=r.from_id===NET.uid, other=(mine?r.b:r.a)||{};
+      return {reqId:r.id, id: mine? r.to_id : r.from_id, name: other.name, online: isOnline(other.last_seen),
+        skin:other.skin, charSkin:other.char_skin, kills:other.kills, gems:other.gems, tier:other.tier, wins:other.wins, time:other.best_score}; }).filter(x=>x.name); }catch(e){ return []; } }
 async function onlineRespond(id,accept){ try{ await netPatch('/rako_friend_requests?id=eq.'+id,{status:accept?'accepted':'declined'}); }catch(e){} }
 async function onlineUnfriend(reqId){ try{ await netDelete('/rako_friend_requests?id=eq.'+reqId); }catch(e){} }
 async function onlineLeaderboard(){ if(!NET.ready) return null;
