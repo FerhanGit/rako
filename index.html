@@ -3945,6 +3945,16 @@ function checkAchievements(silent){
   return fresh;
 }
 function openAch(){ checkAchievements(true); renderAch(); showScreen('ach'); }
+// ---------- DAILY REWARD (login bonus with a streak) ----------
+function claimDaily(){
+  const today=new Date().toLocaleDateString();
+  if(account.daily.last===today){ flash('🎁 Already claimed today — come back tomorrow!'); return; }
+  account.daily.streak=(account.daily.streak||0)+1;
+  const reward=Math.min(220, 50+(account.daily.streak-1)*15);
+  account.gems=(account.gems||0)+reward; account.daily.last=today;
+  saveAccount(); refreshChip(); netSyncStats(); checkAchievements();
+  flash('🎁 Daily reward: +'+reward+' 💎 · '+account.daily.streak+'-day streak!');
+}
 function renderAch(){
   const B=document.getElementById('achBody'); if(!B) return;
   const done=account.ach.length;
