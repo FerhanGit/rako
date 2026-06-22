@@ -4399,7 +4399,7 @@ function spinLottery(){
   const wh=document.getElementById('lottoWheel');
   wh.style.transition='transform 3.2s cubic-bezier(.17,.67,.2,1)'; wh.style.transform='rotate('+_lottoAngle+'deg)';
   SFX.chest&&SFX.chest();
-  setTimeout(()=>{ _lottoSpinning=false; sp.disabled=false;
+  setTimeout(()=>{ _lottoSpinning=false; sp.disabled=false; sp.textContent='🎰 SPIN — '+lottoCost()+' 💎';
     if(outcome==='none') res.textContent='😞 Nothing this time — try again!';
     else if(outcome==='g50'){ account.gems+=50; res.textContent='🎉 You won 50 💎!'; }
     else if(outcome==='g85'){ account.gems+=85; res.textContent='🎉 You won 85 💎!'; }
