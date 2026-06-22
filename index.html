@@ -4020,6 +4020,13 @@ const ACHIEVEMENTS=[
   { id:'ghostking',  icon:'👻', name:'Reaper',        desc:'Slay 1000 monsters → unlock the PHANTOM skin.',           reward:150, rewardSkin:'phantom',   cur:()=>account.kills||0,     max:1000 },
   { id:'cyborg',     icon:'🤖', name:'Machine War',   desc:'Slay 300 monsters → unlock the CYBORG skin.',             reward:60,  rewardSkin:'cyborg',    cur:()=>account.kills||0,     max:300 },
   { id:'angel',      icon:'😇', name:'Ascended',      desc:'Win 25 games → unlock the ANGEL skin.',                   reward:160, rewardSkin:'angel',     cur:()=>account.wins||0,      max:25 },
+  { id:'wins100',    icon:'🏆', name:'Centurion',     desc:'Win 100 games.',                    reward:500, cur:()=>account.wins||0,          max:100 },
+  { id:'kills5000',  icon:'🔪', name:'Annihilator',   desc:'Slay 5000 monsters.',               reward:400, cur:()=>account.kills||0,         max:5000 },
+  { id:'gems5000',   icon:'💰', name:'Millionaire',   desc:'Hold 5000 gems at once.',           reward:200, cur:()=>account.gems||0,          max:5000 },
+  { id:'champ25',    icon:'🐲', name:'Boss Destroyer',desc:'Defeat 25 champion bosses.',        reward:350, cur:()=>account.champKills||0,    max:25 },
+  // ---- SECRET achievements: hidden until you discover them. We don't tell you how. ----
+  { id:'secretlib',  icon:'🔮', name:'The Reader',    desc:'You rewrote the end with your own eyes.', reward:250, rewardSkin:'rune', secret:true, cur:()=>account.secretLibWin?1:0, max:1 },
+  { id:'secretimp',  icon:'🔥', name:'Untouchable',   desc:'You bested the God of the End at its cruelest.', reward:300, secret:true, cur:()=>account.impWin?1:0, max:1 },
 ];
 // award any newly-completed achievements; returns the list of fresh ones
 function checkAchievements(silent){
