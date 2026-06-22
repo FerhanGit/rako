@@ -3783,8 +3783,7 @@ function blankAvatarURL(){
   const c=document.createElement('canvas'); c.width=c.height=72; const g=c.getContext('2d');
   g.fillStyle='#222a22'; g.fillRect(0,0,72,72);
   g.fillStyle='#3c4a3c'; g.beginPath(); g.arc(36,30,12,0,7); g.fill();              // head
-  g.beginPath(); g.ellipse(36,62,20,16,0,Math.PI,0); g.fill();                       // shoulders
-  g.fillStyle='#6a7a6a'; g.font='bold 26px sans-serif'; g.textAlign='center'; g.fillText('?',36,40);
+  g.beginPath(); g.ellipse(36,62,20,16,0,Math.PI,0); g.fill();                       // shoulders silhouette
   return c.toDataURL();
 }
 function showProfile(name, stats){
