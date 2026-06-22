@@ -3835,7 +3835,7 @@ function renderSkins(){
   G.querySelectorAll('button[data-s]').forEach(b=> b.onclick=()=>{
     const id=b.dataset.s;
     if(b.dataset.lock){ flash('🔒 '+id+' is a premium colour — unlock it in the RAKO Pass.'); SFX.hurt&&SFX.hurt(); return; }   // colours are pass-only, not buyable
-    account.skin=id; saveAccount(); refreshChip(); renderSkins(); renderShop(); });
+    account.skin=id; saveAccount(); refreshChip(); renderSkins(); renderShop(); netSyncStats(); });
 }
 function openQuests(){ refreshQuests(); renderQuests('questBody'); showScreen('quests'); }
 function openQuestPanel(){ if(state!=='play'||inSecretArea()) return; refreshQuests(); renderQuests('qpanelBody'); state='qpanel'; document.getElementById('qpanel').classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); }
