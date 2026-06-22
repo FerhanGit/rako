@@ -2215,8 +2215,8 @@ function update(){
       objects.splice(i,1);
       if(o.lastHitBy && o.lastHitBy.type==='ally'){ o.lastHitBy.kills++; }   // teammate scored
       else { kills++; account.kills=(account.kills||0)+1; cam.dmg+=0.4; cam.maxHp+=2; cam.hp=Math.min(cam.maxHp,cam.hp+8); gainXP(xpFor(o)); questEvent('monster');
-        if(wasChamp){ account.gems=(account.gems||0)+25; gainXP(40); addPassXP(20); flash('👑 You slew the '+champNm+'! +25 💎, +40 XP'); }
-        saveAccount(); }
+        if(wasChamp){ account.gems=(account.gems||0)+25; gainXP(40); addPassXP(20); account.champKills=(account.champKills||0)+1; flash('👑 You slew the '+champNm+'! +25 💎, +40 XP'); }
+        checkAchievements(); saveAccount(); }
     } else if(o.type==='bunny' && o.hp<=0){
       burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1); questEvent('bunny'); gainXP(1);
       flash("Meat +1 (total "+cam.meat+") — feed a wolf (P) to tame it");
