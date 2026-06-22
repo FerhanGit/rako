@@ -2639,7 +2639,7 @@ function drawMap(){
   dot(HOME.x,HOME.z,'#5fd05f','');
   dot(SH.x,SH.z,'#caa020','');
   dot(BOSS.x,BOSS.z,'#ff20a0','');
-  for(const o of objects){ if((o.type==='chest'&&!o.opened)) dot(o.x,o.z,o.rako?'#ffe070':'#caa020'); }
+  for(const o of objects){ if((o.type==='chest'&&!o.opened)) dot(o.x,o.z,o.rako?'#ffe070':(o.gold?'#ffd24a':'#caa020')); }
   // biome buildings — only shown once you've explored near them (fog of war)
   const BICON={igloo:'🏠',spaceship:'🛸',rocket:'🚀',volcano:'🌋',library:'📖',icechest:'❄'};
   ctx.textAlign='center';
