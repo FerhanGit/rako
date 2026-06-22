@@ -4465,6 +4465,8 @@ function lottoConfetti(){
     setTimeout(()=>s.remove(),1600); }
 }
 function openLottery(){
+  const today=new Date().toLocaleDateString();
+  if(account.lottoDay!==today){ account.lottoSpins=0; account.lottoDay=today; saveAccount(); }   // price resets each day
   const seg=360/LOTTO_WEDGES.length, stops=[];
   for(let i=0;i<LOTTO_WEDGES.length;i++) stops.push(LOTTO_COLORS[i]+' '+(i*seg)+'deg '+((i+1)*seg)+'deg');
   const wh=document.getElementById('lottoWheel'); wh.style.background='conic-gradient('+stops.join(',')+')';
