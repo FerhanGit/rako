@@ -2890,6 +2890,17 @@ function drawCharacter(g, x, y, r, id, col, f){
     g.fillStyle='#333'; g.beginPath(); g.arc(x-headR*0.3,headY,headR*0.1,0,7); g.arc(x+headR*0.3,headY,headR*0.1,0,7); g.fill();
     g.restore(); return;
   }
+  if(id==='rune'){   // secret reward — dark robed wanderer etched with glowing runes
+    g.fillStyle='#14121c'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.64,0,0,7); g.fill();    // robe lower
+    g.fillStyle='#1d1930'; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();    // robe
+    g.strokeStyle='#46e0c0'; g.lineWidth=Math.max(1,r*0.05);                                       // glowing runes
+    g.beginPath(); g.moveTo(x-r*0.3,y-r*0.4); g.lineTo(x-r*0.1,y-r*0.1); g.lineTo(x-r*0.3,y+r*0.15); g.stroke();
+    g.beginPath(); g.arc(x+r*0.2,y-r*0.05,r*0.18,0,7); g.stroke();
+    g.beginPath(); g.moveTo(x+r*0.1,y+r*0.3); g.lineTo(x+r*0.32,y+r*0.1); g.stroke();
+    g.fillStyle='#1d1930'; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();                      // hooded head
+    g.fillStyle='#46e0c0'; g.beginPath(); g.arc(x-headR*0.3,headY,headR*0.13,0,7); g.arc(x+headR*0.3,headY,headR*0.13,0,7); g.fill();  // glowing eyes
+    g.restore(); return;
+  }
   if(id==='pickaxe'){
     g.strokeStyle='#7a4a22'; g.lineWidth=Math.max(2,r*0.18); g.beginPath(); g.moveTo(x+r*0.9,y+r*0.5); g.lineTo(x+r*1.25,y-r*1.0); g.stroke();
     g.strokeStyle='#cfd0d8'; g.lineWidth=Math.max(3,r*0.28); g.beginPath(); g.arc(x+r*1.25,y-r*1.05,r*0.45,-0.7,0.7); g.stroke();
