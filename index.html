@@ -4445,14 +4445,24 @@ function renderPass(){
 }
 function openShop(){ renderShop(); showScreen('shop'); }
 // ---------- CRAFTING BENCH ----------
+const FOOD_EMOJI={meat:'🍖',apple:'🍎',berry:'🫐',mushroom:'🍄',carrot:'🥕',fish:'🐟',honey:'🍯',cheese:'🧀',stew:'🍲'};
 const CRAFTS=[
+  {id:'stew',     name:'🍲 Cook a Hearty Stew',    cost:{'food:berry':1,'food:mushroom':1,'food:carrot':1}, desc:'Combine 3 small foods into a filling Stew (+30 hunger).'},
   {id:'house',    name:'🏠 Bigger & Cooler House', cost:{rock:6,wood:4,meat:2}, desc:'Upgrade your cabin — +25 max HP & a fancier home.'},
   {id:'sword',    name:'🗡 Stone Sword',           cost:{rock:8,wood:2},        desc:'+6 damage.'},
   {id:'feast',    name:'🍢 Cook a Feast',          cost:{fish:3,meat:2},        desc:'Cook 4 hearty meals into your food bag.'},
   {id:'amethyst', name:'💜 Amethyst Skin (secret)',cost:{wood:5,rock:5,amethyst:2}, desc:'Unlock the rare crystal Amethyst skin.'},
 ];
-function matCount(k){ return k==='meat'?(cam&&cam.meat||0):(cam&&cam.mats&&cam.mats[k]||0); }
-function spendMat(k,n){ if(k==='meat') cam.meat-=n; else cam.mats[k]-=n; }
+function matCount(k){
+  if(k.indexOf('food:')===0){ const fk=k.slice(5); return (cam&&cam.food&&cam.food[fk])||0; }
+  if(k==='meat') return (cam&&cam.meat)||0;
+  return (cam&&cam.mats&&cam.mats[k])||0;
+}
+function spendMat(k,n){
+  if(k.indexOf('food:')===0){ const fk=k.slice(5); cam.food[fk]=(cam.food[fk]||0)-n; return; }
+  if(k==='meat'){ cam.meat-=n; return; }
+  cam.mats[k]-=n;
+}
 function canCraft(c){ for(const k in c.cost){ if(matCount(k)<c.cost[k]) return false; } return true; }
 function openCraft(){ renderCraft(); document.getElementById('craftPanel').classList.remove('hidden'); }
 function closeCraft(){ document.getElementById('craftPanel').classList.add('hidden'); }
