@@ -1489,8 +1489,12 @@ function mineRock(rc){
   let total=0, names=[];
   for(let i=0;i<3;i++){ const k=rollRock(); total+=k.pts; names.push(k.n); }
   cam.points+=total;
+  // crafting materials from the rock: rock + wood/fish, rare amethyst
+  const rk=3+Math.floor(Math.random()*3), wd=2+Math.floor(Math.random()*2), fs=Math.floor(Math.random()*3);
+  cam.mats.rock+=rk; cam.mats.wood+=wd; cam.mats.fish+=fs;
+  let amy=''; if(Math.random()<0.18){ cam.mats.amethyst++; amy=', 💎 amethyst!'; }
   burst(cam.x,cam.z,'#b070e0',16); SFX.chest();
-  flash("Stone chest: "+names.join(", ")+" = +"+total+" rock points (total "+cam.points+")");
+  flash("Mined: +"+rk+" rock, +"+wd+" wood, +"+fs+" fish"+amy+" (+"+total+" pts)");
 }
 function strongholdGuards(){ return objects.filter(o=>o.type==='monster' && o.guard).length; }
 function openStronghold(sc){
