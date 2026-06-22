@@ -4272,10 +4272,31 @@ async function netCheckGifts(){ if(!NET.ready) return;
     saveAccount(); refreshChip(); netSyncStats(); if(got.length) flash('🎁 Club gift: '+got.join(' · ')); }catch(e){} }
 function clubLeaderboardHTML(clubs){
   const sorted=clubs.slice().sort((a,b)=>b._wins-a._wins).slice(0,15);
-  let h='<div style="font-weight:bold;color:#8fe070;margin:14px 0 4px">🏆 CLUB LEADERBOARD</div>';
+  let h='<div style="font-weight:bold;color:#8fe070;margin:14px 0 4px">🏆 CLUB LEADERBOARD <span style="font-size:11px;color:#9ab09a;font-weight:normal">— tap a club to see members</span></div>';
   if(!sorted.length) return h+'<div class="hint" style="font-size:13px">No clubs yet — be the first to build one!</div>';
-  sorted.forEach((c,i)=>{ h+='<div class="lbRow"><span><span class="r">'+(i+1)+'.</span> '+clubTag(c.name,c.color)+'</span><span>'+c._wins+' wins · '+c._members+'👥</span></div>'; });
+  sorted.forEach((c,i)=>{ h+='<div class="lbRow clubRow" data-cid="'+c.id+'" style="cursor:pointer"><span><span class="r">'+(i+1)+'.</span> '+clubTag(c.name,c.color)+'</span><span>'+c._wins+' wins · '+c._members+'👥</span></div>'; });
   return h;
+}
+// club detail: members (each clickable to their profile) + a Join button
+async function openClubDetail(cid){
+  const B=document.getElementById('clubBody'); if(!B) return; B.innerHTML='<div class="hint">Loading…</div>';
+  let cl=(_clubsCache||[]).find(c=>c.id===cid); if(!cl){ const all=await netClubList(); cl=all.find(c=>c.id===cid); }
+  if(!cl){ renderClubs(); return; }
+  const members=await netClubMembers(cid);
+  let h='<button id="clubDetailBack" class="alt" style="font-size:12px;padding:4px 10px">← Back to clubs</button>';
+  h+='<div style="font-size:24px;font-weight:bold;margin-top:10px">'+clubTag(cl.name,cl.color)+'</div>';
+  h+='<div class="hint" style="font-size:12px">'+members.length+'/'+cl.max_members+' members · need '+cl.min_wins+' wins to join · '+(cl._wins||0)+' total club wins</div>';
+  h+='<div style="font-weight:bold;color:#8fe070;margin:10px 0 4px">Members <span style="font-size:11px;color:#9ab09a;font-weight:normal">— tap a name for their account</span></div>';
+  if(!members.length) h+='<div class="hint" style="font-size:13px">No members.</div>';
+  members.forEach(m=>{ const isOwner=m.id===cl.owner_id;
+    h+='<div class="friendRow"><span>'+pn(m.name,{wins:m.wins,charSkin:m.char_skin,skin:m.skin})+(isOwner?' <span style="color:#ffd070">(owner)</span>':'')+' · '+(m.wins||0)+' wins</span></div>'; });
+  if(!account.club){ const full=members.length>=cl.max_members, can=(account.wins||0)>=cl.min_wins&&!full;
+    h+='<button id="detailJoin"'+(can?'':' disabled')+' style="margin-top:14px">'+(full?'Club is full':(can?'🏰 Join this club':'Need '+cl.min_wins+' wins to join'))+'</button>'; }
+  else if(account.club.id===cl.id) h+='<div class="hint" style="margin-top:12px;color:#8fe070">⭐ This is your club.</div>';
+  else h+='<div class="hint" style="margin-top:12px">Leave your current club to join another.</div>';
+  B.innerHTML=h;
+  document.getElementById('clubDetailBack').onclick=()=>renderClubs();
+  const dj=document.getElementById('detailJoin'); if(dj) dj.onclick=async()=>{ dj.disabled=true; const r=await netJoinClub(cl); dj.textContent=r.msg; setTimeout(renderClubs,700); };
 }
 async function openClubs(){ showScreen('clubs'); const B=document.getElementById('clubBody'); B.innerHTML='<div class="hint">Loading clubs…</div>'; if(!NET.ready) await ensurePlayer(); await netMyClub(); renderClubs(); }
 async function renderClubs(){
