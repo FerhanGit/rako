@@ -4513,6 +4513,13 @@ const ACHIEVEMENTS=[
   { id:'kills5000',  icon:'🔪', name:'Annihilator',   desc:'Slay 5000 monsters.',               reward:400, cur:()=>account.kills||0,         max:5000 },
   { id:'gems5000',   icon:'💰', name:'Millionaire',   desc:'Hold 5000 gems at once.',           reward:200, cur:()=>account.gems||0,          max:5000 },
   { id:'champ25',    icon:'🐲', name:'Boss Destroyer',desc:'Defeat 25 champion bosses.',        reward:350, cur:()=>account.champKills||0,    max:25 },
+  { id:'homeowner',  icon:'🏡', name:'Homeowner',    desc:'Upgrade your house at the crafting bench.', reward:60,  cur:()=>account.houseLvl||0,            max:1 },
+  { id:'crafter',    icon:'💜', name:'Master Crafter',desc:'Craft the Amethyst skin.',           reward:90,  cur:()=>((account.ownedSkins||[]).indexOf('amethyst')>=0?1:0), max:1 },
+  { id:'lucky',      icon:'🍀', name:'Jackpot Winner',desc:'Win the Pumper skin from the lottery.', reward:100, cur:()=>((account.ownedSkins||[]).indexOf('pumper')>=0?1:0),   max:1 },
+  { id:'explorer6',  icon:'🌍', name:'World Walker',  desc:'Visit all 6 biomes.',                reward:120, cur:()=>(account.biomes||[]).length,    max:6 },
+  { id:'fullcloset', icon:'🧳', name:'Full Closet',   desc:'Own 20 character skins.',            reward:200, cur:()=>(account.ownedSkins||[]).length, max:20 },
+  { id:'gemlord',    icon:'👑', name:'Gem Lord',      desc:'Hold 10,000 gems at once.',          reward:300, cur:()=>account.gems||0,               max:10000 },
+  { id:'wins250',    icon:'🏅', name:'Unstoppable',   desc:'Win 250 games.',                     reward:1000,cur:()=>account.wins||0,               max:250 },
   // ---- SECRET achievements: hidden until you discover them. We don't tell you how. ----
   { id:'secretlib',  icon:'🔮', name:'The Reader',    desc:'You rewrote the end with your own eyes.', reward:250, rewardSkin:'rune', secret:true, cur:()=>account.secretLibWin?1:0, max:1 },
   { id:'secretimp',  icon:'🔥', name:'Untouchable',   desc:'You bested the God of the End at its cruelest.', reward:300, secret:true, cur:()=>account.impWin?1:0, max:1 },
