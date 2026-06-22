@@ -2418,7 +2418,7 @@ function draw(){
     ctx.globalAlpha=Math.max(0.15,fog);
     try{
     if(o.type==='hole') drawHole(o,p);
-    else if(o.type==='tree') drawTree(p);
+    else if(o.type==='tree') drawTree(o,p);
     else if(o.type==='spire') drawSpire(o,p);
     else if(o.type==='giant') drawGiant(o,p);
     else if(o.type==='wall') drawWall(p);
