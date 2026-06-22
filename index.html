@@ -3512,6 +3512,18 @@ function drawCoin(o,p){
   ctx.fillStyle='#b8860b'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(3,w*0.5*(0.4+0.6*sw)),Math.max(3,h*0.5),0,0,7); ctx.fill();
   ctx.fillStyle='#ffd84a'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(2,w*0.34*(0.4+0.6*sw)),Math.max(2,h*0.34),0,0,7); ctx.fill();
 }
+function drawCraftBench(p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.fillStyle='#4a3118'; ctx.fillRect(x-w*0.42, base-h*0.5, w*0.08, h*0.5); ctx.fillRect(x+w*0.34, base-h*0.5, w*0.08, h*0.5);  // legs
+  ctx.fillStyle='#6a4a26'; ctx.fillRect(x-w*0.5, base-h*0.66, w, h*0.2);                       // workbench top
+  ctx.fillStyle='#3a2a16'; ctx.fillRect(x-w*0.5, base-h*0.5, w, h*0.06);                        // shelf
+  // tools on top: hammer + saw
+  ctx.strokeStyle='#caa', ctx.lineWidth=Math.max(1,w*0.05);
+  ctx.fillStyle='#999'; ctx.fillRect(x-w*0.28, base-h*0.78, w*0.16, h*0.08);                    // hammer head
+  ctx.fillStyle='#5a3a1e'; ctx.fillRect(x-w*0.22, base-h*0.74, w*0.04, h*0.14);                 // hammer handle
+  ctx.fillStyle='#bcd'; ctx.beginPath(); ctx.moveTo(x+w*0.1,base-h*0.66); ctx.lineTo(x+w*0.34,base-h*0.66); ctx.lineTo(x+w*0.1,base-h*0.8); ctx.closePath(); ctx.fill();  // saw
+  ctx.fillStyle='#cfe8cf'; ctx.font=`bold ${Math.max(8,h*0.1)}px sans-serif`; ctx.textAlign='center'; ctx.fillText('🔨', x, base-h*0.86); ctx.textAlign='left';
+}
 function drawBuyTable(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.fillStyle='#5a3a1e'; ctx.fillRect(x-w*0.42, base-h*0.45, w*0.07, h*0.45);
