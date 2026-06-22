@@ -4705,6 +4705,7 @@ function leaveToLobby(){
   document.getElementById('topbar').classList.add('hidden');
   document.getElementById('overlay').classList.remove('hidden');
   playLobbyMusic();   // back to the lobby track (your music.mp3)
+  checkAchievements();
   showScreen('lobby');
 }
 
