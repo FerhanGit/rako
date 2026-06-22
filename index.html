@@ -4020,7 +4020,7 @@ function musicBass(freq){ if(!AC) return; const t=AC.currentTime,o=AC.createOsci
 // lobby = your music.mp3 file (the song you drop in); in-game = chosen procedural style
 function playGameMusic(){ stopMusic(); if(settings.gameMusic==='off'||!settings.music) return; _procStyle=settings.gameMusic; startProc(); }
 function playLobbyMusic(){ if(settings.music) startMusic(); }
-function stopProc(){ if(procTimer){ clearInterval(procTimer); procTimer=null; } if(musicMode==='proc') musicMode=null; }
+function stopProc(){ if(procTimer){ clearInterval(procTimer); procTimer=null; } if(beatTimer){ clearInterval(beatTimer); beatTimer=null; } if(musicMode==='proc') musicMode=null; }
 function pad(freq,dur){ if(!AC) return; const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
   o.type='sine'; o.frequency.value=freq;
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.05,t+1.0);
