@@ -4078,14 +4078,21 @@ function drawWeaponBar(){
     {key:'R', icon:'🚀', own:cam.rpg>0},
     {key:'F', icon:'🪽', own:!!cam.hasPet},
   ];
-  const slots=all.filter(s=>s.own);   // only show what you actually have
-  const bw=44, gap=6, total=slots.length*bw+(slots.length-1)*gap, x0=(W-total)/2, y=H-56;
+  const slots=all.filter(s=>s.own);   // weapons & abilities you own
+  // stored items live in the SAME bar — food first (eat with X), then materials
+  const items=[];
+  const fc=foodCount(); if(fc>0) items.push({key:'X', icon:'🍖', count:fc});
+  [['🪵','wood'],['🪨','rock'],['🐟','fish'],['💎','amethyst']].forEach(m=>{ const n=(cam.mats&&cam.mats[m[1]])||0; if(n>0) items.push({icon:m[0],count:n}); });
+  const mc=cam.meat||0; if(mc>0) items.push({icon:'🥩',count:mc});
+  const bar=slots.concat(items);
+  const bw=44, gap=6, total=bar.length*bw+(bar.length-1)*gap, x0=(W-total)/2, y=H-56;
   ctx.textAlign='center';
-  for(let i=0;i<slots.length;i++){ const s=slots[i], x=x0+i*(bw+gap);
+  for(let i=0;i<bar.length;i++){ const s=bar[i], x=x0+i*(bw+gap), isItem=(i>=slots.length);
     ctx.fillStyle='#0c1810dd'; ctx.fillRect(x,y,bw,bw);
-    ctx.strokeStyle='#5fd05f'; ctx.lineWidth=2; ctx.strokeRect(x,y,bw,bw);
+    ctx.strokeStyle=isItem?'#caa040':'#5fd05f'; ctx.lineWidth=2; ctx.strokeRect(x,y,bw,bw);   // gold border = stored item
     ctx.font='22px sans-serif'; ctx.fillStyle='#fff'; ctx.fillText(s.icon, x+bw/2, y+bw/2+3);
-    ctx.font='10px sans-serif'; ctx.fillStyle='#bcd'; ctx.fillText(s.key, x+bw/2, y+bw-4);
+    if(s.count!=null){ ctx.font='bold 11px sans-serif'; ctx.fillStyle='#ffe680'; ctx.fillText('x'+s.count, x+bw/2, y+bw-4); }
+    if(s.key){ ctx.font='10px sans-serif'; ctx.fillStyle='#bcd'; ctx.fillText(s.key, x+bw/2, y+11); }
   }
   ctx.textAlign='left';
 }
