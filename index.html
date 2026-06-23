@@ -3615,6 +3615,16 @@ function drawCoin(o,p){
   ctx.fillStyle='#b8860b'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(3,w*0.5*(0.4+0.6*sw)),Math.max(3,h*0.5),0,0,7); ctx.fill();
   ctx.fillStyle='#ffd84a'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(2,w*0.34*(0.4+0.6*sw)),Math.max(2,h*0.34),0,0,7); ctx.fill();
 }
+function drawRock(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.55,w*0.16,0,0,7); ctx.fill(); ctx.restore();
+  const flash=o.flash>0; if(o.flash>0) o.flash--;
+  ctx.fillStyle=flash?'#fff':'#6b6f76'; ctx.beginPath(); ctx.ellipse(x, base-h*0.32, w*0.55, h*0.42, 0,0,7); ctx.fill();   // boulder
+  ctx.fillStyle=flash?'#fff':'#878d95'; ctx.beginPath(); ctx.ellipse(x-w*0.14, base-h*0.42, w*0.34, h*0.26, 0,0,7); ctx.fill();  // highlight
+  ctx.strokeStyle='#4a4e54'; ctx.lineWidth=Math.max(1,w*0.05);                                   // cracks
+  ctx.beginPath(); ctx.moveTo(x-w*0.2,base-h*0.5); ctx.lineTo(x,base-h*0.2); ctx.lineTo(x+w*0.18,base-h*0.4); ctx.stroke();
+  if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*0.72,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*0.72,bw*2*(o.hp/o.maxHp),4); }
+}
 function drawBush(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.55,w*0.14,0,0,7); ctx.fill(); ctx.restore();
