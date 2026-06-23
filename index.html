@@ -958,6 +958,13 @@ const FOODS=[
 ];
 function food(x,z,kind){ const fk=kind||FOODS[Math.floor(Math.random()*FOODS.length)].k;
   return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6,kind:fk}; }
+function placeBush(){
+  if(state!=='play'||scene!=='forest') return;
+  if(!cam.hasBush){ flash(cam.bushUsed?'Your camping bush is already placed.':'No camping bush — find one in a Golden Chest.'); return; }
+  objects.push({type:'bush', x:cam.x+Math.sin(cam.yaw)*1.4, z:cam.z+Math.cos(cam.yaw)*1.4, height:1.4, width:1.8});
+  cam.hasBush=false; cam.bushUsed=true; burst(cam.x,cam.z,'#3a8a3a',12); SFX.door&&SFX.door();
+  flash('🌿 Camping bush placed! Stand in it to hide — enemies can\'t see you.');
+}
 function foodCount(){ if(!cam||!cam.food) return 0; let n=0; for(const k in cam.food) n+=cam.food[k]||0; return n; }
 function eatStored(){
   if(!cam||!cam.food) return;
