@@ -3601,6 +3601,14 @@ function drawCoin(o,p){
   ctx.fillStyle='#b8860b'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(3,w*0.5*(0.4+0.6*sw)),Math.max(3,h*0.5),0,0,7); ctx.fill();
   ctx.fillStyle='#ffd84a'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(2,w*0.34*(0.4+0.6*sw)),Math.max(2,h*0.34),0,0,7); ctx.fill();
 }
+function drawBush(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.55,w*0.14,0,0,7); ctx.fill(); ctx.restore();
+  const clumps=[[0,-0.3,0.5],[-0.4,-0.05,0.4],[0.4,-0.05,0.4],[0,0.05,0.46]];
+  ctx.fillStyle='#1c3a1d'; clumps.forEach(c=>{ ctx.beginPath(); ctx.ellipse(x+c[0]*w, base-h*0.45+c[1]*h, c[2]*w, c[2]*w*0.95,0,0,7); ctx.fill(); });
+  ctx.fillStyle='#2f5e30'; clumps.forEach(c=>{ ctx.beginPath(); ctx.ellipse(x+c[0]*w-w*0.08, base-h*0.45+c[1]*h-w*0.08, c[2]*w*0.6, c[2]*w*0.55,0,0,7); ctx.fill(); });
+  if(cam.hidden && Math.hypot(cam.x-o.x,cam.z-o.z)<2.4){ ctx.fillStyle='#8fe070'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center'; ctx.fillText('🌿 HIDDEN', x, base-h-6); ctx.textAlign='left'; }
+}
 function drawCraftBench(p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.fillStyle='#4a3118'; ctx.fillRect(x-w*0.42, base-h*0.5, w*0.08, h*0.5); ctx.fillRect(x+w*0.34, base-h*0.5, w*0.08, h*0.5);  // legs
