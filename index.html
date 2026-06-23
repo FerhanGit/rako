@@ -1358,7 +1358,7 @@ function attack(){
   let best=null, bestDepth=1e9;
   for(const o of objects){
     const hittable = o.type==='monster' || (o.type==='boss'&&o.alive) || o.type==='bunny'
-                  || o.type==='entity' || (o.type==='wolf' && !o.tamed);
+                  || o.type==='entity' || (o.type==='wolf' && !o.tamed) || o.type==='rock';
     if(!hittable) continue;
     if(o.type==='monster' && !night && !alwaysHostile(o)) continue;   // can only strike visible foes
     const rx=o.x-cam.x, rz=o.z-cam.z;
