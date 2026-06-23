@@ -2299,7 +2299,8 @@ function update(){
       if(frozen || !(night || alwaysHostile(o) || (o.type==='boss'&&o.left))) continue;   // dormant by day / frozen in time (boss that left the city hunts always)
       const rx=cam.x-o.x, rz=cam.z-o.z, d=Math.hypot(rx,rz)||1;
       const range=o.type==='boss'?60:18;
-      if(d<range) o.aggro=true;
+      if(cam.hidden){ o.aggro=false; }   // hidden in the camping bush — enemies lose sight of you
+      else if(d<range) o.aggro=true;
       if(o.champion && o.aggro && d<42){ o.roarCd=(o.roarCd||0)-1; if(o.roarCd<=0){ o.roarCd=170; SFX.boss&&SFX.boss(); }
         o.abilCd=(o.abilCd||0)-1; if(o.abilCd<=0){ o.abilCd=150; champAbility(o,d); } }
       if(o.aggro && !safe){
