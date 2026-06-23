@@ -4471,8 +4471,8 @@ function spendMat(k,n){
   cam.mats[k]-=n;
 }
 function canCraft(c){ for(const k in c.cost){ if(matCount(k)<c.cost[k]) return false; } return true; }
-function openCraft(){ renderCraft(); document.getElementById('craftPanel').classList.remove('hidden'); }
-function closeCraft(){ document.getElementById('craftPanel').classList.add('hidden'); }
+function openCraft(){ if(state!=='play') return; state='craft'; renderCraft(); document.getElementById('craftPanel').classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); }
+function closeCraft(){ state='play'; document.getElementById('craftPanel').classList.add('hidden'); }
 function renderCraft(){
   if(!cam) return;
   // Minecraft-style item grid — every food + material you hold, as slots
