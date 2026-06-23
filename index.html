@@ -1368,6 +1368,14 @@ function attack(){
     const aim=Math.abs(side)/depth;            // 0 = dead ahead
     if(depth<6.5 && aim<0.55 && depth<bestDepth){ best=o; bestDepth=depth; }
   }
+  if(best && best.type==='rock'){
+    best.flash=6; best.hp-=cam.dmg; burst(best.x,best.z,'#9aa',8); SFX.hit&&SFX.hit(); shake=Math.max(shake,4);
+    if(best.hp<=0){ const r=2+Math.floor(Math.random()*3), wd=Math.floor(Math.random()*2); cam.mats.rock+=r; cam.mats.wood+=wd;
+      let amy=''; if(Math.random()<0.12){ cam.mats.amethyst++; amy=' +💎 amethyst'; }
+      burst(best.x,best.z,'#b070e0',16); objects.splice(objects.indexOf(best),1);
+      flash('⛏ Broke a rock: +'+r+' rock'+(wd?' +'+wd+' wood':'')+amy); }
+    return;
+  }
   if(best){
     best.flash=6; best.aggro=true; best.hp-=cam.dmg; best.lastHitBy=null;   // null = player kill
     burst(best.x,best.z, best.type==='boss'?'#ff40ff':'#ffd040', 8);
