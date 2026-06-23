@@ -4097,6 +4097,7 @@ function drawWeaponBar(){
     {key:'G', icon:'🧊', own:!!cam.hasIce},
     {key:'R', icon:'🚀', own:cam.rpg>0},
     {key:'F', icon:'🪽', own:!!cam.hasPet},
+    {key:'V', icon:'🌿', own:!!cam.hasBush},
   ];
   const slots=all.filter(s=>s.own);   // weapons & abilities you own
   // stored items live in the SAME bar — food first (eat with X), then materials
