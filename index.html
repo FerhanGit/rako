@@ -1215,6 +1215,7 @@ addEventListener('keydown',e=>{
   if(k==='b') firePistol();
   if(k==='c') activatePoison();
   if(k==='x') eatStored();
+  if(k==='v') placeBush();
   if(k==='escape'){ if(state==='inv') toggleInventory(); else if(state==='trade') closeTrade(); else if(state==='buy') closeBuy(); else if(state==='admin') closeAdmin(); else if(state==='map') toggleMap(); else if(state==='craft') closeCraft(); }
 });
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
