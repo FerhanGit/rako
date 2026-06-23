@@ -1381,7 +1381,9 @@ function grantChest(o, who){
 }
 function applyChestReward(rako, code, by){
   if(code==='gold'){ const g=3+Math.floor(Math.random()*6); account.gems=(account.gems||0)+g; cam.maxHp+=20; cam.hp=cam.maxHp; cam.dmg+=6;
-    saveAccount(); refreshChip(); netSyncStats(); SFX.rako&&SFX.rako(); flash(""+by+"💰 GOLDEN CHEST! +"+g+" gems, +20 max HP, +6 damage!"); return; }
+    saveAccount(); refreshChip(); netSyncStats(); SFX.rako&&SFX.rako();
+    let extra=''; if(!cam.hasBush && !cam.bushUsed){ cam.hasBush=true; extra=' + a 🌿 Camping Bush (press V to place once & hide)!'; }
+    flash(""+by+"💰 GOLDEN CHEST! +"+g+" gems, +20 max HP, +6 damage"+extra); return; }
   if(code && code.indexOf('theme:')===0){ applyThemeChest(code.slice(6), by); return; }
   if(rako){ SFX.rako();
     if(!cam.hasPet){ cam.hasPet=true; cam.flyCd=0; flash(""+by+"RAKO CHEST! Skyling pet unlocked — you can FLY!"); }
