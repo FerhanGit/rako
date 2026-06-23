@@ -5734,6 +5734,7 @@ document.getElementById('howToBtn').onclick=()=>document.getElementById('howto')
 document.getElementById('howToClose').onclick=()=>document.getElementById('howto').classList.add('hidden');
 document.getElementById('profClose').onclick=()=>document.getElementById('profile').classList.add('hidden');
 document.getElementById('craftClose').onclick=closeCraft;
+document.getElementById('craftPanel').addEventListener('mousedown',e=>{ if(e.target.id==='craftPanel') closeCraft(); });
 document.getElementById('profile').addEventListener('mousedown',e=>{ if(e.target.id==='profile') document.getElementById('profile').classList.add('hidden'); });
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('.pn');
   if(t){ let d={}; try{ d=JSON.parse(decodeURIComponent(t.dataset.info||'{}')); }catch(e2){} showProfile(t.dataset.pname,d); } });
