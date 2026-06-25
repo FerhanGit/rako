@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Replace YOURDOMAIN with your real published address once hosted:
+Sitemap: https://YOURDOMAIN/sitemap.xml
