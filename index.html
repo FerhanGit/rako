@@ -2278,11 +2278,11 @@ function update(){
   { const bush=objects.find(o=>o.type==='bush'); cam.hidden = !!(bush && !cam.flyTime && Math.hypot(cam.x-bush.x,cam.z-bush.z)<2.4); }
   { const lake=objects.find(o=>o.type==='lake' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r);
     if(lake && !cam.flyTime){
-      if(!cam.swimming){ cam.swimming=true; flash('💧 You sink into the deep lake — hold SPACE to swim up. A chest waits at the bottom!'); SFX.eat&&SFX.eat(); }
-      if(keys[' ']) cam.dive=Math.max(0,(cam.dive||0)-0.024);   // SPACE = rise back up
-      else cam.dive=Math.min(1,(cam.dive||0)+0.0045);           // otherwise sink slowly, deeper and deeper
-      cam.eyeH=0.55 - (cam.dive||0)*3.8;                         // sinking lowers the camera UNDER the surface
-    } else { cam.swimming=false; if(cam.dive>0){ cam.dive=Math.max(0,cam.dive-0.05); cam.eyeH=0.55-cam.dive*3.8; } else cam.eyeH=0.55; } }
+      if(!cam.swimming){ cam.swimming=true; flash('💧 Diving! Sink to the bottom for the chest — hold SPACE to swim up.'); SFX.eat&&SFX.eat(); }
+      if(keys[' ']) cam.dive=Math.max(0,(cam.dive||0)-0.02);    // SPACE = swim up
+      else cam.dive=Math.min(1,(cam.dive||0)+0.005);            // otherwise sink deeper
+    } else { cam.swimming=false; cam.dive=Math.max(0,(cam.dive||0)-0.06); }
+    cam.eyeH=0.55; }   // camera stays level — depth is shown by the underwater scene (no view glitches)
   { const b=biomeAt(cam.x,cam.z); if(b!==curBiome){ curBiome=b; flash(BIOME_LABEL[b]); biomeAmbient(b); biomeAmbient(b);
       weather=pickWeather(b); weatherT=60*(40+Math.random()*50); announceWeather();
       if(!account.biomes) account.biomes=[]; if(account.biomes.indexOf(b)<0){ account.biomes.push(b); saveAccount(); } }
