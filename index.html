@@ -3730,6 +3730,14 @@ function drawLake(o,p){
   for(let i=1;i<=2;i++){ ctx.beginPath(); ctx.ellipse(x, base, w*0.5*(0.4+0.25*i)+Math.sin(time*0.05+i)*3, w*0.2*(0.4+0.25*i), 0,0,7); ctx.stroke(); }
   ctx.restore();
 }
+function drawFish(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  const sw=Math.sin(time*0.06+o.bob)*w*0.4, y=base-h*0.3+Math.sin(time*0.05+o.bob)*3;   // wiggle along the surface
+  const R=Math.max(3,w*0.5), dir=Math.cos(time*0.06+o.bob)>=0?1:-1;
+  ctx.fillStyle='#e08030'; ctx.beginPath(); ctx.ellipse(x+sw, y, R, R*0.55, 0,0,7); ctx.fill();   // body
+  ctx.beginPath(); ctx.moveTo(x+sw-dir*R, y); ctx.lineTo(x+sw-dir*R*1.6, y-R*0.5); ctx.lineTo(x+sw-dir*R*1.6, y+R*0.5); ctx.closePath(); ctx.fill();  // tail
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(x+sw+dir*R*0.5, y-R*0.15, R*0.16, 0,7); ctx.fill();   // eye
+}
 function drawWaterChest(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const body=o.opened?'#1a3a4a':'#2f7fa0';
