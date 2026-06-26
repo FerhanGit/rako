@@ -1316,6 +1316,7 @@ addEventListener('keydown',e=>{
   if(k==='c') activatePoison();
   if(k==='x') eatStored();
   if(k==='v') placeBush();
+  if(k==='o') toggleRide();
   if(k==='escape'){ const cp=document.getElementById('craftPanel'); if(cp && !cp.classList.contains('hidden')){ closeCraft(); return; }
     if(state==='inv') toggleInventory(); else if(state==='trade') closeTrade(); else if(state==='buy') closeBuy(); else if(state==='admin') closeAdmin(); else if(state==='map') toggleMap(); }
 });
