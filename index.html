@@ -436,8 +436,9 @@
   <!-- PARTY / HOW MANY PLAYERS -->
   <div class="screen hidden" id="scrParty">
     <h1 style="font-size:38px" data-i18n="howmany">HOW MANY PLAYERS?</h1>
-    <p class="sub" style="font-size:14px" data-i18n="partysub">Pick how many other players join you. They play as AI teammates named after your friends.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:420px">
+    <p class="sub" style="font-size:14px" data-i18n="partysub">Pick how many other players join you. Real online players join first — bots only fill the rest.</p>
+    <div id="onlineNote" style="font-size:13px;color:#7fe0a0;margin-bottom:6px"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:480px">
       <button class="party" data-n="0" data-i18n="solo">Solo</button>
       <button class="party" data-n="1">1</button>
       <button class="party" data-n="2">2</button>
@@ -445,6 +446,10 @@
       <button class="party" data-n="4">4</button>
       <button class="party" data-n="5">5</button>
       <button class="party" data-n="6">6</button>
+      <button class="party" data-n="10">10</button>
+      <button class="party" data-n="25">25</button>
+      <button class="party" data-n="50">50</button>
+      <button class="party" data-n="100">100</button>
     </div>
     <button id="btnInvite" class="party" style="border-color:#c0a020;color:#ffd040;min-width:220px;margin-top:6px">🤝 Play with a friend</button>
     <div id="invitePick" class="hidden" style="margin-top:8px;max-width:420px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center"></div>
