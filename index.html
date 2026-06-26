@@ -6048,12 +6048,12 @@ document.getElementById('btnBestiary').onclick=()=>{ renderBestiary(); document.
 document.getElementById('bestClose').onclick=()=>document.getElementById('bestPanel').classList.add('hidden');
 function bestiaryBiome(i){ if(i>=27&&i<=30) return 'Swamp'; if(i>=24&&i<=26) return 'Desert'; if(i===31) return 'Lake'; if(i>=20&&i<=22) return 'Celeb'; if([7,14,15,16].includes(i)) return 'Snow'; if([8,17,18].includes(i)) return 'Lava'; if([9,19].includes(i)) return 'Space'; return 'Forest'; }
 const BEST_SPECIALS=[
-  {n:'Bunny', c:'#ffffff', sub:'Passive critter', hp:'8', dmg:'0 (harmless)', note:'Kill it with your sword for 🥩 meat (used to tame wolves).'},
-  {n:'Wolf', c:'#8a7a66', sub:'Tameable', hp:'50', dmg:'11', note:'Feed it meat and press P to tame — it then fights enemies for you.'},
-  {n:'Void Entity', c:'#7020c0', sub:'Nightmare city', hp:'42', dmg:'15', note:'A purple horror lurking among the gothic spires.'},
-  {n:'Sky Wraith', c:'#b07bff', sub:'Flying', hp:'60', dmg:'18', note:'A flying menace that hunts you day & night above the forest.'},
-  {n:'Biome Champions 👑', c:'#ffd24a', sub:'Mini-bosses', hp:'~600–900', dmg:'~45–55', note:'Frost Titan, Inferno Colossus, Void Sovereign, Dune Pharaoh & Plague Lord — one per biome, each with a unique attack. Big gem rewards.'},
-  {n:'God of the End', c:'#ff20a0', sub:'FINAL BOSS', hp:'colossal (regenerates!)', dmg:'34', note:'Lurks deep in the nightmare city and heals if you stop hitting it. Slay it to WIN the game.'},
+  {n:'Bunny', c:'#ffffff', sub:'Passive critter', found:'Forest', hp:'8', dmg:'0 (harmless)', note:'Kill it with your sword for 🥩 meat (used to tame wolves).'},
+  {n:'Wolf', c:'#8a7a66', sub:'Tameable', found:'Forest', hp:'50', dmg:'11', note:'Feed it meat and press P to tame — it then fights enemies for you.'},
+  {n:'Void Entity', c:'#7020c0', sub:'Nightmare city', found:'Nightmare City (around the boss)', hp:'42', dmg:'15', note:'A purple horror lurking among the gothic spires.'},
+  {n:'Sky Wraith', c:'#b07bff', sub:'Flying', found:'Forest skies', hp:'60', dmg:'18', note:'A flying menace that hunts you day & night above the forest.'},
+  {n:'Biome Champions 👑', c:'#ffd24a', sub:'Mini-bosses', found:'Snow · Lava · Space · Desert · Swamp (one each)', hp:'~600–900', dmg:'~45–55', note:'Frost Titan, Inferno Colossus, Void Sovereign, Dune Pharaoh & Plague Lord — each with a unique attack. Big gem rewards.'},
+  {n:'God of the End', c:'#ff20a0', sub:'FINAL BOSS', found:'Nightmare City (deep south)', hp:'colossal (regenerates!)', dmg:'34', note:'Heals if you stop hitting it. Slay it to WIN the game.'},
 ];
 function renderBestiary(){
   const B=document.getElementById('bestBody'); if(!B) return;
