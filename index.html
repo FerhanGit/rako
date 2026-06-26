@@ -2547,6 +2547,13 @@ function update(){
     markExplored(al.x, al.z);
     if(Math.hypot(al.x-HOME.x,al.z-HOME.z)<HOME.r) al.hp=Math.min(al.maxHp,al.hp+0.5);   // heal at home
     const moveTo=(tx,tz,sp)=>{ const d=Math.hypot(tx-al.x,tz-al.z)||1; al.x+=(tx-al.x)/d*sp; al.z+=(tz-al.z)/d*sp; return d; };
+    // teammates far from you fight off-screen — cheap wander only (no object scans), so 150 stay smooth
+    if(Math.hypot(al.x-cam.x,al.z-cam.z)>62){
+      if(al.roamT<=0 || Math.hypot(al.roamX-al.x,al.roamZ-al.z)<3){ al.roamT=160+Math.random()*200;
+        const a=Math.random()*6.283, r=8+Math.random()*22;
+        al.roamX=Math.max(3,Math.min(WORLD-3, al.x+Math.cos(a)*r)); al.roamZ=Math.max(3,Math.min(WORLD-3, al.z+Math.sin(a)*r)); }
+      al.roamT--; moveTo(al.roamX, al.roamZ, 0.06); continue;
+    }
     // 1) nearest visible monster (big parties reuse the last target most frames to save CPU)
     let tgt=null, td=1e9;
     if(bigParty && al.tgt && al.tgt.hp>0 && al.tgt.type!=='cleared' && (al.tgt.type!=='boss'||al.tgt.alive) && (time+idx)%5!==0){
