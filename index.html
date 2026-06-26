@@ -1332,10 +1332,7 @@ function reset(){
     let nm, isReal=false;
     if(realPool.length){ nm=realPool.shift(); isReal=true; }
     else if(account.friends[i] && !usedNames.has(account.friends[i])) nm=account.friends[i];
-    if(!nm || usedNames.has(nm)){ isReal=false;
-      let tries=0; do { nm=NAMES[Math.floor(Math.random()*NAMES.length)]; tries++; } while(usedNames.has(nm) && tries<30);
-      if(usedNames.has(nm)) nm=nm+(i+1);   // names run out past pool — add a number instead of looping forever
-    }
+    if(!nm || usedNames.has(nm)){ isReal=false; nm=pickName(usedNames); }   // natural name, no bare numbers
     usedNames.add(nm);
     const col='hsl('+Math.floor(Math.random()*360)+','+(55+Math.floor(Math.random()*30))+'%,58%)';   // random color
     let ax,az;
