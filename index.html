@@ -2769,6 +2769,9 @@ function drawWeather(){
   // acid rain burns you while exposed (safe at home / indoors)
   if(weather==='acid' && scene==='forest' && cam && cam.invuln<=0 && !inHome() && time%36===0){
     cam.hp-=2; hurtFlash=Math.min(1,(hurtFlash||0)+0.25); if(cam.hp<=0){ cam.hp=0; lose(); } }
+  // ember storm (lava) & toxic rain (swamp) hurt you while exposed
+  if((weather==='ember'||weather==='toxic') && scene==='forest' && cam && cam.invuln<=0 && !inHome() && time%40===0){
+    cam.hp-=2; hurtFlash=Math.min(1,(hurtFlash||0)+0.22); if(cam.hp<=0){ cam.hp=0; lose(); } }
   if(weather==='fog'){ ctx.fillStyle='rgba(176,182,196,0.17)'; ctx.fillRect(-14,-280,W+28,H+560); }
   if(weather==='rain'||weather==='acid'){
     ctx.strokeStyle = weather==='acid'?'rgba(150,220,90,0.5)':'rgba(150,170,205,0.42)'; ctx.lineWidth=1.4; ctx.beginPath();
