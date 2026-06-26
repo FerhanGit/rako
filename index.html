@@ -3343,6 +3343,17 @@ function drawCharacter(g, x, y, r, id, col, f){
     g.fillStyle='#46e0c0'; g.beginPath(); g.arc(x-headR*0.3,headY,headR*0.13,0,7); g.arc(x+headR*0.3,headY,headR*0.13,0,7); g.fill();  // glowing eyes
     g.restore(); return;
   }
+  if(id==='bolt'){   // lightning speedster — yellow suit, blue lightning, goggles, speed streaks
+    g.save(); g.globalAlpha*=0.4; g.fillStyle='#ffe24a'; g.beginPath(); g.arc(x,y-r*0.1,r*1.0,0,7); g.fill(); g.restore();   // glow
+    g.fillStyle='#1a3a8a'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.62,0,0,7); g.fill();     // blue legs
+    g.fillStyle=col; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();           // shirt (chosen colour)
+    g.fillStyle='#ffd21a'; g.beginPath(); g.moveTo(x-r*0.1,y-r*0.45); g.lineTo(x+r*0.18,y-r*0.05); g.lineTo(x,y-r*0.05); g.lineTo(x+r*0.12,y+r*0.4); g.lineTo(x-r*0.18,y-r*0.1); g.lineTo(x,y-r*0.1); g.closePath(); g.fill();  // lightning bolt
+    g.fillStyle=skin; g.beginPath(); g.arc(x,headY,headR,0,7); g.fill();                            // head
+    g.fillStyle='#ffd21a'; g.beginPath(); g.moveTo(x-headR,headY-headR*0.5); g.lineTo(x-headR*1.5,headY); g.lineTo(x-headR,headY+headR*0.5); g.closePath(); g.fill();   // wing on the head (left)
+    g.fillStyle='#142a5a'; g.fillRect(x-headR*0.7,headY-headR*0.1,headR*1.4,headR*0.34);            // goggles band
+    g.fillStyle='#7fd0ff'; g.beginPath(); g.arc(x-headR*0.32,headY+headR*0.05,headR*0.18,0,7); g.arc(x+headR*0.32,headY+headR*0.05,headR*0.18,0,7); g.fill();  // lenses
+    g.restore(); return;
+  }
   if(id==='pumper'){
     g.fillStyle='#2a2a30'; g.beginPath(); g.ellipse(x,y+r*0.35,r*0.78,r*0.62,0,0,7); g.fill();   // dark trousers
     g.fillStyle=col; g.beginPath(); g.ellipse(x,y-r*0.12,r*0.82,r*0.72,0,0,7); g.fill();          // shirt (chosen colour)
