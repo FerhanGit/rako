@@ -1278,6 +1278,9 @@ function reset(){
   // bunnies (meat), wild wolves, and the Entities
   for(let i=0;i<18;i++){ const x=Math.random()*WORLD, z=12+Math.random()*(WORLD-24);
     if(inCity(x,z)) continue; objects.push(bunny(x,z)); }
+  // 🐰✨ one rare GOLDEN BUNNY — fast, runs hard, but kill it for a big gem reward
+  { let gx,gz,tries=0; do{ gx=Math.random()*WORLD; gz=20+Math.random()*(WORLD-40); tries++; }while(inCity(gx,gz)&&tries<20);
+    const gb=bunny(gx,gz); gb.gold=true; gb.hp=18; gb.flee=0.22; objects.push(gb); }
   for(let i=0;i<7;i++){ const x=Math.random()*WORLD, z=18+Math.random()*(WORLD-30);
     if(inCity(x,z) || Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+4) continue; objects.push(wolf(x,z)); }
   for(let i=0;i<9;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-45);
