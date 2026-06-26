@@ -3348,6 +3348,18 @@ function groundPt(wx,wz){
   const scale=FOCAL/depth;
   return {x:W/2+side*scale, y:H/2+(cam.eyeH+(cam.jumpY||0))*scale, depth};
 }
+// lakes are painted INTO the ground as flat perspective polygons (blue water + earthy rim)
+function drawLakes(){
+  for(const o of objects){ if(o.type!=='lake') continue;
+    if(Math.hypot(cam.x-o.x,cam.z-o.z)<o.r){ ctx.fillStyle='rgba(28,92,150,0.42)'; ctx.fillRect(-14,H/2-30,W+28,H/2+260); continue; }  // standing in it = underwater tint
+    const pts=[]; for(let a=0;a<24;a++){ const ang=a/24*Math.PI*2; const gp=groundPt(o.x+Math.cos(ang)*o.r, o.z+Math.sin(ang)*o.r); if(gp) pts.push(gp); }
+    if(pts.length<3) continue;
+    const path=()=>{ ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y); for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y); ctx.closePath(); };
+    ctx.lineJoin='round'; ctx.strokeStyle='#3a2a16'; ctx.lineWidth=Math.max(6,FOCAL/o.r*1.2); path(); ctx.stroke();   // muddy rim
+    ctx.fillStyle='#1f5fa0'; path(); ctx.fill();                                                                      // deep water
+    ctx.fillStyle='rgba(95,175,225,0.45)'; ctx.beginPath(); for(let i=0;i<pts.length;i++){ const px=pts[i].x,py=pts[i].y-4; i?ctx.lineTo(px,py):ctx.moveTo(px,py); } ctx.closePath(); ctx.fill();   // shimmer
+  }
+}
 // the sun arcs across the sky by day, the moon by night — both tied to the day/night clock
 function drawSunMoon(){
   if(cam && cam.flyTime>0) return;
