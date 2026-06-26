@@ -3399,9 +3399,7 @@ function box3D(cx,cz,hw,hd,hgt,baseCol,topCol,yoff){
 // lakes are painted INTO the ground as flat perspective polygons (blue water + earthy rim)
 function drawLakes(){
   for(const o of objects){ if(o.type!=='lake') continue;
-    if(Math.hypot(cam.x-o.x,cam.z-o.z)<o.r){ const d=cam.dive||0; ctx.fillStyle='rgba(18,'+Math.round(80-40*d)+','+Math.round(140-70*d)+','+(0.34+0.5*d)+')'; ctx.fillRect(-14,-280,W+28,H+560);   // deeper = darker
-      if(d>0.05){ ctx.fillStyle='#bfe8ff'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.fillText('▼ Depth '+Math.round(d*100)+'%  ·  hold SPACE to rise', W/2, 40); ctx.textAlign='left'; }
-      continue; }  // standing in it = underwater
+    if(Math.hypot(cam.x-o.x,cam.z-o.z)<o.r){ continue; }  // standing in it — the full underwater scene is drawn separately
     const pts=[]; for(let a=0;a<24;a++){ const ang=a/24*Math.PI*2; const gp=groundPt(o.x+Math.cos(ang)*o.r, o.z+Math.sin(ang)*o.r); if(gp) pts.push(gp); }
     if(pts.length<3) continue;
     const path=()=>{ ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y); for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y); ctx.closePath(); };
