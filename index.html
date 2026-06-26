@@ -1307,16 +1307,21 @@ function reset(){
     objects.push(tradeTable(HOME.x+4, HOME.z-4));
   }
 
-  // co-op AI teammates (other "players") — friend names first, then random names
+  // co-op teammates: REAL online players join first, then your friends, then bots fill the rest
   allies=[];
-  const usedNames=new Set(account.friends.slice(0,partySize));
+  const usedNames=new Set();
+  const realPool=(onlineNames||[]).slice();          // real people who are online right now
+  const cols=Math.max(1,Math.ceil(Math.sqrt(partySize)));   // cluster them in a grid behind you (works for 1 or 100)
   for(let i=0;i<partySize;i++){
-    let nm=account.friends[i];
-    if(!nm){ do { nm=NAMES[Math.floor(Math.random()*NAMES.length)]; } while(usedNames.has(nm)); }
+    let nm, isReal=false;
+    if(realPool.length){ nm=realPool.shift(); isReal=true; }
+    else if(account.friends[i] && !usedNames.has(account.friends[i])) nm=account.friends[i];
+    if(!nm || usedNames.has(nm)){ do { nm=NAMES[Math.floor(Math.random()*NAMES.length)]; } while(usedNames.has(nm)); isReal=false; }
     usedNames.add(nm);
     const col='hsl('+Math.floor(Math.random()*360)+','+(55+Math.floor(Math.random()*30))+'%,58%)';   // random color
-    const al = makeAlly(nm, col, cam.x+(i-(partySize-1)/2)*1.6, cam.z-2.5);
-    al.roamX=cam.x; al.roamZ=cam.z; al.roamT=0;
+    const gx=(i%cols)-(cols-1)/2, gz=Math.floor(i/cols);
+    const al = makeAlly(nm, col, cam.x+gx*1.8, cam.z-2.5-gz*1.8);
+    al.real=isReal; al.roamX=cam.x; al.roamZ=cam.z; al.roamT=0;
     allies.push(al); objects.push(al);
   }
   // reset fog-of-war (start blind; reveal around home)
