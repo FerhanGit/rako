@@ -3734,15 +3734,7 @@ function drawCoin(o,p){
   ctx.fillStyle='#b8860b'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(3,w*0.5*(0.4+0.6*sw)),Math.max(3,h*0.5),0,0,7); ctx.fill();
   ctx.fillStyle='#ffd84a'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(2,w*0.34*(0.4+0.6*sw)),Math.max(2,h*0.34),0,0,7); ctx.fill();
 }
-function drawLake(o,p){
-  const x=p.sx, base=p.groundY, w=p.wPx;
-  ctx.save(); ctx.globalAlpha*=0.78;
-  ctx.fillStyle='#1f6f9a'; ctx.beginPath(); ctx.ellipse(x, base, w*0.5, w*0.2, 0,0,7); ctx.fill();
-  ctx.fillStyle='#3a9fd0'; ctx.beginPath(); ctx.ellipse(x, base-w*0.02, w*0.4, w*0.15, 0,0,7); ctx.fill();
-  ctx.globalAlpha*=0.5; ctx.strokeStyle='#bfe8ff'; ctx.lineWidth=2;   // ripples
-  for(let i=1;i<=2;i++){ ctx.beginPath(); ctx.ellipse(x, base, w*0.5*(0.4+0.25*i)+Math.sin(time*0.05+i)*3, w*0.2*(0.4+0.25*i), 0,0,7); ctx.stroke(); }
-  ctx.restore();
-}
+function drawLake(o,p){ /* lakes are now painted into the ground in drawLakes() */ }
 function drawFish(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const sw=Math.sin(time*0.06+o.bob)*w*0.4, y=base-h*0.3+Math.sin(time*0.05+o.bob)*3;   // wiggle along the surface
