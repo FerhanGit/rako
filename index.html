@@ -6371,7 +6371,7 @@ function showCine(label,durMs,then,style){
   (function step(){ const e=Math.min(1,(performance.now()-t0)/durMs); fill.style.width=(e*100).toFixed(0)+'%'; pct.textContent=Math.round(e*100)+'%';
     if(e<1) requestAnimationFrame(step); else { hideCine(); if(then) then(); } })();
 }
-function searchThenStart(mode,n){ showCine('Searching for players…', 5000, ()=> start(mode,n)); }
+function searchThenStart(mode,n){ fetchOnlinePlayers(); showCine('Searching for players…', 5000, ()=> start(mode,n)); }
 // a short cinematic about RAKO's story (plays before the free-gem reward; click to skip)
 const RAKO_MOVIE=[
   'Long ago, the forest of RAKO was green and kind.',
