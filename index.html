@@ -572,6 +572,22 @@ function biomeAt(x,z){
   }
   return 'forest';                     // the near/start area
 }
+// ---- TERRAIN HEIGHTFIELD: walkable rolling hills (some big, some small) ----
+let HILLS=[], _camGY=0;
+function terrainH(x,z){
+  let h=0; for(let i=0;i<HILLS.length;i++){ const hl=HILLS[i], dx=x-hl.x, dz=z-hl.z, d2=dx*dx+dz*dz;
+    if(d2<hl.cut) h+=hl.amp*Math.exp(-d2/hl.s); }
+  return h;
+}
+function genHills(){
+  HILLS=[];
+  for(let i=0;i<14;i++){
+    const x=Math.random()*WORLD, z=Math.random()*WORLD;
+    if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+12) continue;   // keep home flat
+    const big=Math.random()<0.45, r=big?(16+Math.random()*12):(7+Math.random()*5);
+    HILLS.push({x,z, amp:big?(3.5+Math.random()*4):(1.2+Math.random()*1.6), s:r*r, cut:(r*2.6)*(r*2.6)});
+  }
+}
 const HOME={x:100, z:12, r:6};   // safe cabin area
 const BOSS={x:100, z:186};        // the God of the End, deep in the nightmare city
 const SH={x:150, z:96, r:11};     // the Stronghold compound
