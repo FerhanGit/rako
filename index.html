@@ -2761,6 +2761,7 @@ function draw(){
     if(o.type==='monster' && !night && !alwaysHostile(o)) continue;
     if(o.gone) continue;
     if(o.type!=='boss' && o.type!=='hill'){ const dx=o.x-cam.x, dz=o.z-cam.z; if(dx*dx+dz*dz > cullDist*cullDist) continue; }   // quick distance cull (hills always visible)
+    if(o.type!=='boss' && o.type!=='lake' && terrainOccluded(o)) continue;   // hidden behind a hill
     const p=project(o); if(p) draws.push({o,p});
   }
   for(const pt of particles){ const p=project(pt); if(p) draws.push({o:pt,p}); }
