@@ -2617,6 +2617,9 @@ function update(){
     if(o.type==='monster' && o.hp<=0){
       burst(o.x,o.z,o.col,o.champion?40:12); SFX.kill(); if(o.champion){ SFX.rako&&SFX.rako(); shake=Math.max(shake,16); }
       if(o.name==='Shark'){ cam.meat=(cam.meat||0)+3; flash('🦈 You beat the shark! +3 🥩 meat'); }   // sharks give meat
+      if(o.split && (o.gen||0)<2){   // Splitter — bursts into two smaller copies
+        for(let s=0;s<2;s++){ const sm=makeMonster(o.x+(s?1.2:-1.2), o.z+(Math.random()-.5)*2, 35);
+          sm.gen=(o.gen||0)+1; const f=0.62; sm.width*=f; sm.height*=f; sm.maxHp=Math.max(8,Math.round(sm.maxHp*0.4)); sm.hp=sm.maxHp; sm.aggro=true; objects.push(sm); } }
       if(Math.random()<0.42) objects.push(food(o.x,o.z));  // monsters drop food (rarer = harder)
       const wasChamp=o.champion, champNm=o.bossName;
       objects.splice(i,1);
