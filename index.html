@@ -3378,7 +3378,8 @@ function project3D(wx,wy,wz){
   const depth=rx*Math.sin(cam.yaw)+rz*Math.cos(cam.yaw);
   if(depth<=0.12) return null;
   const side=rx*Math.cos(cam.yaw)-rz*Math.sin(cam.yaw), scale=FOCAL/depth;
-  return {x:W/2+side*scale, y:H/2+(cam.eyeH+(cam.jumpY||0)-wy)*scale, depth};
+  const ty=(scene==='forest')?terrainH(wx,wz):0;
+  return {x:W/2+side*scale, y:H/2+(_camGY+cam.eyeH+(cam.jumpY||0)-(wy+ty))*scale, depth};
 }
 function shade(col,br){ return mix(col,'#000000', Math.max(0,Math.min(0.4,1-br))); }   // keep faces clearly visible
 // draw a solid 3D box (footprint cx,cz ± hw/hd, rising hgt from yoff) — visible faces shaded by sun direction
