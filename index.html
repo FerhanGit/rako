@@ -2534,13 +2534,18 @@ function update(){
     markExplored(al.x, al.z);
     if(Math.hypot(al.x-HOME.x,al.z-HOME.z)<HOME.r) al.hp=Math.min(al.maxHp,al.hp+0.5);   // heal at home
     const moveTo=(tx,tz,sp)=>{ const d=Math.hypot(tx-al.x,tz-al.z)||1; al.x+=(tx-al.x)/d*sp; al.z+=(tz-al.z)/d*sp; return d; };
-    // 1) nearest visible monster
+    // 1) nearest visible monster (big parties reuse the last target most frames to save CPU)
     let tgt=null, td=1e9;
-    for(const o of objects){
-      if(o.type==='monster' || o.type==='entity' || (o.type==='boss'&&o.alive)){
-        if(o.type==='monster' && !night && !alwaysHostile(o)) continue;
-        const d=Math.hypot(o.x-al.x,o.z-al.z); if(d<td){ td=d; tgt=o; }
+    if(bigParty && al.tgt && al.tgt.hp>0 && al.tgt.type!=='cleared' && (al.tgt.type!=='boss'||al.tgt.alive) && (time+idx)%5!==0){
+      tgt=al.tgt; td=Math.hypot(tgt.x-al.x,tgt.z-al.z);
+    } else {
+      for(const o of objects){
+        if(o.type==='monster' || o.type==='entity' || (o.type==='boss'&&o.alive)){
+          if(o.type==='monster' && !night && !alwaysHostile(o)) continue;
+          const d=Math.hypot(o.x-al.x,o.z-al.z); if(d<td){ td=d; tgt=o; }
+        }
       }
+      al.tgt=tgt;
     }
     if(tgt && td<20){
       if(td>1.7) moveTo(tgt.x,tgt.z,0.095);
