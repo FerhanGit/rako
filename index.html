@@ -3632,31 +3632,26 @@ function drawGiant(o,p){
   ctx.beginPath(); ctx.arc(x+sway-w*0.06, base-h*0.85, es,0,7); ctx.arc(x+sway+w*0.06, base-h*0.85, es,0,7); ctx.fill();
 }
 function drawCabin(o,p){
-  const cx=o.x, cz=o.z, hw=o.width*0.42, wallH=o.height*0.42;
-  // ground shadow
-  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(p.sx,p.groundY,p.wPx*0.6,p.wPx*0.16,0,0,7); ctx.fill(); ctx.restore();
-  // 3D log walls (warm wood) + a stone base
-  box3D(cx,cz, hw*1.02,hw*1.02, wallH*0.18, '#6a6e74', '#7a7e84', 0);   // stone foundation
-  box3D(cx,cz, hw,hw, wallH, '#9a6a38', '#7a532a', wallH*0.18);          // log walls
-  // pitched 3D roof: 4 corners at wall top + an apex above the centre
-  const roofH=o.height*0.34, cor=[[cx-hw*1.12,cz-hw*1.12],[cx+hw*1.12,cz-hw*1.12],[cx+hw*1.12,cz+hw*1.12],[cx-hw*1.12,cz+hw*1.12]];
-  const e=cor.map(c=>project3D(c[0],wallH,c[1])), apex=project3D(cx,wallH+roofH,cz);
-  if(apex){ const tri=[];
-    for(let i=0;i<4;i++){ const j=(i+1)%4; if(!e[i]||!e[j]) continue;
-      const mx=(cor[i][0]+cor[j][0])/2-cx, mz=(cor[i][1]+cor[j][1])/2-cz, ln=Math.hypot(mx,mz)||1;
-      const br=0.6+0.4*Math.max(0,(mx/ln)*-0.7+(mz/ln)*-0.7);
-      tri.push({pts:[e[i],e[j],apex], d:(e[i].depth+e[j].depth)/2, br}); }
-    tri.sort((a,b)=>b.d-a.d); tri.forEach(f=>poly(f.pts, shade('#9a2c1c',f.br))); }
-  // brick chimney with smoke
-  box3D(cx+hw*0.6, cz+hw*0.6, hw*0.16, hw*0.16, roofH*1.3, '#7a3a2a', '#8a4636', wallH);
-  const cp=project3D(cx+hw*0.6, wallH+roofH*1.3, cz+hw*0.6);
-  if(cp){ ctx.fillStyle='rgba(210,210,215,0.35)'; for(let i=0;i<3;i++){ ctx.beginPath(); ctx.arc(cp.x+Math.sin(time*0.04+i)*4, cp.y-i*p.hPx*0.06, p.wPx*0.05+i*p.wPx*0.02,0,7); ctx.fill(); } }
-  // glowing windows + door on the wall face nearest the camera (project onto the front)
-  const fp=project3D(cx,wallH*0.55,cz), w=p.wPx, h=p.hPx;
-  if(fp){ const glow=0.7+0.3*Math.sin(time*0.06);
-    ctx.fillStyle='rgba(255,210,110,'+glow+')';
-    ctx.fillRect(fp.x-w*0.34, fp.y-h*0.06, w*0.16, h*0.16); ctx.fillRect(fp.x+w*0.18, fp.y-h*0.06, w*0.16, h*0.16);
-    const dp=project3D(cx,0,cz); if(dp){ ctx.fillStyle='#2a1a0e'; ctx.fillRect(dp.x-w*0.1, dp.y-h*0.34, w*0.2, h*0.34); ctx.fillStyle='#caa050'; ctx.beginPath(); ctx.arc(dp.x+w*0.05,dp.y-h*0.16,w*0.02,0,7); ctx.fill(); } }
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  const left=x-w*0.5, wallTop=base-h*0.78;
+  // wooden wall
+  const wood=ctx.createLinearGradient(0,wallTop,0,base); wood.addColorStop(0,'#8a5a30'); wood.addColorStop(1,'#5a3a1c');
+  ctx.fillStyle=wood; ctx.fillRect(left, wallTop, w, base-wallTop);
+  ctx.strokeStyle='#3a2410'; ctx.lineWidth=Math.max(1,h*0.006);
+  for(let yy=wallTop; yy<base; yy+=Math.max(4,h*0.075)){ ctx.beginPath(); ctx.moveTo(left,yy); ctx.lineTo(left+w,yy); ctx.stroke(); }
+  ctx.lineWidth=Math.max(1,h*0.012); ctx.strokeRect(left, wallTop, w, base-wallTop);
+  // gable roof
+  ctx.fillStyle='#7a2418'; ctx.beginPath(); ctx.moveTo(left-w*0.06, wallTop); ctx.lineTo(x, wallTop-h*0.26); ctx.lineTo(left+w+w*0.06, wallTop); ctx.closePath(); ctx.fill();
+  // glowing windows
+  ctx.fillStyle='#ffe28a'; const ww=w*0.16, wh=h*0.16, wy=wallTop+h*0.1;
+  ctx.fillRect(x-w*0.26-ww/2, wy, ww, wh); ctx.fillRect(x+w*0.26-ww/2, wy, ww, wh);
+  ctx.strokeStyle='#3a2410'; ctx.lineWidth=Math.max(1,h*0.008);
+  ctx.strokeRect(x-w*0.26-ww/2, wy, ww, wh); ctx.strokeRect(x+w*0.26-ww/2, wy, ww, wh);
+  // door
+  ctx.fillStyle='#2a1a0e'; ctx.fillRect(x-w*0.1, base-h*0.4, w*0.2, h*0.4);
+  ctx.fillStyle='#caa050'; ctx.beginPath(); ctx.arc(x+w*0.05, base-h*0.2, w*0.02,0,7); ctx.fill();
+  // HOME sign
+  ctx.fillStyle='#cfe8d0'; ctx.font='bold '+Math.max(8,h*0.06)+'px sans-serif'; ctx.textAlign='center'; ctx.fillText('HOME', x, wallTop-h*0.04); ctx.textAlign='left';
 }
 function drawPyramid(o,p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.fillStyle='#c79a4e'; ctx.beginPath(); ctx.moveTo(x,base-h); ctx.lineTo(x-w*0.55,base); ctx.lineTo(x+w*0.55,base); ctx.closePath(); ctx.fill();   // sand body
