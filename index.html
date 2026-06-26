@@ -5631,14 +5631,21 @@ function buildMatch(won){
 }
 function scoreboardHTML(){
   if(!allies.length) return "Slain: "+kills+" monsters";
-  const rows=lastMatch.map((p,i)=>{
+  const rowHTML=(p,i)=>{
     const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
-    return '<div style="display:flex;justify-content:space-between;gap:12px;padding:4px 10px;border-radius:6px;'+
+    return '<div style="display:flex;justify-content:space-between;gap:16px;padding:7px 14px;border-radius:7px;font-size:15px;'+
       (p.you?'background:#1c4a2c;font-weight:bold;color:#9fffb0':(i%2?'background:#10180f':''))+'">'+
       '<span>'+medal+' '+p.name+(p.you?' (YOU)':'')+'</span><span>'+p.kills+' ⚔</span></div>';
-  }).join('');
-  return '<div style="font-weight:bold;margin-bottom:4px">🏆 SCOREBOARD — '+lastMatch.length+' players</div>'+
-    '<div style="max-height:34vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid #2c5a3a;border-radius:8px;padding:4px;text-align:left;font-size:13px">'+rows+'</div>';
+  };
+  const CAP=300;
+  let rows=lastMatch.slice(0,CAP).map(rowHTML).join('');
+  if(lastMatch.length>CAP){
+    const yi=lastMatch.findIndex(p=>p.you);
+    if(yi>=CAP) rows+='<div style="text-align:center;color:#9ab09a;padding:3px">⋯</div>'+rowHTML(lastMatch[yi],yi);
+    rows+='<div style="text-align:center;color:#9ab09a;padding:6px">+ '+(lastMatch.length-CAP).toLocaleString()+' more players</div>';
+  }
+  return '<div style="font-weight:bold;margin-bottom:6px;font-size:17px">🏆 SCOREBOARD — '+lastMatch.length.toLocaleString()+' players</div>'+
+    '<div style="max-height:58vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid #2c5a3a;border-radius:10px;padding:6px;text-align:left;max-width:460px;margin:0 auto">'+rows+'</div>';
 }
 const WIN_REWARD={easy:100, normal:125, hard:150, impossible:200};
 function win(){ burst(BOSS.x,BOSS.z,'#ffd040',60); shake=18; SFX.win();
