@@ -4925,6 +4925,9 @@ const ACHIEVEMENTS=[
   { id:'speed10',    icon:'⏱️', name:'Quick Slayer',   desc:'Beat the God of the End in under 10 minutes.', reward:80,  cur:()=>((account.fastestWin&&account.fastestWin<=600)?1:0), max:1 },
   { id:'speed5',     icon:'⚡', name:'Speedrunner',    desc:'Beat the God of the End in under 5 minutes.',  reward:200, cur:()=>((account.fastestWin&&account.fastestWin<=300)?1:0), max:1 },
   { id:'speed3',     icon:'🏃', name:'Blitz Slayer',   desc:'Beat the God of the End in under 3 minutes → unlock the BOLT skin.', reward:400, rewardSkin:'bolt', cur:()=>((account.fastestWin&&account.fastestWin<=180)?1:0), max:1 },
+  { id:'dragonslayer',icon:'🐲',name:'Dragon Slayer',  desc:'Kill every biome champion in ONE game → unlock the DRAGON skin.', reward:300, rewardSkin:'dragon', cur:()=>(account.dragonWin?1:0), max:1 },
+  { id:'neonquests', icon:'🟦', name:'Quest Master',   desc:'Complete 5 weekly quests → unlock the NEON skin.', reward:120, rewardSkin:'neon', cur:()=>account.weeklyDone||0, max:5 },
+  { id:'reaperkills',icon:'☠️', name:'Soul Harvest',   desc:'Slay 750 monsters → unlock the REAPER skin.', reward:120, rewardSkin:'reaper', cur:()=>account.kills||0, max:750 },
   // ---- SECRET achievements: hidden until you discover them. We don't tell you how. ----
   { id:'secretlib',  icon:'🔮', name:'The Reader',    desc:'You rewrote the end with your own eyes.', reward:250, rewardSkin:'rune', secret:true, cur:()=>account.secretLibWin?1:0, max:1 },
   { id:'secretimp',  icon:'🔥', name:'Untouchable',   desc:'You bested the God of the End at its cruelest.', reward:300, secret:true, cur:()=>account.impWin?1:0, max:1 },
