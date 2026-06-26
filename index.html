@@ -1091,7 +1091,8 @@ function reset(){
   // a lake — dive in to swim; a water chest waits in the middle
   { const lx=HOME.x+38, lz=HOME.z+34; objects.push({type:'lake', x:lx, z:lz, r:13, width:30, height:0.3});
     objects.push({type:'waterchest', x:lx, z:lz, height:1.1, width:1.3, opened:false});   // at the deep bottom — dive down to it
-    for(let i=0;i<6;i++) objects.push({type:'fish', x:lx+(Math.random()-.5)*18, z:lz+(Math.random()-.5)*18, height:0.5, width:0.9, bob:Math.random()*6, lx:lx, lz:lz}); }   // harmless fish (no monsters in the lake)
+    for(let i=0;i<6;i++) objects.push({type:'fish', x:lx+(Math.random()-.5)*18, z:lz+(Math.random()-.5)*18, height:0.5, width:0.9, bob:Math.random()*6, lx:lx, lz:lz});   // harmless fish
+    for(let i=0;i<2;i++) objects.push(makeMonster(lx+(Math.random()-.5)*12, lz+(Math.random()-.5)*12, 31)); }   // sharks — the only thing that attacks in the lake
 
   // scatter trees over the forest (not inside the city, stronghold, or home)
   for(let i=0;i<1000;i++){
