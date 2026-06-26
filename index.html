@@ -4218,7 +4218,7 @@ function drawInvBoxes(){
 }
 function drawWeaponBar(){
   const all=[
-    {key:'LMB', icon: cam.hasIceSword?'❄':'🗡', own:true},
+    {key:'LMB', icon: cam.hasWaterSword?'🌊':(cam.hasIceSword?'❄':'🗡'), own:true},
     {key:'B', icon:'🔫', own:!!(cam.hasPistol||cam.hasMinigun)},
     {key:'C', icon:'🧪', own:!!cam.hasPoison},
     {key:'T', icon:'🔮', own:!!cam.hasCrystal},
