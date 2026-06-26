@@ -1057,6 +1057,7 @@ function reset(){
   if(settings.bonushp){ cam.maxHp+=150; cam.hp=cam.maxHp; }   // SECRETCODE
   cam.armorReduce = settings.armor0505 ? 0.7 : 0;             // CODE 0505 — strong armor (70% less damage)
   objects=[]; particles=[]; kills=0; msgTimer=0; promptTxt=''; time=0; matchFrames=0;
+  genHills(); _camGY=0;   // build the rolling-hill terrain
   shake=0; hurtFlash=0; scene='forest'; nightAmt=0; wasNight=false; outsidePos=null; caveChestOpened=false;
   weather='clear'; weatherT=60*35; thunderFlash=0; curBiome='forest';   // always start in the forest on a clear, sunny day
   // drifting fireflies (atmosphere) — screen-space
