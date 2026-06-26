@@ -2195,6 +2195,7 @@ function updateClock(){
 
 function update(){
   if(!cam) return;
+  _camGY = (scene==='forest') ? terrainH(cam.x,cam.z) : 0;   // the player stands on the hills
   tickChat();
   // while a panel is open: keep the world alive (animations flow) but paused & player-safe,
   // so it never looks "frozen". Closing the panel resumes everything.
