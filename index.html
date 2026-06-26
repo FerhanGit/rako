@@ -2706,6 +2706,7 @@ function draw(){
   ctx.fillStyle=gr; ctx.fillRect(-14,H/2,W+28,H/2+280);
   drawGround();
   drawGrass();
+  drawLakes();
   // horizon mist band
   const mist=ctx.createLinearGradient(0,H/2-44,0,H/2+60);
   mist.addColorStop(0,'rgba(50,80,62,0)'); mist.addColorStop(0.45,'rgba(64,96,74,0.34)');
