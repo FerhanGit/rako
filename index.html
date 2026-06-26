@@ -2794,6 +2794,22 @@ function drawWeather(){
       ctx.strokeStyle=g; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-26,y-40); ctx.stroke();
       ctx.fillStyle='#ffd070'; ctx.beginPath(); ctx.arc(x,y,2.5,0,7); ctx.fill(); }
   }
+  if(weather==='ember'){   // lava — glowing cinders drifting upward + red haze
+    ctx.fillStyle='rgba(60,12,4,0.16)'; ctx.fillRect(-14,-280,W+28,H+560);
+    for(let i=0;i<70;i++){ const x=(i*97+Math.sin(time*0.03+i)*40)%(W+40)-20, y=(H+40)-((i*53+time*6)%(H+60));
+      ctx.fillStyle = i%3?'#ff7a1a':'#ffce3a'; ctx.fillRect(x,y,2.5,2.5); }
+  }
+  if(weather==='sand'){    // desert — blowing sand, low visibility
+    ctx.fillStyle='rgba(220,180,100,0.22)'; ctx.fillRect(-14,-280,W+28,H+560);
+    ctx.strokeStyle='rgba(232,207,138,0.5)'; ctx.lineWidth=1.6; ctx.beginPath();
+    for(let i=0;i<160;i++){ const x=(i*89+time*28)%(W+60)-30, y=(i*47+Math.sin(time*0.05+i)*16)%(H+40)-20; ctx.moveTo(x,y); ctx.lineTo(x+18,y+3); }
+    ctx.stroke();
+  }
+  if(weather==='toxic'){   // swamp — green poisonous rain
+    ctx.strokeStyle='rgba(150,230,70,0.5)'; ctx.lineWidth=1.6; ctx.beginPath();
+    for(let i=0;i<150;i++){ const x=(i*101+time*15)%(W+40)-20, y=(i*57+time*26)%(H+40)-20; ctx.moveTo(x,y); ctx.lineTo(x-4,y+15); }
+    ctx.stroke(); ctx.fillStyle='rgba(60,90,30,0.17)'; ctx.fillRect(-14,-280,W+28,H+560);
+  }
   if(thunderFlash>0){ ctx.fillStyle='rgba(255,255,255,'+(thunderFlash*0.5)+')'; ctx.fillRect(-14,-280,W+28,H+560); }
 }
 
