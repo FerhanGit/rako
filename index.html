@@ -1278,7 +1278,7 @@ document.addEventListener('pointerlockchange',()=>{ locked=(document.pointerLock
 document.addEventListener('mousemove',e=>{
   if(locked && state==='play' && scene==='forest'){
     cam.yaw+=e.movementX*0.0026;
-    cam.pitch=Math.max(-200,Math.min(200,(cam.pitch||0)-e.movementY*1.1));   // look up/down
+    cam.pitch=Math.max(-340,Math.min(340,(cam.pitch||0)-e.movementY*1.1));   // look up/down
   } else {
     const r=cvs.getBoundingClientRect();                                     // minigame cursor
     mgMouse.x=(e.clientX-r.left)*(W/r.width); mgMouse.y=(e.clientY-r.top)*(H/r.height);
@@ -1334,7 +1334,7 @@ function setMobileUI(on){ mobileOn=on; const m=document.getElementById('mctrl');
   cvs.addEventListener('touchmove',e=>{ if(!mobileOn||lid===null) return; e.preventDefault();
     for(const t of e.changedTouches) if(t.identifier===lid){
       if(state==='play'&&scene==='forest'){ cam.yaw+=(t.clientX-lx)*0.006;
-        cam.pitch=Math.max(-200,Math.min(200,(cam.pitch||0)-(t.clientY-ly)*1.6)); }
+        cam.pitch=Math.max(-340,Math.min(340,(cam.pitch||0)-(t.clientY-ly)*1.6)); }
       lx=t.clientX; ly=t.clientY; } },{passive:false});
   cvs.addEventListener('touchend',e=>{ for(const t of e.changedTouches) if(t.identifier===lid) lid=null; },{passive:false});
   // ----- mobile minigame pad + back-to-city -----
@@ -2216,8 +2216,8 @@ function update(){
   if(keys['arrowleft']) cam.yaw-=0.035;
   if(keys['arrowright']) cam.yaw+=0.035;
   if(scene==='forest'){
-    if(keys['arrowup']) cam.pitch=Math.min(200,(cam.pitch||0)+5);
-    if(keys['arrowdown']) cam.pitch=Math.max(-200,(cam.pitch||0)-5);
+    if(keys['arrowup']) cam.pitch=Math.min(340,(cam.pitch||0)+5);
+    if(keys['arrowdown']) cam.pitch=Math.max(-340,(cam.pitch||0)-5);
   }
 
   if(scene==='interior'){ updateInterior(); juiceDecay(); hudTimers(); return; }
@@ -4107,25 +4107,27 @@ function drawBoss(o,p){
 }
 function drawChest(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
-  if(o.rako){
-    // rainbow Rako chest (animated)
-    const rb=(yy)=>{ const g=ctx.createLinearGradient(x-w*0.6,yy,x+w*0.6,yy);
-      for(let i=0;i<=6;i++) g.addColorStop(i/6,'hsl('+(((i*60)+time*3)%360)+',90%,'+(o.opened?40:58)+'%)'); return g; };
-    ctx.fillStyle=rb(base-h*0.3); ctx.fillRect(x-w*0.5, base-h*0.6, w, h*0.6);
-    if(!o.opened){
-      ctx.fillStyle=rb(base-h*0.8); ctx.fillRect(x-w*0.55, base-h, w*1.1, h*0.42);
-      ctx.fillStyle="#222"; ctx.fillRect(x-w*0.08, base-h*0.62, w*0.16, h*0.2);
-    }
-    return;
-  }
-  const gold=o.gold;
-  const body=o.opened?(gold?'#6a5410':'#3a2a18'):(gold?'#e8b830':'#7a5a2a');
-  ctx.fillStyle=body; ctx.fillRect(x-w*0.5, base-h*0.6, w, h*0.6);
+  // ground shadow
+  ctx.save(); ctx.globalAlpha*=0.28; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.58,w*0.15,0,0,7); ctx.fill(); ctx.restore();
+  let front,side,top,band;
+  if(o.rako){ const hue=(time*3)%360; front='hsl('+hue+',80%,52%)'; side='hsl('+hue+',80%,38%)'; top='hsl('+hue+',85%,64%)'; band='#ffffff'; }
+  else if(o.gold){ front='#e0b028'; side='#9a7416'; top='#ffe27a'; band='#fff3b0'; }
+  else { front='#8a5a2a'; side='#5a3a18'; top='#9c6630'; band='#c8a24e'; }
+  if(o.opened){ front=mix(front,'#000',0.45); side=mix(side,'#000',0.45); top=mix(top,'#000',0.45); }
+  const bw=w*0.46, bh=h*0.4, dx=w*0.2, dy=-w*0.13;   // half-width, body height, isometric depth offset
+  const L=x-bw, R=x+bw, B=base, T=base-bh;
+  poly([[R,T],[R+dx,T+dy],[R+dx,B+dy],[R,B]], side);   // right depth face
+  ctx.fillStyle=front; ctx.fillRect(L,T,bw*2,bh);      // front face
+  const lidH=h*0.22, LT=T-lidH;
+  poly([[L,T],[L+dx,T+dy],[R+dx,T+dy],[R,T]], top);    // slanted lid top (the 3D look)
   if(!o.opened){
-    ctx.fillStyle=gold?'#ffe680':'#9a7a3a'; ctx.fillRect(x-w*0.55, base-h, w*1.1, h*0.42);
-    ctx.fillStyle=gold?'#7a5a10':"#2a1a08"; ctx.fillRect(x-w*0.08, base-h*0.62, w*0.16, h*0.2); // lock
-    if(gold){ ctx.fillStyle='rgba(255,240,150,'+(0.4+0.3*Math.sin(time*0.15))+')'; ctx.fillRect(x-w*0.5, base-h, w, h*0.05); }  // shimmer
-  }
+    ctx.fillStyle=front; ctx.fillRect(L,LT,bw*2,lidH);                                   // lid front
+    poly([[R,LT],[R+dx,LT+dy],[R+dx,T+dy],[R,T]], side);                                 // lid right
+    ctx.fillStyle=band; ctx.fillRect(L,LT+lidH*0.35,bw*2,Math.max(2,h*0.025));           // metal band
+    ctx.fillStyle=band; ctx.fillRect(x-w*0.04,LT,w*0.08,bh+lidH);                        // center strap
+    ctx.fillStyle='#2a1a08'; ctx.fillRect(x-w*0.05,T+bh*0.08,w*0.1,h*0.1);               // lock
+    if(o.gold||o.rako){ ctx.fillStyle='rgba(255,250,200,'+(0.3+0.35*Math.sin(time*0.15))+')'; ctx.fillRect(L,LT,bw*2,Math.max(1,h*0.02)); }  // shine
+  } else { ctx.fillStyle='#140d04'; ctx.fillRect(L+3,T-3,bw*2-6,5); }                     // open: dark interior slit
 }
 function drawFood(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
