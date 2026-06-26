@@ -4134,28 +4134,17 @@ function drawBoss(o,p){
     ctx.textAlign="center"; ctx.fillText("", x, headY-hr*1.6); }
 }
 function drawChest(o,p){
-  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   // ground shadow
-  ctx.save(); ctx.globalAlpha*=0.28; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.58,w*0.15,0,0,7); ctx.fill(); ctx.restore();
-  let front,side,top,band;
-  if(o.rako){ const hue=(time*3)%360; front='hsl('+hue+',80%,52%)'; side='hsl('+hue+',80%,38%)'; top='hsl('+hue+',85%,64%)'; band='#ffffff'; }
-  else if(o.gold){ front='#e0b028'; side='#9a7416'; top='#ffe27a'; band='#fff3b0'; }
-  else { front='#8a5a2a'; side='#5a3a18'; top='#9c6630'; band='#c8a24e'; }
-  if(o.opened){ front=mix(front,'#000',0.45); side=mix(side,'#000',0.45); top=mix(top,'#000',0.45); }
-  const bw=w*0.46, bh=h*0.4, dx=w*0.2, dy=-w*0.13;   // half-width, body height, isometric depth offset
-  const L=x-bw, R=x+bw, B=base, T=base-bh;
-  poly([[R,T],[R+dx,T+dy],[R+dx,B+dy],[R,B]], side);   // right depth face
-  ctx.fillStyle=front; ctx.fillRect(L,T,bw*2,bh);      // front face
-  const lidH=h*0.22, LT=T-lidH;
-  poly([[L,T],[L+dx,T+dy],[R+dx,T+dy],[R,T]], top);    // slanted lid top (the 3D look)
-  if(!o.opened){
-    ctx.fillStyle=front; ctx.fillRect(L,LT,bw*2,lidH);                                   // lid front
-    poly([[R,LT],[R+dx,LT+dy],[R+dx,T+dy],[R,T]], side);                                 // lid right
-    ctx.fillStyle=band; ctx.fillRect(L,LT+lidH*0.35,bw*2,Math.max(2,h*0.025));           // metal band
-    ctx.fillStyle=band; ctx.fillRect(x-w*0.04,LT,w*0.08,bh+lidH);                        // center strap
-    ctx.fillStyle='#2a1a08'; ctx.fillRect(x-w*0.05,T+bh*0.08,w*0.1,h*0.1);               // lock
-    if(o.gold||o.rako){ ctx.fillStyle='rgba(255,250,200,'+(0.3+0.35*Math.sin(time*0.15))+')'; ctx.fillRect(L,LT,bw*2,Math.max(1,h*0.02)); }  // shine
-  } else { ctx.fillStyle='#140d04'; ctx.fillRect(L+3,T-3,bw*2-6,5); }                     // open: dark interior slit
+  ctx.save(); ctx.globalAlpha*=0.28; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(p.sx,p.groundY,p.wPx*0.5,p.wPx*0.14,0,0,7); ctx.fill(); ctx.restore();
+  let body,top;
+  if(o.rako){ const hue=(time*3)%360; body='hsl('+hue+',75%,48%)'; top='hsl('+hue+',82%,62%)'; }
+  else if(o.gold){ body='#d8a828'; top='#ffe27a'; }
+  else { body='#8a5a2a'; top='#a8702f'; }
+  if(o.opened){ body=mix(body,'#000',0.4); top=mix(top,'#000',0.4); }
+  const hw=o.width*0.4, hd=o.width*0.3, bodyH=o.height*0.5, lidH=o.height*0.3;
+  box3D(o.x,o.z, hw,hd, bodyH, body, mix(body,'#000',0.25), 0);                  // body
+  if(!o.opened){ box3D(o.x,o.z, hw*1.05,hd*1.05, lidH, top, top, bodyH);          // lid
+    const bp=project3D(o.x,o.height*0.5,o.z); if(bp){ ctx.fillStyle='#2a1a08'; ctx.fillRect(bp.x-p.wPx*0.05, bp.y, p.wPx*0.1, p.hPx*0.12); } }   // lock hint
 }
 function drawFood(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
