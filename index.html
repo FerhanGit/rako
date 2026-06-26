@@ -4761,7 +4761,7 @@ async function netClubList(){ try{
     const players=await netGet('/rako_players?club_id=not.is.null&select=club_id,wins');
     const cnt={}, wn={}; players.forEach(p=>{ cnt[p.club_id]=(cnt[p.club_id]||0)+1; wn[p.club_id]=(wn[p.club_id]||0)+(p.wins||0); });
     clubs.forEach(c=>{ c._members=cnt[c.id]||0; c._wins=wn[c.id]||0; }); return clubs; }catch(e){ return []; } }
-async function netClubMembers(cid){ try{ return await netGet('/rako_players?club_id=eq.'+cid+'&select=id,name,wins,char_skin,skin,club_role&order=wins.desc'); }catch(e){ return []; } }
+async function netClubMembers(cid){ try{ return await netGet('/rako_players?club_id=eq.'+cid+'&select=id,name,wins,char_skin,skin,club_role,last_seen&order=wins.desc'); }catch(e){ return []; } }
 async function netSetRole(pid,role){ try{ await netPatch('/rako_players?id=eq.'+pid,{club_role:role}); }catch(e){} }
 async function netKick(pid){ try{ await netPatch('/rako_players?id=eq.'+pid,{club_id:null,club_name:null,club_color:null,club_role:'member'}); }catch(e){} }
 async function netCreateClub(name,color,max,minWins){
