@@ -2367,6 +2367,10 @@ function update(){
     if(wc && !wc.opened) promptTxt=((cam.dive||0)<0.55)?"Sink deeper to reach the Water Chest…":"Press E to open the Water Chest (50% Water Sword)";
   }
   if(!promptTxt){
+    const cv=objects.find(o=>o.type==='cave' && dist(o)<3.6);
+    if(cv) promptTxt = cv.water ? ((cam.dive||0)<0.55 ? "Dive deeper to reach the cave hole" : "Press E to enter the underwater cave") : "Press E to enter the cave";
+  }
+  if(!promptTxt){
     const relic=objects.find(o=>(o.type==='pyramid'||o.type==='factory') && dist(o)<9);
     if(relic) promptTxt = relic.looted ? "" : (relic.type==='pyramid'?"Press E to enter the Pyramid (Desert Relic)":"Press E to enter the Factory (Radioactive Core)");
   }
