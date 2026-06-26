@@ -5886,6 +5886,7 @@ document.getElementById('gameMusicToggle').onclick=()=>{
   if(state==='play') playGameMusic();    // apply live if you're mid-match
   refreshSettingsUI(); };
 document.getElementById('howToBtn').onclick=()=>document.getElementById('howto').classList.remove('hidden');
+document.getElementById('aboutBtn').onclick=()=>document.getElementById('aboutLine').classList.toggle('hidden');
 document.getElementById('howToClose').onclick=()=>document.getElementById('howto').classList.add('hidden');
 document.getElementById('profClose').onclick=()=>document.getElementById('profile').classList.add('hidden');
 document.getElementById('craftClose').onclick=closeCraft;
