@@ -579,6 +579,15 @@ function terrainH(x,z){
     if(d2<hl.cut) h+=hl.amp*Math.exp(-d2/hl.s); }
   return h;
 }
+// is an object hidden behind a hill? (line-of-sight check against the heightfield)
+function terrainOccluded(o){
+  if(!HILLS.length || scene!=='forest') return false;
+  const dx=o.x-cam.x, dz=o.z-cam.z, D=Math.hypot(dx,dz); if(D<4) return false;
+  const eyeAbs=_camGY+cam.eyeH, objH=terrainH(o.x,o.z)+(o.height||1)*0.55;
+  for(let s=2;s<=7;s++){ const f=s/8, px=cam.x+dx*f, pz=cam.z+dz*f, lineH=eyeAbs+(objH-eyeAbs)*f;
+    if(terrainH(px,pz) > lineH+0.5) return true; }   // a hill rises above the line of sight
+  return false;
+}
 function genHills(){
   HILLS=[];
   for(let i=0;i<14;i++){
