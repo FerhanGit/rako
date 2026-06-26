@@ -1082,6 +1082,8 @@ function reset(){
     if(inCity(x,z)) continue;
     objects.push(tree(x,z));
   }
+  // exactly one tree per game bears a Golden Apple — break it to claim it
+  { const trees=objects.filter(o=>o.type==='tree' && !o.giant); if(trees.length){ const gt=trees[Math.floor(Math.random()*trees.length)]; gt.golden=true; gt.solid=false; } }
   // THE NIGHTMARE CITY — a forest of jagged cathedral spires around the boss
   for(let i=0;i<130;i++){
     const a=Math.random()*6.283, r=6+Math.random()*42;
