@@ -1410,6 +1410,7 @@ function attack(){
   }
   if(best){
     best.flash=6; best.aggro=true; best.hp-=cam.dmg; best.lastHitBy=null;   // null = player kill
+    if(cam.hasWaterSword){ best.slowT=180; }   // water sword chills foes
     burst(best.x,best.z, best.type==='boss'?'#ff40ff':'#ffd040', 8);
     shake=Math.max(shake, best.type==='boss'?7:5);
     if(best.type==='boss'){ SFX.boss(); flash("You strike the God of the End!"); }
