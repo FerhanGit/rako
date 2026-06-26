@@ -2526,7 +2526,9 @@ function update(){
   }
 
   // AI teammates: fight monsters, open chests, and explore the map
+  const bigParty=allies.length>16; let _aiIdx=0;   // big parties stagger their AI scans to stay fast
   for(const al of allies){
+    const idx=_aiIdx++;
     if(al.atkCd>0) al.atkCd--;
     if(al.down){ al.downT--; if(al.downT<=0){ al.down=false; al.hp=al.maxHp*0.5; } continue; }
     markExplored(al.x, al.z);
