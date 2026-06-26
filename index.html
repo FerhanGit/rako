@@ -2985,12 +2985,11 @@ function drawMap(){
 }
 
 // hex->rgb blend (t=0 -> h1, t=1 -> h2)
-function mix(h1,h2,t){
-  const a=parseInt(h1.slice(1),16), b=parseInt(h2.slice(1),16);
-  const r=Math.round(((a>>16)&255)+(((b>>16)&255)-((a>>16)&255))*t);
-  const g=Math.round(((a>>8)&255)+(((b>>8)&255)-((a>>8)&255))*t);
-  const bl=Math.round((a&255)+((b&255)-(a&255))*t);
-  return 'rgb('+r+','+g+','+bl+')';
+function _rgb(s){ if(s[0]==='#'){ const a=parseInt(s.slice(1),16); return [(a>>16)&255,(a>>8)&255,a&255]; }
+  const m=s.match(/\d+/g); return m?[+m[0],+m[1],+m[2]]:[0,0,0]; }
+function mix(h1,h2,t){   // accepts hex OR rgb() so mix() calls can be chained
+  const a=_rgb(h1), b=_rgb(h2);
+  return 'rgb('+Math.round(a[0]+(b[0]-a[0])*t)+','+Math.round(a[1]+(b[1]-a[1])*t)+','+Math.round(a[2]+(b[2]-a[2])*t)+')';
 }
 
 // ---------- cabin interior (true 3D, projected & near-clipped) ----------
