@@ -2689,7 +2689,7 @@ function draw(){
   for(const pt of particles){ const p=project(pt); if(p) draws.push({o:pt,p}); }
   draws.sort((a,b)=>b.p.depth-a.p.depth);
 
-  const viewRange=quality*(snowView?0.40:0.28);   // snow biome is bright & open — you see much farther
+  const viewRange=quality*(snowView?0.40:0.28)*mView;   // snow biome is bright & open — you see much farther
   for(const {o,p} of draws){
     if(!isFinite(p.sx) || !isFinite(p.groundY)) continue;   // skip bad geometry
     const fog=Math.max(0,Math.min(1,1-(p.depth-8)/viewRange));   // distance fade
