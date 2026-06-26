@@ -2535,6 +2535,7 @@ function update(){
     const o=objects[i];
     if(o.type==='monster' && o.hp<=0){
       burst(o.x,o.z,o.col,o.champion?40:12); SFX.kill(); if(o.champion){ SFX.rako&&SFX.rako(); shake=Math.max(shake,16); }
+      if(o.name==='Shark'){ cam.meat=(cam.meat||0)+3; flash('🦈 You beat the shark! +3 🥩 meat'); }   // sharks give meat
       if(Math.random()<0.42) objects.push(food(o.x,o.z));  // monsters drop food (rarer = harder)
       const wasChamp=o.champion, champNm=o.bossName;
       objects.splice(i,1);
