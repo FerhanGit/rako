@@ -1647,7 +1647,7 @@ function enterBuilding(o){
   else if(o.type==='library')   enterLibrary(o);
 }
 function enterVolcano(o){
-  if(Math.random()<0.3){   // small chance of the lava chest → minigun
+  if(Math.random()<0.1){   // rare chance of the lava chest → minigun
     cam.hasMinigun=true; cam.hasPistol=true; cam.dmg=Math.max(cam.dmg,42);
     burst(cam.x,cam.z,'#ff8a2a',30); SFX.rako();
     flash('🌋 LAVA CHEST! You found the MINIGUN — press B to unload a hail of bullets!');
