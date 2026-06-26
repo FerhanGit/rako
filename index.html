@@ -1567,6 +1567,8 @@ function interact(){
   if(sc){ openStronghold(sc); return; }
   const ic=objects.find(o=>o.type==='icechest' && dist(o)<3);
   if(ic){ openIceChest(ic); return; }
+  const wc=objects.find(o=>o.type==='waterchest' && dist(o)<3);
+  if(wc){ openWaterChest(wc); return; }
   const relic=objects.find(o=>(o.type==='pyramid'||o.type==='factory') && dist(o)<9);
   if(relic){ enterRoom(relic); return; }
   const bd=objects.find(o=>['rocket','igloo','spaceship','volcano','library'].includes(o.type) && dist(o)<4);
