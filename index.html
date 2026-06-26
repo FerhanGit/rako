@@ -772,6 +772,16 @@ const NAMES=['theKiller','xX_Reaper_Xx','NoScope360','ShadowSlayer','ToxicGamer'
   'Holly','Marcus','Tara','vlad','niko','petar','Alex','Sam','jordan','Riley',
   'Quinn','Cody','Bella','Max','Ruben','Tess','Owen','Gabe','Nina','Pavel'];
 function randomName(){ return NAMES[Math.floor(Math.random()*NAMES.length)]+Math.floor(Math.random()*1000); }
+// pick a believable player name. tries to be unique; if the pool runs out it adds a natural gamertag flair
+// (no bare numbers) and finally just allows a duplicate — real lobbies have repeated names anyway.
+const NAME_TAGS=['_','x','xX','YT','TTV','yt','og','xd','HD','pro','gg','TV','zz','_og','itz'];
+function pickName(used){
+  let nm=NAMES[Math.floor(Math.random()*NAMES.length)];
+  if(!used || !used.has(nm)) return nm;
+  for(let t=0;t<25;t++){ nm=NAMES[Math.floor(Math.random()*NAMES.length)]; if(!used.has(nm)) return nm; }
+  const base=NAMES[Math.floor(Math.random()*NAMES.length)], tag=NAME_TAGS[Math.floor(Math.random()*NAME_TAGS.length)];
+  return Math.random()<0.5 ? base+tag : tag+base;
+}
 // fog-of-war map grid
 const MAP=50, MCELL=WORLD/MAP;     // 50x50 cells
 let explored=new Uint8Array(MAP*MAP);
