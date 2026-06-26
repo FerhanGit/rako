@@ -5214,7 +5214,7 @@ function renderShop(){
   for(const sk of CHAR_SKINS){
     if(sk.id==='aura' && !account.ownedSkins.includes('aura')) continue;   // Aura only shows once you own it (code 0505)
     if(sk.achReq && !account.ownedSkins.includes(sk.id)) continue;          // achievement skins stay hidden until earned
-    const owned=account.ownedSkins.includes(sk.id) || (sk.price===0 && !sk.code && !sk.passReq && !sk.achReq);
+    const owned=account.ownedSkins.includes(sk.id) || (sk.price===0 && !sk.code && !sk.passReq && !sk.achReq && !sk.likeReq);
     const sel=account.charSkin===sk.id;
     const card=document.createElement('div');
     card.style.cssText='width:'+cw+'px;border:2px solid '+(sel?'#7fe070':'#2c5a3a')+';border-radius:12px;padding:'+(m?'5px':'8px')+';background:#0c1810;text-align:center';
