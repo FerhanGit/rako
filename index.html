@@ -6047,14 +6047,29 @@ document.getElementById('newsClose').onclick=()=>document.getElementById('newsPa
 document.getElementById('btnBestiary').onclick=()=>{ renderBestiary(); document.getElementById('bestPanel').classList.remove('hidden'); };
 document.getElementById('bestClose').onclick=()=>document.getElementById('bestPanel').classList.add('hidden');
 function bestiaryBiome(i){ if(i>=27&&i<=30) return 'Swamp'; if(i>=24&&i<=26) return 'Desert'; if(i===31) return 'Lake'; if(i>=20&&i<=22) return 'Celeb'; if([7,14,15,16].includes(i)) return 'Snow'; if([8,17,18].includes(i)) return 'Lava'; if([9,19].includes(i)) return 'Space'; return 'Forest'; }
+const BEST_SPECIALS=[
+  {n:'Bunny', c:'#ffffff', sub:'Passive critter', note:'Harmless — kill it with your sword for 🥩 meat (tame wolves with it).'},
+  {n:'Wolf', c:'#8a7a66', sub:'Tameable', note:'Feed it meat and press P to tame — it then fights enemies for you.'},
+  {n:'Void Entity', c:'#7020c0', sub:'Nightmare city', note:'A purple horror lurking among the gothic spires — slay it for XP.'},
+  {n:'Sky Wraith', c:'#b07bff', sub:'Flying', note:'A flying menace that hunts you day & night above the forest.'},
+  {n:'Biome Champions 👑', c:'#ffd24a', sub:'Mini-bosses', note:'Frost Titan, Inferno Colossus, Void Sovereign, Dune Pharaoh & Plague Lord — one giant boss per biome, each with a unique attack. Big gem rewards.'},
+  {n:'God of the End', c:'#ff20a0', sub:'FINAL BOSS', note:'950 HP and regenerates if you stop hitting it. Lurks deep in the nightmare city — slay it to WIN the game.'},
+];
 function renderBestiary(){
   const B=document.getElementById('bestBody'); if(!B) return;
-  B.innerHTML='<div class="hint" style="font-size:12px;margin-bottom:6px">'+MONSTER_TYPES.length+' creatures roam RAKO:</div>'+MONSTER_TYPES.map((m,i)=>{
+  let h='<div style="font-weight:bold;color:#ff8a6a;margin:2px 0 4px">⭐ BOSSES &amp; SPECIAL CREATURES</div>';
+  h+=BEST_SPECIALS.map(s=>'<div style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid #2a3a2a">'+
+      '<div style="width:22px;height:22px;border-radius:5px;background:'+s.c+';flex:none;border:1px solid #0006"></div>'+
+      '<div style="flex:1"><b>'+s.n+'</b> <span style="font-size:11px;color:#7fb0e0">['+s.sub+']</span><br>'+
+      '<span style="font-size:11px;color:#9ab09a">'+s.note+'</span></div></div>').join('');
+  h+='<div style="font-weight:bold;color:#8fe070;margin:12px 0 4px">🐾 MONSTERS ('+MONSTER_TYPES.length+')</div>';
+  h+=MONSTER_TYPES.map((m,i)=>{
     const tag = m.always?'<span style="color:#ff8a6a">day &amp; night</span>' : (m.stalker?'<span style="color:#b08aff">night stalker</span>' : '<span style="color:#9ab09a">night only</span>');
     return '<div style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid #2a3a2a">'+
       '<div style="width:22px;height:22px;border-radius:5px;background:'+m.c+';flex:none;border:1px solid #0006"></div>'+
       '<div style="flex:1"><b>'+m.n+'</b> <span style="font-size:11px;color:#7fb0e0">['+bestiaryBiome(i)+']</span><br>'+
       '<span style="font-size:11px;color:#9ab09a">❤ '+m.hp+' HP · ⚔ '+m.dmg+' dmg · '+(m.fly?'🪽 flying · ':'')+tag+'</span></div></div>'; }).join('');
+  B.innerHTML=h;
 }
 document.getElementById('lottoSpin').onclick=()=>spinLottery();
 document.getElementById('lottoBack').onclick=()=>showScreen('lobby');
