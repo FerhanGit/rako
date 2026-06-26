@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -3503,7 +3503,9 @@ function drawVignette(){
   ctx.fillStyle=g; ctx.fillRect(-14,-14,W+28,H+28);
 }
 
-function poly(pts,fill){ ctx.fillStyle=fill; ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]); for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]); ctx.closePath(); ctx.fill(); }
+function poly(pts,fill){ ctx.fillStyle=fill; ctx.beginPath();
+  const px=p=>(p[0]!==undefined?p[0]:p.x), py=p=>(p[1]!==undefined?p[1]:p.y);   // accepts [x,y] OR {x,y}
+  ctx.moveTo(px(pts[0]),py(pts[0])); for(let i=1;i<pts.length;i++) ctx.lineTo(px(pts[i]),py(pts[i])); ctx.closePath(); ctx.fill(); }
 function drawTree(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const night=isNight();
@@ -6202,4 +6204,4 @@ loop();
 </script>
 </body>
 </html>
-<html><niggggger>messege<brbrpatapim</niggggger></html>Дmake
+<html><niggggger>messege<brbrpatapim</niggggger></html>?/летящи пишки/                         
