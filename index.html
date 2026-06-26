@@ -1317,21 +1317,22 @@ function reset(){
   allies=[];
   const usedNames=new Set();
   const realPool=(onlineNames||[]).slice();          // real people who are online right now
-  const spawnN=Math.min(partySize, 40);              // only render/simulate up to 40 — the rest are "out in the field" (shown on the scoreboard)
-  const cols=Math.max(1,Math.ceil(Math.sqrt(spawnN)));   // cluster them in a grid behind you
+  const spawnN=Math.min(partySize, 150);             // up to 150 real teammates spawn THROUGHOUT the world; the rest fight off-screen
   for(let i=0;i<spawnN;i++){
     let nm, isReal=false;
     if(realPool.length){ nm=realPool.shift(); isReal=true; }
     else if(account.friends[i] && !usedNames.has(account.friends[i])) nm=account.friends[i];
     if(!nm || usedNames.has(nm)){ isReal=false;
       let tries=0; do { nm=NAMES[Math.floor(Math.random()*NAMES.length)]; tries++; } while(usedNames.has(nm) && tries<30);
-      if(usedNames.has(nm)) nm=nm+(i+1);   // names run out past 24 — add a number instead of looping forever
+      if(usedNames.has(nm)) nm=nm+(i+1);   // names run out past pool — add a number instead of looping forever
     }
     usedNames.add(nm);
     const col='hsl('+Math.floor(Math.random()*360)+','+(55+Math.floor(Math.random()*30))+'%,58%)';   // random color
-    const gx=(i%cols)-(cols-1)/2, gz=Math.floor(i/cols);
-    const al = makeAlly(nm, col, cam.x+gx*1.8, cam.z-2.5-gz*1.8);
-    al.real=isReal; al.roamX=cam.x; al.roamZ=cam.z; al.roamT=0;
+    let ax,az;
+    if(i<12){ ax=cam.x+((i%4)-1.5)*1.8; az=cam.z-2.5-Math.floor(i/4)*1.8; }      // your squad spawns next to you
+    else { let t=0; do{ ax=Math.random()*WORLD; az=Math.random()*WORLD; t++; }while(t<30 && (inCity(ax,az)||Math.hypot(ax-HOME.x,az-HOME.z)<HOME.r+4)); }   // everyone else is spread across the world
+    const al = makeAlly(nm, col, ax, az);
+    al.real=isReal; al.roamX=ax; al.roamZ=az; al.roamT=0;
     allies.push(al); objects.push(al);
   }
   // field teammates beyond the 40 rendered — not drawn, but they accumulate REAL kills over the match
