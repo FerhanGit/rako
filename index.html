@@ -5624,11 +5624,10 @@ function revivePlayer(){
   flash('💎 Revived! −200 gems — back at the cabin.');
 }
 function buildMatch(won){
-  lastMatch=[{name:account.name, kills, you:true}].concat(allies.map(a=>({name:a.name, kills:a.kills})));
-  // virtual field teammates beyond the 40 rendered — give them plausible kill counts so huge parties show a full board
-  const extra=Math.max(0, partySize - allies.length), seen=new Set(lastMatch.map(p=>p.name));
-  for(let i=0;i<extra;i++){ let nm=NAMES[Math.floor(Math.random()*NAMES.length)]; if(seen.has(nm)) nm=nm+(Math.floor(Math.random()*9000)+100); seen.add(nm);
-    lastMatch.push({name:nm, kills:Math.floor(Math.random()*Math.max(3,kills+10))}); }
+  // you + the 40 rendered allies (real kills) + the field teammates (real kills accumulated during the match)
+  lastMatch=[{name:account.name, kills, you:true}]
+    .concat(allies.map(a=>({name:a.name, kills:a.kills})))
+    .concat(fieldBots.map(fb=>({name:fb.name, kills:fb.kills})));
   lastMatch.sort((a,b)=>b.kills-a.kills);
   // record REAL results (teammates only; the player is tracked via account)
   const secs=Math.floor(matchFrames/60), w=won?1:0;
