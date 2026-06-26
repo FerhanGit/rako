@@ -1529,6 +1529,13 @@ function drawRoom(){
   drawHousePlayer();
   ctx.restore();
 }
+function openWaterChest(wc){
+  if(wc.opened){ flash('The water chest is empty.'); return; }
+  wc.opened=true; SFX.chest&&SFX.chest(); burst(wc.x,wc.z,'#5fc0e0',16);
+  if(Math.random()<0.5){ cam.hasWaterSword=true; cam.maxHp+=40; cam.hp=cam.maxHp;
+    flash('🌊 WATER CHEST! You drew the WATER SWORD — your hits SLOW enemies, and +40 max HP!'); }
+  else { account.gems=(account.gems||0)+10; saveAccount(); refreshChip(); netSyncStats(); flash('🌊 Water chest: +10 💎 — no sword this time.'); }
+}
 function broadcastChestEvent(o, code){
   _myEvt={ code:'chest|'+(o.rako?1:0)+'|'+code+'|'+o.x.toFixed(1)+'|'+o.z.toFixed(1), t:Date.now() };
   netPresenceWrite();
