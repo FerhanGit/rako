@@ -2229,6 +2229,11 @@ function update(){
   cam.z=Math.max(1,Math.min(WORLD-1,nz));
   markExplored(cam.x, cam.z);
   { const bush=objects.find(o=>o.type==='bush'); cam.hidden = !!(bush && !cam.flyTime && Math.hypot(cam.x-bush.x,cam.z-bush.z)<2.4); }
+  { const lake=objects.find(o=>o.type==='lake' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r);
+    if(lake && !cam.flyTime){ if(!cam.swimming){ cam.swimming=true; cam.swimT=0; flash('💧 You dive into the lake — swim! (don\'t stay too long)'); SFX.eat&&SFX.eat(); }
+      cam.swimT=(cam.swimT||0)+1;
+      if(cam.swimT>10*60 && time%60===0){ cam.hp-=5; hurtFlash=Math.min(1,(hurtFlash||0)+0.3); flash('💧 You\'re drowning! Get out of the water!'); if(cam.hp<=0){ cam.hp=0; lose(); } } }
+    else { cam.swimming=false; cam.swimT=0; } }
   { const b=biomeAt(cam.x,cam.z); if(b!==curBiome){ curBiome=b; flash(BIOME_LABEL[b]); biomeAmbient(b); biomeAmbient(b);
       weather=pickWeather(b); weatherT=60*(40+Math.random()*50); announceWeather();
       if(!account.biomes) account.biomes=[]; if(account.biomes.indexOf(b)<0){ account.biomes.push(b); saveAccount(); } }
