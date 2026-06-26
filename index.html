@@ -2297,6 +2297,7 @@ function update(){
   let spd=flying?0.30:0.17;
   if(weather==='snow' && !flying) spd*=0.6;   // snow slows you down
   if(cam.swimming && !flying) spd*=0.55;       // swimming is slow
+  if(cam.riding && !flying) spd*=1.7;          // riding your tamed wolf — fast!
   if(playerSlowT>0){ playerSlowT--; spd*=0.45; }   // chilled by the Frost Titan
   if(sprinting) spd*=1.8;
   if(cam.boostT>0){ cam.boostT--; spd*=1.5; }   // swift-boots chest reward
