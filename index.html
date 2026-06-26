@@ -6061,7 +6061,7 @@ function renderBestiary(){
   h+=BEST_SPECIALS.map(s=>'<div style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid #2a3a2a">'+
       '<div style="width:22px;height:22px;border-radius:5px;background:'+s.c+';flex:none;border:1px solid #0006"></div>'+
       '<div style="flex:1"><b>'+s.n+'</b> <span style="font-size:11px;color:#7fb0e0">['+s.sub+']</span><br>'+
-      '<span style="font-size:11px;color:#cfe0cf">❤ '+s.hp+' HP · ⚔ '+s.dmg+' dmg</span><br>'+
+      '<span style="font-size:11px;color:#cfe0cf">❤ '+s.hp+' HP · ⚔ '+s.dmg+' dmg · 📍 '+s.found+'</span><br>'+
       '<span style="font-size:11px;color:#9ab09a">'+s.note+'</span></div></div>').join('');
   h+='<div style="font-weight:bold;color:#8fe070;margin:12px 0 4px">🐾 MONSTERS ('+MONSTER_TYPES.length+')</div>';
   h+=MONSTER_TYPES.map((m,i)=>{
