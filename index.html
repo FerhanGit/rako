@@ -1238,6 +1238,7 @@ function reset(){
     for(let tries=0;tries<900;tries++){ const x=Math.random()*WORLD,z=Math.random()*WORLD;
       if(biomeAt(x,z)!==bio||inCity(x,z)||Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+8) continue;
       objects.push(makeBiomeBoss(x,z,tiers[Math.floor(Math.random()*tiers.length)],nm,col)); break; } });
+  matchChampTotal=objects.filter(o=>o.champion).length; matchChampKills=0;   // for the Dragon Slayer achievement
   // hostile wildlife — bears, foxes, frogs, squirrels — attack day & night
   for(let i=0;i<40;i++){ const x=Math.random()*WORLD, z=Math.random()*WORLD;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+5 || inCity(x,z)) continue;
