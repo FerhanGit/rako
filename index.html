@@ -3491,6 +3491,7 @@ function drawGround(){
     let col=mix(grass,'#ffffff', 0.14*lift + 0.16*Math.max(0,sl));   // sunlit slopes brighter
     col=mix(col,'#000000', 0.24*Math.max(0,-sl));                    // shaded slopes darker
     const fog=Math.min(0.55, cl.depth/(span*1.7)); col=mix(col, BP.skyBot, fog*0.45);
+    if(k>0.02) col=mix(col,'#0a0c14', 0.55*k);                       // darken at night
     poly([[cl.a.x,cl.a.y],[cl.b.x,cl.b.y],[cl.c.x,cl.c.y],[cl.d.x,cl.d.y]], col);
   }
 }
