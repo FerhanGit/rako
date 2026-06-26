@@ -1071,7 +1071,7 @@ function reset(){
   objects.push({type:'craftbench', x:HOME.x-6, z:HOME.z-1, height:1.4, width:2.4});   // crafting bench by the cabin
   // a lake — dive in to swim; a water chest waits in the middle
   { const lx=HOME.x+38, lz=HOME.z+34; objects.push({type:'lake', x:lx, z:lz, r:13, width:30, height:0.3});
-    objects.push({type:'waterchest', x:lx, z:lz, height:1.1, width:1.3, opened:false}); }
+    objects.push({type:'waterchest', x:lx, z:lz-9, height:1.1, width:1.3, opened:false}); }   // near the edge, easy to reach
 
   // scatter trees over the forest (not inside the city, stronghold, or home)
   for(let i=0;i<1000;i++){
