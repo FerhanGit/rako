@@ -3439,7 +3439,9 @@ function drawTree(o,p){
   const bio=(o.bio!=null)?o.bio:(o.bio=biomeAt(o.x,o.z));
   const sway=Math.sin(time*0.012+seed)*w*0.05, cx=x+sway;
   // low-poly facets: dark = shadow side, mid = base, lite = lit side (light from upper-left)
-  const dark=night?'#122a14':'#2c6a32', mid=night?'#1a3a1e':'#3f8a45', lite=night?'#264e2a':'#74c266';
+  let dark=night?'#122a14':'#2c6a32', mid=night?'#1a3a1e':'#3f8a45', lite=night?'#264e2a':'#74c266';
+  if(o.golden){ dark='#9a7410'; mid='#d8aa1e'; lite='#ffe88a';   // the Golden-Apple tree glows
+    ctx.save(); ctx.globalAlpha*=0.4; ctx.fillStyle='#ffd24a'; ctx.beginPath(); ctx.arc(x+Math.sin(time*0.012+seed)*w*0.05, base-h*0.62, w*0.85,0,7); ctx.fill(); ctx.restore(); }
   // ground shadow
   ctx.globalAlpha*=0.28; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.58,w*0.14,0,0,7); ctx.fill(); ctx.globalAlpha/=0.28;
   // faceted trunk (light-left / dark-right)
