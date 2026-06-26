@@ -2551,8 +2551,8 @@ function update(){
   // bunnies — flee the player, otherwise hop around
   for(const b of objects){ if(b.type!=='bunny') continue;
     if(b.flash>0)b.flash--;
-    const dp=Math.hypot(cam.x-b.x,cam.z-b.z)||1;
-    if(dp<6){ b.x+=(b.x-cam.x)/dp*0.13; b.z+=(b.z-cam.z)/dp*0.13; }
+    const dp=Math.hypot(cam.x-b.x,cam.z-b.z)||1; const fs=b.flee||0.13, fr=b.gold?11:6;
+    if(dp<fr){ b.x+=(b.x-cam.x)/dp*fs; b.z+=(b.z-cam.z)/dp*fs; }
     else { if(b.hop<=0){ b.dir=Math.random()*6.283; b.hop=50+Math.random()*70; } b.hop--;
       b.x+=Math.cos(b.dir)*0.03; b.z+=Math.sin(b.dir)*0.03; }
     b.x=Math.max(1,Math.min(WORLD-1,b.x)); b.z=Math.max(1,Math.min(WORLD-1,b.z));
