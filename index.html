@@ -1213,10 +1213,10 @@ function reset(){
   for(let i=0;i<4;i++){ const x=14+Math.random()*(WORLD-28), z=14+Math.random()*(WORLD-28), r=3+Math.random()*2.5;
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+r+2 || Math.hypot(x-SH.x,z-SH.z)<SH.r+r) continue;
     objects.push(hole(x,z,r)); }
-  // a cave mouth you can enter (legendary chest inside)
-  { let cx,cz,tries=0; do{ cx=20+Math.random()*(WORLD-40); cz=40+Math.random()*(WORLD-70); tries++; }
-    while(tries<20 && (Math.hypot(cx-HOME.x,cz-HOME.z)<20 || inCity(cx,cz)));
-    objects.push(caveMouth(cx,cz)); }
+  // several cave mouths (holes in the ground) you can enter
+  for(let i=0;i<6;i++){ let cx,cz,tries=0; do{ cx=20+Math.random()*(WORLD-40); cz=30+Math.random()*(WORLD-50); tries++; }
+    while(tries<30 && (Math.hypot(cx-HOME.x,cz-HOME.z)<18 || inCity(cx,cz)));
+    if(tries<30) objects.push(caveMouth(cx,cz)); }
   // coins scattered to collect, and a Buy Table near home to spend them
   for(let i=0;i<26;i++){ const x=8+Math.random()*(WORLD-16), z=8+Math.random()*(WORLD-16);
     if(inCity(x,z)) continue; objects.push(coin(x,z)); }
