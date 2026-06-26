@@ -3445,24 +3445,27 @@ function drawSunMoon(){
   ctx.restore();
 }
 function drawGround(){
-  const step=4, span=28;
+  const BP=BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest, grass=BP.grass;
+  const step=5, span=46;
   const cx=Math.round(cam.x/step)*step, cz=Math.round(cam.z/step)*step;
-  ctx.lineWidth=1;
-  const seg=(a,b)=>{ if(!a||!b) return; const d=Math.min(a.depth,b.depth);
-    const al=Math.max(0,0.22*(1-d/span)); if(al<=0.01) return;
-    ctx.globalAlpha=al; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); };
-  ctx.strokeStyle=mix((BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest).grass,'#000000',0.35);
-  // lines running along world-x (constant z)
-  for(let gz=cz-span; gz<=cz+span; gz+=step){
-    let prev=null;
-    for(let gx=cx-span; gx<=cx+span; gx+=step){ const pt=groundPt(gx,gz); seg(prev,pt); prev=pt; }
+  const n=Math.floor(span/step)*2+1;
+  // precompute the vertex grid (one projection + height per vertex)
+  const V=[]; for(let iz=0;iz<=n;iz++){ const row=[], gz=cz-span+iz*step; for(let ix=0;ix<=n;ix++){ const gx=cx-span+ix*step; row.push({h:terrainH(gx,gz), p:groundPt(gx,gz)}); } V.push(row); }
+  const cells=[];
+  for(let iz=0;iz<n;iz++) for(let ix=0;ix<n;ix++){
+    const a=V[iz][ix], b=V[iz][ix+1], c=V[iz+1][ix+1], d=V[iz+1][ix];
+    if(!a.p||!b.p||!c.p||!d.p) continue;
+    const depth=Math.min(a.p.depth,b.p.depth,c.p.depth,d.p.depth); if(depth>span*1.4) continue;
+    cells.push({a:a.p,b:b.p,c:c.p,d:d.p, depth, hC:(a.h+c.h)*0.5, slope:(a.h-c.h)});
   }
-  // lines running along world-z (constant x)
-  for(let gx=cx-span; gx<=cx+span; gx+=step){
-    let prev=null;
-    for(let gz=cz-span; gz<=cz+span; gz+=step){ const pt=groundPt(gx,gz); seg(prev,pt); prev=pt; }
+  cells.sort((p,q)=>q.depth-p.depth);   // far -> near
+  for(const cl of cells){
+    const lift=Math.max(0,Math.min(1,cl.hC/7)), sl=Math.max(-1,Math.min(1,cl.slope*0.45));
+    let col=mix(grass,'#ffffff', 0.14*lift + 0.16*Math.max(0,sl));   // sunlit slopes brighter
+    col=mix(col,'#000000', 0.24*Math.max(0,-sl));                    // shaded slopes darker
+    const fog=Math.min(0.55, cl.depth/(span*1.7)); col=mix(col, BP.skyBot, fog*0.45);
+    poly([[cl.a.x,cl.a.y],[cl.b.x,cl.b.y],[cl.c.x,cl.c.y],[cl.d.x,cl.d.y]], col);
   }
-  ctx.globalAlpha=1;
 }
 function drawGrass(){
   const step=3, span=20, night=isNight();
