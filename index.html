@@ -762,9 +762,14 @@ function mulberry32(a){ return function(){ a|=0; a=(a+0x6D2B79F5)|0; let t=Math.
 let records={}, matchFrames=0;   // real per-name records accumulated from matches actually played
 let matchChampTotal=0, matchChampKills=0;   // biome champions this game (Dragon Slayer achievement)
 const ALLY_COLORS=['#5fa0ff','#ff7f50','#9b5fff','#5fd35f','#ffd040','#ff5f8f'];
-const NAMES=['theKiller','xX_Reaper_Xx','NoScope360','ShadowSlayer','ToxicGamer','Cracked','Sweaty99',
-  'DemonLord','vEnoM','SavageKid','MLGpro','DarkAce','NightmareX','SkullCrusher','ProSniper','Vernuus',
-  'Kael','Thorn','Onyx','Draeko','Pyre','Nyx','Rook','Zephyr'];
+const NAMES=['Liam','Maya','noah_k','Sofia','jaxon','emma2011','Lucas','Aria','itsdylan','Mia',
+  'Ethan','oliver7','Zoe','leo','Hannah','sammyj','Ava','Mason','chloe_b','benji',
+  'Isla','theo','Ruby','finn','layla','kaiX','Nora','milo','Ivy','ezra',
+  'Luna','jude','Ellie','reece','tommy','jakey','Sienna','Caleb','Freya','danny',
+  'Holly','Marcus','Tara','vlad','niko','petar','Alex','Sam','jordan','Riley',
+  'Quinn','Cody','Bella','Max','Ruben','Tess','Owen','Gabe','Nina','Pavel',
+  'Dimi','Yara','Kerem','Deniz','Bobby','Lena','Toby','Mira','Joey','Sasha',
+  'Cole','Eden','Pip','Roan','Suki','Vince','Wren','Zane','Anya','Bruno'];
 function randomName(){ return NAMES[Math.floor(Math.random()*NAMES.length)]+Math.floor(Math.random()*1000); }
 // fog-of-war map grid
 const MAP=50, MCELL=WORLD/MAP;     // 50x50 cells
