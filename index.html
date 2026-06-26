@@ -4076,7 +4076,8 @@ function drawRemoteFriend(o,p){
 function drawBunny(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const hopY=Math.abs(Math.sin(time*0.18+o.bob))*h*0.25;
-  ctx.fillStyle=o.flash>0?'#fff':'#e8e0d8';
+  if(o.gold){ const gl=ctx.createRadialGradient(x,base-h*0.4-hopY,2,x,base-h*0.4-hopY,w*1.1); gl.addColorStop(0,'rgba(255,210,30,0.5)'); gl.addColorStop(1,'rgba(255,210,30,0)'); ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(x,base-h*0.4-hopY,w*1.1,0,7); ctx.fill(); }
+  ctx.fillStyle=o.flash>0?'#fff':(o.gold?'#ffd21a':'#e8e0d8');
   ctx.beginPath(); ctx.ellipse(x, base-h*0.35-hopY, w*0.42, h*0.4, 0,0,7); ctx.fill();   // body
   ctx.beginPath(); ctx.ellipse(x, base-h*0.62-hopY, w*0.26, h*0.28, 0,0,7); ctx.fill();  // head
   ctx.fillStyle='#d8b0b0';   // ears
