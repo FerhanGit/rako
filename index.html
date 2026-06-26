@@ -1319,8 +1319,9 @@ function reset(){
   allies=[];
   const usedNames=new Set();
   const realPool=(onlineNames||[]).slice();          // real people who are online right now
-  const cols=Math.max(1,Math.ceil(Math.sqrt(partySize)));   // cluster them in a grid behind you (works for 1 or 100)
-  for(let i=0;i<partySize;i++){
+  const spawnN=Math.min(partySize, 40);              // only render/simulate up to 40 — the rest are "out in the field" (shown on the scoreboard)
+  const cols=Math.max(1,Math.ceil(Math.sqrt(spawnN)));   // cluster them in a grid behind you
+  for(let i=0;i<spawnN;i++){
     let nm, isReal=false;
     if(realPool.length){ nm=realPool.shift(); isReal=true; }
     else if(account.friends[i] && !usedNames.has(account.friends[i])) nm=account.friends[i];
