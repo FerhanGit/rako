@@ -2261,10 +2261,12 @@ function update(){
   markExplored(cam.x, cam.z);
   { const bush=objects.find(o=>o.type==='bush'); cam.hidden = !!(bush && !cam.flyTime && Math.hypot(cam.x-bush.x,cam.z-bush.z)<2.4); }
   { const lake=objects.find(o=>o.type==='lake' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r);
-    if(lake && !cam.flyTime){ if(!cam.swimming){ cam.swimming=true; cam.swimT=0; flash('💧 You dive into the lake — swim! (don\'t stay too long)'); SFX.eat&&SFX.eat(); }
-      cam.swimT=(cam.swimT||0)+1;
-      if(cam.swimT>15*60 && time%60===0){ cam.hp-=5; hurtFlash=Math.min(1,(hurtFlash||0)+0.3); flash('💧 You\'re drowning! Get out of the water!'); if(cam.hp<=0){ cam.hp=0; lose(); } } }
-    else { cam.swimming=false; cam.swimT=0; } }
+    if(lake && !cam.flyTime){
+      if(!cam.swimming){ cam.swimming=true; flash('💧 You sink into the deep lake — hold SPACE to swim up. A chest waits at the bottom!'); SFX.eat&&SFX.eat(); }
+      if(keys[' ']) cam.dive=Math.max(0,(cam.dive||0)-0.024);   // SPACE = rise
+      else cam.dive=Math.min(1,(cam.dive||0)+0.0045);           // otherwise sink slowly, deeper and deeper
+      cam.eyeH=0.55 + (cam.dive||0)*2.2;                         // camera dips below the surface as you sink
+    } else { cam.swimming=false; if(cam.dive>0){ cam.dive=Math.max(0,cam.dive-0.04); cam.eyeH=0.55+cam.dive*2.2; } else cam.eyeH=0.55; } }
   { const b=biomeAt(cam.x,cam.z); if(b!==curBiome){ curBiome=b; flash(BIOME_LABEL[b]); biomeAmbient(b); biomeAmbient(b);
       weather=pickWeather(b); weatherT=60*(40+Math.random()*50); announceWeather();
       if(!account.biomes) account.biomes=[]; if(account.biomes.indexOf(b)<0){ account.biomes.push(b); saveAccount(); } }
