@@ -3567,30 +3567,31 @@ function drawGiant(o,p){
 }
 function drawCabin(p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
-  const left=x-w*0.5, wallTop=base-h*0.92;
-  // ---- flat wooden wall (no 3D roof) ----
-  const wood=ctx.createLinearGradient(0,wallTop,0,base);
-  wood.addColorStop(0,'#7a4f2a'); wood.addColorStop(1,'#4a2f18');
+  const left=x-w*0.5, wallTop=base-h*0.78, dx=w*0.2, dy=-w*0.13;   // isometric side depth
+  // ground shadow
+  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x+dx*0.4,base,w*0.66,w*0.16,0,0,7); ctx.fill(); ctx.restore();
+  // right depth wall (darker)
+  poly([[left+w,wallTop],[left+w+dx,wallTop+dy],[left+w+dx,base+dy],[left+w,base]], '#3a2614');
+  // front wall (log gradient)
+  const wood=ctx.createLinearGradient(0,wallTop,0,base); wood.addColorStop(0,'#7a4f2a'); wood.addColorStop(1,'#4a2f18');
   ctx.fillStyle=wood; ctx.fillRect(left, wallTop, w, base-wallTop);
-  // plank lines
-  ctx.strokeStyle="#3a2410"; ctx.lineWidth=Math.max(1,h*0.006);
-  for(let yy=wallTop; yy<base; yy+=Math.max(4,h*0.07)){
-    ctx.beginPath(); ctx.moveTo(left,yy); ctx.lineTo(left+w,yy); ctx.stroke(); }
-  ctx.lineWidth=Math.max(1,h*0.012); ctx.strokeRect(left, wallTop, w, base-wallTop);
-  // ---- two windows ----
-  ctx.fillStyle='#ffe28a';
-  const ww=w*0.16, wh=h*0.18, wy=wallTop+h*0.12;
-  ctx.fillRect(x-w*0.26-ww/2, wy, ww, wh);
-  ctx.fillRect(x+w*0.26-ww/2, wy, ww, wh);
-  ctx.strokeStyle="#3a2410"; ctx.lineWidth=Math.max(1,h*0.008);
-  ctx.strokeRect(x-w*0.26-ww/2, wy, ww, wh);
-  ctx.strokeRect(x+w*0.26-ww/2, wy, ww, wh);
-  // ---- door ----
-  ctx.fillStyle='#2a1a0e';
-  ctx.fillRect(x-w*0.11, base-h*0.42, w*0.22, h*0.42);
-  // little "HOME" sign
-  ctx.fillStyle="#cfe8d0"; ctx.font=`${Math.max(8,h*0.06)}px sans-serif`;
-  ctx.textAlign="center"; ctx.fillText("HOME", x, wallTop-h*0.04); ctx.textAlign="left";
+  ctx.strokeStyle='#3a2410'; ctx.lineWidth=Math.max(1,h*0.006);
+  for(let yy=wallTop; yy<base; yy+=Math.max(4,h*0.08)){ ctx.beginPath(); ctx.moveTo(left,yy); ctx.lineTo(left+w,yy); ctx.stroke(); }
+  // ---- pitched 3D roof ----
+  const peak=wallTop-h*0.3, eaveL=left-w*0.08, eaveR=left+w+w*0.08;
+  poly([[eaveL,wallTop],[x,peak],[eaveR,wallTop]], '#7a2418');                                    // front gable (red roof)
+  poly([[eaveR,wallTop],[x,peak],[x+dx,peak+dy],[eaveR+dx,wallTop+dy]], '#5a1810');                // roof right slope (darker)
+  ctx.strokeStyle='#3a0f08'; ctx.lineWidth=Math.max(1,h*0.01); ctx.beginPath(); ctx.moveTo(eaveL,wallTop); ctx.lineTo(x,peak); ctx.lineTo(eaveR,wallTop); ctx.stroke();
+  // chimney with smoke
+  ctx.fillStyle='#4a4e54'; ctx.fillRect(x+w*0.28, peak-h*0.02, w*0.1, h*0.22);
+  ctx.fillStyle='rgba(200,200,205,0.35)'; for(let i=0;i<3;i++){ ctx.beginPath(); ctx.arc(x+w*0.33+Math.sin(time*0.04+i)*4, peak-h*0.04-i*h*0.06, w*0.05+i*w*0.02,0,7); ctx.fill(); }
+  // glowing windows + door
+  const glow=0.7+0.3*Math.sin(time*0.06);
+  ctx.fillStyle='rgba(255,210,110,'+glow+')'; const ww=w*0.16, wh=h*0.18, wy=wallTop+h*0.14;
+  [x-w*0.26,x+w*0.26].forEach(wx=>{ ctx.fillRect(wx-ww/2,wy,ww,wh); ctx.strokeStyle='#3a2410'; ctx.lineWidth=Math.max(1,h*0.01); ctx.strokeRect(wx-ww/2,wy,ww,wh); ctx.beginPath(); ctx.moveTo(wx,wy); ctx.lineTo(wx,wy+wh); ctx.moveTo(wx-ww/2,wy+wh/2); ctx.lineTo(wx+ww/2,wy+wh/2); ctx.stroke(); });
+  ctx.fillStyle='#2a1a0e'; ctx.fillRect(x-w*0.11, base-h*0.4, w*0.22, h*0.4);                       // door
+  ctx.fillStyle='#caa050'; ctx.beginPath(); ctx.arc(x+w*0.06, base-h*0.2, w*0.02,0,7); ctx.fill();   // knob
+  ctx.fillStyle='#cfe8d0'; ctx.font=`bold ${Math.max(8,h*0.06)}px sans-serif`; ctx.textAlign='center'; ctx.fillText('HOME', x, peak-h*0.03); ctx.textAlign='left';
 }
 function drawPyramid(o,p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.fillStyle='#c79a4e'; ctx.beginPath(); ctx.moveTo(x,base-h); ctx.lineTo(x-w*0.55,base); ctx.lineTo(x+w*0.55,base); ctx.closePath(); ctx.fill();   // sand body
