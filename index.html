@@ -3804,18 +3804,15 @@ function drawWaterChest(o,p){
     ctx.fillStyle='rgba(180,230,255,'+(0.4+0.3*Math.sin(time*0.15))+')'; ctx.fillRect(x-w*0.5, base-h, w, h*0.05); }
 }
 function drawRock(o,p){
-  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
-  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.55,w*0.16,0,0,7); ctx.fill(); ctx.restore();
+  const w=p.wPx;
+  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(p.sx,p.groundY,w*0.55,w*0.16,0,0,7); ctx.fill(); ctx.restore();
   const flash=o.flash>0; if(o.flash>0) o.flash--; const amy=o.ore==='amethyst';
-  const dk=flash?'#fff':(amy?'#5a2f86':'#565b62'), md=flash?'#fff':(amy?'#7e45b8':'#74797f'), lt=flash?'#fff':(amy?'#b58aff':'#9aa0a8');
-  // low-poly faceted boulder (shadow / mid / lit facets)
-  const cy=base-h*0.34, rw=w*0.55, rh=h*0.5;
-  poly([[x-rw,base],[x-rw*0.7,cy],[x,cy-rh*0.5],[x+rw*0.7,cy],[x+rw,base]], dk);                 // base silhouette
-  poly([[x-rw*0.7,cy],[x,cy-rh*0.5],[x+rw*0.15,cy-rh*0.2],[x-rw*0.2,cy+rh*0.2]], md);            // mid facet
-  poly([[x-rw*0.7,cy],[x,cy-rh*0.5],[x-rw*0.15,cy+rh*0.1],[x-rw*0.5,cy+rh*0.2]], lt);            // lit facet (upper-left)
-  poly([[x,cy-rh*0.5],[x+rw*0.7,cy],[x+rw*0.4,base*0.0+cy+rh*0.4],[x+rw*0.1,cy+rh*0.1]], dk);    // right shadow facet
-  if(amy){ ctx.fillStyle='#e6ccff'; for(let k=-1;k<=1;k++){ ctx.beginPath(); ctx.moveTo(x+k*w*0.2,cy-rh*0.3); ctx.lineTo(x+k*w*0.2-w*0.07,cy+rh*0.2); ctx.lineTo(x+k*w*0.2+w*0.07,cy+rh*0.2); ctx.closePath(); ctx.fill(); } }  // crystals
-  if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*0.72,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*0.72,bw*2*(o.hp/o.maxHp),4); }
+  let body=amy?'#7e45b8':'#74797f', top=amy?'#b58aff':'#9aa0a8'; if(flash){ body='#fff'; top='#fff'; }
+  // real 3D boulder block (two stacked offset boxes for a chunky rock look)
+  box3D(o.x,o.z, o.width*0.42, o.width*0.36, o.height*0.5, body, top, 0);
+  box3D(o.x-o.width*0.06, o.z-o.width*0.05, o.width*0.3, o.width*0.24, o.height*0.35, mix(body,'#fff',0.12), mix(top,'#fff',0.15), o.height*0.42);
+  if(amy){ const cp=project3D(o.x,o.height*0.95,o.z); if(cp){ ctx.fillStyle='#e6ccff'; for(let k=-1;k<=1;k++){ ctx.beginPath(); ctx.moveTo(cp.x+k*w*0.18,cp.y); ctx.lineTo(cp.x+k*w*0.18-w*0.06,cp.y+p.hPx*0.18); ctx.lineTo(cp.x+k*w*0.18+w*0.06,cp.y+p.hPx*0.18); ctx.closePath(); ctx.fill(); } } }
+  if(o.hp<o.maxHp){ const hp=project3D(o.x,o.height*1.15,o.z); if(hp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(hp.x-bw,hp.y,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(hp.x-bw,hp.y,bw*2*(o.hp/o.maxHp),4); } }
 }
 function drawBush(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
