@@ -3907,6 +3907,22 @@ function drawCave(){
   for(let i=0;i<8;i++){ ctx.beginPath(); ctx.moveTo(R.x, R.y+i*R.h/8+10); ctx.lineTo(R.x+R.w, R.y+i*R.h/8-6); ctx.stroke(); }
   // cave walls
   ctx.lineWidth=18; ctx.strokeStyle='#15131a'; ctx.strokeRect(R.x+9,R.y+9,R.w-18,R.h-18);
+  // stalactites hanging from the ceiling (top)
+  ctx.fillStyle='#2e2a34'; for(let i=0;i<11;i++){ const sx=R.x+24+i*(R.w-48)/10; ctx.beginPath(); ctx.moveTo(sx-9,R.y+9); ctx.lineTo(sx,R.y+9+20+(i%3)*9); ctx.lineTo(sx+9,R.y+9); ctx.closePath(); ctx.fill(); }
+  // stalagmites + mossy rocks rising from the floor
+  for(let i=0;i<16;i++){ const rx=R.x+34+((i*97)%(R.w-68)), ry=R.y+50+((i*53)%(R.h-110)), hh=14+(i%4)*9;
+    ctx.fillStyle='#3a3640'; ctx.beginPath(); ctx.moveTo(rx-11,ry+18); ctx.lineTo(rx,ry-hh); ctx.lineTo(rx+11,ry+18); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#4a4652'; ctx.beginPath(); ctx.moveTo(rx-4,ry+18); ctx.lineTo(rx,ry-hh); ctx.lineTo(rx+4,ry+18); ctx.closePath(); ctx.fill();
+    if(i%3===0){ ctx.fillStyle='#3a7a3a'; ctx.beginPath(); ctx.arc(rx,ry-hh+3,5,0,7); ctx.fill(); } }   // moss
+  // glowing crystals (purple & lush green, like the photos)
+  for(let i=0;i<11;i++){ const cxp=R.x+50+((i*131)%(R.w-100)), cyp=R.y+70+((i*89)%(R.h-140)), pur=i%2;
+    const pulse=0.4+0.35*Math.abs(Math.sin(time*0.05+i)), hue=pur?'rgba(160,90,255,':'rgba(90,220,150,';
+    const g=ctx.createRadialGradient(cxp,cyp,1,cxp,cyp,18); g.addColorStop(0,hue+pulse+')'); g.addColorStop(1,hue+'0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cxp,cyp,18,0,7); ctx.fill();
+    ctx.fillStyle=pur?'#c79bff':'#8fe8b0'; ctx.beginPath(); ctx.moveTo(cxp,cyp-9); ctx.lineTo(cxp-4,cyp+5); ctx.lineTo(cxp+4,cyp+5); ctx.closePath(); ctx.fill(); }
+  // a little glowing water pool (lush-cave feel)
+  ctx.fillStyle='rgba(40,110,150,0.6)'; ctx.beginPath(); ctx.ellipse(R.x+R.w*0.25, R.y+R.h*0.7, 46, 22, 0,0,7); ctx.fill();
+  ctx.fillStyle='rgba(120,200,230,0.3)'; ctx.beginPath(); ctx.ellipse(R.x+R.w*0.25, R.y+R.h*0.7, 30, 12, 0,0,7); ctx.fill();
   // torches (flicker)
   const fl=0.6+0.4*Math.abs(Math.sin(time*0.3));
   for(const tx of [R.x+30, R.x+R.w-30]){ ctx.fillStyle='#3a2410'; ctx.fillRect(tx-3,R.y+30,6,30);
