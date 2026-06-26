@@ -6043,7 +6043,19 @@ document.getElementById('clubsBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnDaily').onclick=()=>claimDaily();
 document.getElementById('btnLottery').onclick=()=>openLottery();
 document.getElementById('btnNews').onclick=()=>document.getElementById('newsPanel').classList.remove('hidden');
+document.getElementById('newsClose').onclick=()=>document.getElementById('newsPanel').classList.add('hidden');
 document.getElementById('btnBestiary').onclick=()=>{ renderBestiary(); document.getElementById('bestPanel').classList.remove('hidden'); };
+document.getElementById('bestClose').onclick=()=>document.getElementById('bestPanel').classList.add('hidden');
+function bestiaryBiome(i){ if(i>=27&&i<=30) return 'Swamp'; if(i>=24&&i<=26) return 'Desert'; if(i===31) return 'Lake'; if(i>=20&&i<=22) return 'Celeb'; if([7,14,15,16].includes(i)) return 'Snow'; if([8,17,18].includes(i)) return 'Lava'; if([9,19].includes(i)) return 'Space'; return 'Forest'; }
+function renderBestiary(){
+  const B=document.getElementById('bestBody'); if(!B) return;
+  B.innerHTML='<div class="hint" style="font-size:12px;margin-bottom:6px">'+MONSTER_TYPES.length+' creatures roam RAKO:</div>'+MONSTER_TYPES.map((m,i)=>{
+    const tag = m.always?'<span style="color:#ff8a6a">day &amp; night</span>' : (m.stalker?'<span style="color:#b08aff">night stalker</span>' : '<span style="color:#9ab09a">night only</span>');
+    return '<div style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid #2a3a2a">'+
+      '<div style="width:22px;height:22px;border-radius:5px;background:'+m.c+';flex:none;border:1px solid #0006"></div>'+
+      '<div style="flex:1"><b>'+m.n+'</b> <span style="font-size:11px;color:#7fb0e0">['+bestiaryBiome(i)+']</span><br>'+
+      '<span style="font-size:11px;color:#9ab09a">❤ '+m.hp+' HP · ⚔ '+m.dmg+' dmg · '+(m.fly?'🪽 flying · ':'')+tag+'</span></div></div>'; }).join('');
+}
 document.getElementById('lottoSpin').onclick=()=>spinLottery();
 document.getElementById('lottoBack').onclick=()=>showScreen('lobby');
 document.getElementById('btnPass').onclick=()=>openPass();
