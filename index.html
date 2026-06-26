@@ -3688,6 +3688,23 @@ function drawCoin(o,p){
   ctx.fillStyle='#b8860b'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(3,w*0.5*(0.4+0.6*sw)),Math.max(3,h*0.5),0,0,7); ctx.fill();
   ctx.fillStyle='#ffd84a'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(2,w*0.34*(0.4+0.6*sw)),Math.max(2,h*0.34),0,0,7); ctx.fill();
 }
+function drawLake(o,p){
+  const x=p.sx, base=p.groundY, w=p.wPx;
+  ctx.save(); ctx.globalAlpha*=0.78;
+  ctx.fillStyle='#1f6f9a'; ctx.beginPath(); ctx.ellipse(x, base, w*0.5, w*0.2, 0,0,7); ctx.fill();
+  ctx.fillStyle='#3a9fd0'; ctx.beginPath(); ctx.ellipse(x, base-w*0.02, w*0.4, w*0.15, 0,0,7); ctx.fill();
+  ctx.globalAlpha*=0.5; ctx.strokeStyle='#bfe8ff'; ctx.lineWidth=2;   // ripples
+  for(let i=1;i<=2;i++){ ctx.beginPath(); ctx.ellipse(x, base, w*0.5*(0.4+0.25*i)+Math.sin(time*0.05+i)*3, w*0.2*(0.4+0.25*i), 0,0,7); ctx.stroke(); }
+  ctx.restore();
+}
+function drawWaterChest(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
+  const body=o.opened?'#1a3a4a':'#2f7fa0';
+  ctx.fillStyle=body; ctx.fillRect(x-w*0.5, base-h*0.6, w, h*0.6);
+  if(!o.opened){ ctx.fillStyle='#5fc0e0'; ctx.fillRect(x-w*0.55, base-h, w*1.1, h*0.42);
+    ctx.fillStyle='#cdeeff'; ctx.fillRect(x-w*0.08, base-h*0.62, w*0.16, h*0.2);
+    ctx.fillStyle='rgba(180,230,255,'+(0.4+0.3*Math.sin(time*0.15))+')'; ctx.fillRect(x-w*0.5, base-h, w, h*0.05); }
+}
 function drawRock(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.55,w*0.16,0,0,7); ctx.fill(); ctx.restore();
