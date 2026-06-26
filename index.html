@@ -925,8 +925,7 @@ function tree(x,z){
   const h=giant ? 11+Math.random()*7 : 5+Math.random()*3;
   return {type:'tree', x,z, height:h, width:giant?4.2:2.4, giant, solid:true};
 }
-function makeMonster(x,z,tier){
-  const T=[
+const MONSTER_TYPES=[
     {n:'Forest Slime',c:'#5fd35f',hp:30,dmg:6,spd:0.035,h:1.4,w:1.4},
     {n:'Dire Wolf',   c:'#8a7a66',hp:46,dmg:11,spd:0.075,h:1.7,w:2.0},
     {n:'Treant',      c:'#3a6a3a',hp:80,dmg:15,spd:0.045,h:3.0,w:2.2},
