@@ -3745,8 +3745,14 @@ function drawCoin(o,p){
 function drawLake(o,p){ /* lakes are now painted into the ground in drawLakes() */ }
 function drawHill(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, night=isNight();
-  ctx.fillStyle=night?'#1d3f20':'#3f8a45'; ctx.beginPath(); ctx.moveTo(x-w*0.72,base); ctx.quadraticCurveTo(x-w*0.4,base-h, x,base-h); ctx.quadraticCurveTo(x+w*0.4,base-h, x+w*0.72,base); ctx.closePath(); ctx.fill();
-  ctx.fillStyle=night?'#27512b':'#56a85b'; ctx.beginPath(); ctx.moveTo(x-w*0.5,base); ctx.quadraticCurveTo(x-w*0.18,base-h*0.92, x+w*0.02,base-h*0.96); ctx.lineTo(x-w*0.06,base); ctx.closePath(); ctx.fill();  // lit facet
+  // shadow (right) side — darker for a clear 3D dome
+  ctx.fillStyle=night?'#13301a':'#2c6a32'; ctx.beginPath(); ctx.moveTo(x-w*0.75,base); ctx.quadraticCurveTo(x-w*0.42,base-h, x,base-h*1.02); ctx.quadraticCurveTo(x+w*0.42,base-h, x+w*0.75,base); ctx.closePath(); ctx.fill();
+  // lit (left) side
+  ctx.fillStyle=night?'#1f4424':'#4f9a55'; ctx.beginPath(); ctx.moveTo(x-w*0.75,base); ctx.quadraticCurveTo(x-w*0.42,base-h, x,base-h*1.02); ctx.lineTo(x,base); ctx.closePath(); ctx.fill();
+  // bright cap highlight
+  ctx.fillStyle=night?'#2a5a30':'#69b86c'; ctx.beginPath(); ctx.ellipse(x-w*0.08, base-h*0.86, w*0.26, h*0.12, 0,0,7); ctx.fill();
+  // crisp dark rim along the base so it doesn't blend into the grass
+  ctx.strokeStyle=night?'#0d2412':'#1f5024'; ctx.lineWidth=Math.max(2,w*0.02); ctx.beginPath(); ctx.moveTo(x-w*0.75,base); ctx.quadraticCurveTo(x-w*0.42,base-h, x,base-h*1.02); ctx.quadraticCurveTo(x+w*0.42,base-h, x+w*0.75,base); ctx.stroke();
 }
 function drawDecoBush(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, night=isNight();
