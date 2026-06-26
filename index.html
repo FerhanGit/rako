@@ -2804,7 +2804,9 @@ function draw(){
 
   drawMotes();        // drifting fireflies
   drawWeather();      // rain / fog / thunder
-  if(cam.swimming) drawUnderwater();   // full underwater scene when in the lake
+  if(cam.swimming){ const d=cam.dive||0;   // simple blue water (matches the lake's surface colour)
+    ctx.fillStyle='rgba(31,95,160,'+(0.34+0.4*d)+')'; ctx.fillRect(-14,-280,W+28,H+560);
+    ctx.fillStyle='#bfe8ff'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.fillText('▼ '+Math.round(d*100)+'% deep · SPACE to surface', W/2, 38); ctx.textAlign='left'; }
   drawVignette();     // darkened edges for mood
   ctx.restore();      // end screen-shake transform (HUD stays steady)
 
