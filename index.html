@@ -1218,7 +1218,8 @@ function reset(){
   const spawnInBiome=(biome,tiers,n)=>{ let c=0,tries=0; while(c<n && tries++<900){ const x=Math.random()*WORLD,z=Math.random()*WORLD;
     if(biomeAt(x,z)!==biome||inCity(x,z)||Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+6) continue;
     objects.push(makeMonster(x,z, tiers[Math.floor(Math.random()*tiers.length)])); c++; } };
-  spawnInBiome('snow', [7,14,15,16], 20);   // frost wraith, snow fox, yeti, white bear
+  spawnInBiome('snow', [7,14,15,16,34], 22); // frost wraith, snow fox, yeti, white bear, frost lurker
+  for(let i=0;i<8;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34); if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10||biomeAt(x,z)!=='forest') continue; objects.push(makeMonster(x,z,35)); }   // Splitters in the forest
   spawnInBiome('lava', [8,17,18],   20);    // magma hound, lava dog, lava brute
   spawnInBiome('space',[9,19],      18);    // void horror, alien
   spawnInBiome('desert',[24,25,26], 13);    // sand wurm, scorpion, mummy
