@@ -2681,7 +2681,7 @@ function project(o){
   const side =rx*Math.cos(cam.yaw)-rz*Math.sin(cam.yaw);
   const scale=FOCAL/depth;
   const sx=W/2+side*scale;
-  const groundY=H/2+(cam.eyeH+(cam.jumpY||0))*scale;
+  const groundY=H/2+(_camGY+cam.eyeH+(cam.jumpY||0)-(scene==='forest'?terrainH(o.x,o.z):0))*scale;   // object sits on the hill
   const hPx=o.height*scale, wPx=o.width*scale;
   if(sx+wPx< -60 || sx-wPx>W+60) return null;
   return {sx,groundY,hPx,wPx,depth};
