@@ -2345,8 +2345,8 @@ function update(){
   if(!promptTxt){
     const ic=objects.find(o=>o.type==='icechest' && dist(o)<3);
     if(ic && !ic.opened) promptTxt="Press E to open the Ice Chest (Ice Sword)";
-    const wc=objects.find(o=>o.type==='waterchest' && dist(o)<3);
-    if(wc && !wc.opened) promptTxt="Press E to open the Water Chest (50% Water Sword)";
+    const wc=objects.find(o=>o.type==='waterchest' && dist(o)<4);
+    if(wc && !wc.opened) promptTxt=((cam.dive||0)<0.55)?"Sink deeper to reach the Water Chest…":"Press E to open the Water Chest (50% Water Sword)";
   }
   if(!promptTxt){
     const relic=objects.find(o=>(o.type==='pyramid'||o.type==='factory') && dist(o)<9);
