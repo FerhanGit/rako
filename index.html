@@ -2737,14 +2737,7 @@ function draw(){
 let weather='clear', weatherT=0, thunderFlash=0, _diamondT=0;
 function drawWeather(){
   weatherT--;
-  if(weatherT<=0){ weatherT=60*(45+Math.random()*80); const r=Math.random();
-    weather = r<0.58?'clear' : r<0.70?'rain' : r<0.79?'fog' : r<0.87?'snow' : r<0.94?'acid' : r<0.985?'meteor' : 'diamond';
-    if(weather==='diamond'){ account.gems=(account.gems||0)+5; saveAccount(); SFX.win&&SFX.win(); flash('💎 DIAMOND RAIN! Incredibly rare — +5 gems!'); }
-    else if(weather==='meteor'){ SFX.boss&&SFX.boss(); flash('☄ METEOR SHOWER! The sky is falling...'); }
-    else if(weather==='acid') flash('☣ Acid rain! Get under cover — it burns!');
-    else if(weather==='snow') flash('❄ Snow begins to fall...');
-    else if(weather==='rain') flash('A cold rain begins to fall...');
-    else if(weather==='fog')  flash('A thick fog rolls in...'); }
+  if(weatherT<=0){ weatherT=60*(45+Math.random()*80); weather=pickWeather(curBiome); announceWeather(); }
   if(weather==='rain' && Math.random()<0.0035){ thunderFlash=1; SFX.boss&&SFX.boss(); }
   // rain: a VERY small chance a lightning bolt strikes you dead (only when exposed outside)
   if(weather==='rain' && scene==='forest' && !inHome() && cam && Math.random()<0.00018){
