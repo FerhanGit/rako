@@ -3593,8 +3593,9 @@ function drawCabin(o,p){
   const cx=o.x, cz=o.z, hw=o.width*0.42, wallH=o.height*0.42;
   // ground shadow
   ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(p.sx,p.groundY,p.wPx*0.6,p.wPx*0.16,0,0,7); ctx.fill(); ctx.restore();
-  // 3D log walls
-  box3D(cx,cz, hw,hw, wallH, '#6a4526', '#5a3a1c', 0);
+  // 3D log walls (warm wood) + a stone base
+  box3D(cx,cz, hw*1.02,hw*1.02, wallH*0.18, '#6a6e74', '#7a7e84', 0);   // stone foundation
+  box3D(cx,cz, hw,hw, wallH, '#9a6a38', '#7a532a', wallH*0.18);          // log walls
   // pitched 3D roof: 4 corners at wall top + an apex above the centre
   const roofH=o.height*0.34, cor=[[cx-hw*1.12,cz-hw*1.12],[cx+hw*1.12,cz-hw*1.12],[cx+hw*1.12,cz+hw*1.12],[cx-hw*1.12,cz+hw*1.12]];
   const e=cor.map(c=>project3D(c[0],wallH,c[1])), apex=project3D(cx,wallH+roofH,cz);
