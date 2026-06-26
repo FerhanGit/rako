@@ -6157,8 +6157,24 @@ document.getElementById('btnSettings').onclick=openSettings;
 document.getElementById('playBack').onclick=()=>showScreen('lobby');
 document.getElementById('setBack').onclick=()=>showScreen('lobby');
 // Play flow: choose mode -> choose party size -> start
-let pendingMode='normal';
-document.querySelectorAll('button.mode').forEach(b=> b.onclick=()=>{ pendingMode=b.dataset.mode; resetInviteUI(); showScreen('party'); });
+let pendingMode='normal', onlineNames=[];
+// fetch real online players (excluding you) — they join matches before any bots
+async function fetchOnlinePlayers(){
+  onlineNames=[];
+  if(!NET.ready){ return onlineNames; }
+  try{ const since=new Date(Date.now()-ONLINE_MS).toISOString();
+    const rows=await netGet('/rako_players?select=name,last_seen&last_seen=gte.'+encodeURIComponent(since)+'&order=last_seen.desc&limit=120');
+    onlineNames=rows.filter(r=>r.name && r.name!==account.name).map(r=>r.name);
+  }catch(e){}
+  return onlineNames;
+}
+function updateOnlineNote(){
+  const el=document.getElementById('onlineNote'); if(!el) return;
+  const n=onlineNames.length;
+  el.textContent = n>0 ? ('🟢 '+n+' real player'+(n>1?'s':'')+' online now — they join first, bots fill the rest.')
+                       : '⚪ No other players online right now — your teammates will be AI bots.';
+}
+document.querySelectorAll('button.mode').forEach(b=> b.onclick=()=>{ pendingMode=b.dataset.mode; resetInviteUI(); showScreen('party'); fetchOnlinePlayers().then(updateOnlineNote); });
 document.querySelectorAll('button.party[data-n]').forEach(b=> b.onclick=()=>searchThenStart(pendingMode, +b.dataset.n));
 document.getElementById('btnInvite').onclick=openInvitePicker;
 document.getElementById('partyBack').onclick=()=>{ resetInviteUI(); showScreen('play'); };
