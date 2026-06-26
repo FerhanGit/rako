@@ -4834,7 +4834,8 @@ async function renderClubs(){
     h+='<div class="hint" style="font-size:12px">'+members.length+'/'+c.max+' members · need '+c.minWins+' wins to join</div>';
     h+='<div style="font-weight:bold;color:#8fe070;margin:8px 0 4px">Members</div>';
     const myRole=c.role||(c.owner?'owner':'member');
-    members.forEach(m=>{ const isOwner=m.id===c.ownerId, you=m.id===NET.uid, role=isOwner?'owner':(m.club_role||'member');
+    members.forEach(m=>{ const isOwner=m.id===c.ownerId, you=m.id===NET.uid, role=isOwner?'owner':(m.club_role||'member'), on=you||isOnline(m.last_seen);
+      const dot=(on?'🟢 ':'🔴 ');
       const badge = isOwner?' <span style="color:#ffd070">(owner)</span>' : (role==='officer'?' <span style="color:#7fe0ff">(officer)</span>':'');
       let manage='';
       if(!you && !isOwner){
