@@ -3372,7 +3372,7 @@ function box3D(cx,cz,hw,hd,hgt,baseCol,topCol,yoff){
   const faces=[];
   for(let i=0;i<4;i++){ const j=(i+1)%4; if(!g[i]||!g[j]||!t[i]||!t[j]) continue;
     const mx=(corners[i][0]+corners[j][0])/2-cx, mz=(corners[i][1]+corners[j][1])/2-cz, ln=Math.hypot(mx,mz)||1;
-    const br=0.55+0.45*Math.max(0,(mx/ln)*-0.7+(mz/ln)*-0.7);   // light from the NW
+    const br=0.7+0.3*Math.max(0,(mx/ln)*-0.7+(mz/ln)*-0.7);   // light from the NW (kept bright)
     faces.push({pts:[g[i],g[j],t[j],t[i]], d:(g[i].depth+g[j].depth)/2, br}); }
   faces.sort((a,b)=>b.d-a.d);
   faces.forEach(f=>poly(f.pts, shade(baseCol,f.br)));
