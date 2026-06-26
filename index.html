@@ -5479,7 +5479,9 @@ function scoreboardHTML(){
 const WIN_REWARD={easy:100, normal:125, hard:150, impossible:200};
 function win(){ burst(BOSS.x,BOSS.z,'#ffd040',60); shake=18; SFX.win();
   const rew=WIN_REWARD[difficulty]||100;
-  account.wins++; account.gems=(account.gems||0)+rew; if(difficulty==='impossible') account.impWin=true; questEvent('boss'); addPassXP(rew); gainXP(rew); saveAccount(); checkAchievements(); netSyncStats(); buildMatch(true);
+  account.wins++; account.gems=(account.gems||0)+rew; if(difficulty==='impossible') account.impWin=true;
+  const winSecs=Math.floor(matchFrames/60); account.fastestWin=Math.min(account.fastestWin||1e9, winSecs);   // speedrun time
+  questEvent('boss'); addPassXP(rew); gainXP(rew); saveAccount(); checkAchievements(); netSyncStats(); buildMatch(true);
   showResult("VICTORY","The God of the End falls. You are <b>"+account.name+"</b>, the Monster-Slayer.<br><br>Total wins: "+account.wins+"<br><b style='color:#7fe0ff'>+"+rew+" 💎 gems &amp; +"+rew+" XP!</b> ["+difficulty.toUpperCase()+"]<br><br>"+scoreboardHTML(),"#8fe070,#40c0ff"); }
 const DEATH_MSGS=[
   "The forest claims another soul... but legends rise again.",
