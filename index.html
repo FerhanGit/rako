@@ -3740,6 +3740,19 @@ function drawCoin(o,p){
   ctx.fillStyle='#ffd84a'; ctx.beginPath(); ctx.ellipse(x,y,Math.max(2,w*0.34*(0.4+0.6*sw)),Math.max(2,h*0.34),0,0,7); ctx.fill();
 }
 function drawLake(o,p){ /* lakes are now painted into the ground in drawLakes() */ }
+function drawHill(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, night=isNight();
+  ctx.fillStyle=night?'#1d3f20':'#3f8a45'; ctx.beginPath(); ctx.moveTo(x-w*0.72,base); ctx.quadraticCurveTo(x-w*0.4,base-h, x,base-h); ctx.quadraticCurveTo(x+w*0.4,base-h, x+w*0.72,base); ctx.closePath(); ctx.fill();
+  ctx.fillStyle=night?'#27512b':'#56a85b'; ctx.beginPath(); ctx.moveTo(x-w*0.5,base); ctx.quadraticCurveTo(x-w*0.18,base-h*0.92, x+w*0.02,base-h*0.96); ctx.lineTo(x-w*0.06,base); ctx.closePath(); ctx.fill();  // lit facet
+}
+function drawDecoBush(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, night=isNight();
+  ctx.save(); ctx.globalAlpha*=0.26; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x,base,w*0.5,w*0.12,0,0,7); ctx.fill(); ctx.restore();
+  const mid=night?'#1a3a1e':'#3f8a45', lite=night?'#264e2a':'#6fbf60';
+  const cx=x+Math.sin(time*0.01+(o.seed||0))*w*0.04;
+  ctx.fillStyle=mid; ctx.beginPath(); ctx.ellipse(cx, base-h*0.4, w*0.5, h*0.55, 0,0,7); ctx.fill();
+  ctx.fillStyle=lite; ctx.beginPath(); ctx.ellipse(cx-w*0.12, base-h*0.52, w*0.28, h*0.3, 0,0,7); ctx.fill();
+}
 function drawFish(o,p){
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   const sw=Math.sin(time*0.06+o.bob)*w*0.4, y=base-h*0.3+Math.sin(time*0.05+o.bob)*3;   // wiggle along the surface
