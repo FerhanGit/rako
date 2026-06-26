@@ -2410,7 +2410,9 @@ function update(){
           let mx=rx/d, mz=rz/d;
           if(o.fly){ o.flyPh+=0.12; const px=-mz, pz=mx, s=Math.sin(o.flyPh)*0.5; mx+=px*s; mz+=pz*s; }  // weave through the air
           let ms=o.spd; if(o.slowT>0){ o.slowT--; ms*=0.45; }   // chilled by the water sword
-          o.x+=mx*ms; o.z+=mz*ms;
+          const nx=o.x+mx*ms, nz=o.z+mz*ms;
+          if(o.name!=='Shark'){ const lk=objects.find(L=>L.type==='lake' && Math.hypot(nx-L.x,nz-L.z)<L.r+0.5); if(lk){ continue; } }   // land monsters can't enter the lake
+          o.x=nx; o.z=nz;
         }
         if(canHit && d<2.0 && o.cd<=0 && !flying && cam.invuln<=0){   // airborne or untouchable = safe
           cam.hp-=pdmg(o.dmg); o.cd=(o.type==='boss')?40:48;
