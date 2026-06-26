@@ -3470,7 +3470,9 @@ function drawSunMoon(){
   ctx.restore();
 }
 function drawGround(){
-  const BP=BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest, grass=BP.grass;
+  const BP=BIOME_PAL[biomeAt(cam.x,cam.z)]||BIOME_PAL.forest, grass=BP.grass, night=isNight(), k=nightAmt;
+  // SOLID opaque ground base — guarantees the ground is always visible (never see-through)
+  ctx.fillStyle=mix(grass,'#0a0c12', 0.12 + 0.5*k); ctx.fillRect(-14, H/2-2, W+28, H/2+320);
   const step=5, span=46;
   const cx=Math.round(cam.x/step)*step, cz=Math.round(cam.z/step)*step;
   const n=Math.floor(span/step)*2+1;
