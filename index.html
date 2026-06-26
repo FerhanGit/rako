@@ -3589,33 +3589,27 @@ function drawGiant(o,p){
   ctx.fillStyle='#a0c0d0'; const es=Math.max(1,w*0.05);
   ctx.beginPath(); ctx.arc(x+sway-w*0.06, base-h*0.85, es,0,7); ctx.arc(x+sway+w*0.06, base-h*0.85, es,0,7); ctx.fill();
 }
-function drawCabin(p){
-  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
-  const left=x-w*0.5, wallTop=base-h*0.78, dx=w*0.2, dy=-w*0.13;   // isometric side depth
+function drawCabin(o,p){
+  const cx=o.x, cz=o.z, hw=o.width*0.42, wallH=o.height*0.42;
   // ground shadow
-  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(x+dx*0.4,base,w*0.66,w*0.16,0,0,7); ctx.fill(); ctx.restore();
-  // right depth wall (darker)
-  poly([[left+w,wallTop],[left+w+dx,wallTop+dy],[left+w+dx,base+dy],[left+w,base]], '#3a2614');
-  // front wall (log gradient)
-  const wood=ctx.createLinearGradient(0,wallTop,0,base); wood.addColorStop(0,'#7a4f2a'); wood.addColorStop(1,'#4a2f18');
-  ctx.fillStyle=wood; ctx.fillRect(left, wallTop, w, base-wallTop);
-  ctx.strokeStyle='#3a2410'; ctx.lineWidth=Math.max(1,h*0.006);
-  for(let yy=wallTop; yy<base; yy+=Math.max(4,h*0.08)){ ctx.beginPath(); ctx.moveTo(left,yy); ctx.lineTo(left+w,yy); ctx.stroke(); }
-  // ---- pitched 3D roof ----
-  const peak=wallTop-h*0.3, eaveL=left-w*0.08, eaveR=left+w+w*0.08;
-  poly([[eaveL,wallTop],[x,peak],[eaveR,wallTop]], '#7a2418');                                    // front gable (red roof)
-  poly([[eaveR,wallTop],[x,peak],[x+dx,peak+dy],[eaveR+dx,wallTop+dy]], '#5a1810');                // roof right slope (darker)
-  ctx.strokeStyle='#3a0f08'; ctx.lineWidth=Math.max(1,h*0.01); ctx.beginPath(); ctx.moveTo(eaveL,wallTop); ctx.lineTo(x,peak); ctx.lineTo(eaveR,wallTop); ctx.stroke();
-  // chimney with smoke
-  ctx.fillStyle='#4a4e54'; ctx.fillRect(x+w*0.28, peak-h*0.02, w*0.1, h*0.22);
-  ctx.fillStyle='rgba(200,200,205,0.35)'; for(let i=0;i<3;i++){ ctx.beginPath(); ctx.arc(x+w*0.33+Math.sin(time*0.04+i)*4, peak-h*0.04-i*h*0.06, w*0.05+i*w*0.02,0,7); ctx.fill(); }
-  // glowing windows + door
-  const glow=0.7+0.3*Math.sin(time*0.06);
-  ctx.fillStyle='rgba(255,210,110,'+glow+')'; const ww=w*0.16, wh=h*0.18, wy=wallTop+h*0.14;
-  [x-w*0.26,x+w*0.26].forEach(wx=>{ ctx.fillRect(wx-ww/2,wy,ww,wh); ctx.strokeStyle='#3a2410'; ctx.lineWidth=Math.max(1,h*0.01); ctx.strokeRect(wx-ww/2,wy,ww,wh); ctx.beginPath(); ctx.moveTo(wx,wy); ctx.lineTo(wx,wy+wh); ctx.moveTo(wx-ww/2,wy+wh/2); ctx.lineTo(wx+ww/2,wy+wh/2); ctx.stroke(); });
-  ctx.fillStyle='#2a1a0e'; ctx.fillRect(x-w*0.11, base-h*0.4, w*0.22, h*0.4);                       // door
-  ctx.fillStyle='#caa050'; ctx.beginPath(); ctx.arc(x+w*0.06, base-h*0.2, w*0.02,0,7); ctx.fill();   // knob
-  ctx.fillStyle='#cfe8d0'; ctx.font=`bold ${Math.max(8,h*0.06)}px sans-serif`; ctx.textAlign='center'; ctx.fillText('HOME', x, peak-h*0.03); ctx.textAlign='left';
+  ctx.save(); ctx.globalAlpha*=0.3; ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(p.sx,p.groundY,p.wPx*0.6,p.wPx*0.16,0,0,7); ctx.fill(); ctx.restore();
+  // 3D log walls
+  box3D(cx,cz, hw,hw, wallH, '#6a4526', '#5a3a1c', 0);
+  // pitched 3D roof: 4 corners at wall top + an apex above the centre
+  const roofH=o.height*0.34, cor=[[cx-hw*1.12,cz-hw*1.12],[cx+hw*1.12,cz-hw*1.12],[cx+hw*1.12,cz+hw*1.12],[cx-hw*1.12,cz+hw*1.12]];
+  const e=cor.map(c=>project3D(c[0],wallH,c[1])), apex=project3D(cx,wallH+roofH,cz);
+  if(apex){ const tri=[];
+    for(let i=0;i<4;i++){ const j=(i+1)%4; if(!e[i]||!e[j]) continue;
+      const mx=(cor[i][0]+cor[j][0])/2-cx, mz=(cor[i][1]+cor[j][1])/2-cz, ln=Math.hypot(mx,mz)||1;
+      const br=0.6+0.4*Math.max(0,(mx/ln)*-0.7+(mz/ln)*-0.7);
+      tri.push({pts:[e[i],e[j],apex], d:(e[i].depth+e[j].depth)/2, br}); }
+    tri.sort((a,b)=>b.d-a.d); tri.forEach(f=>poly(f.pts, shade('#8a2418',f.br))); }
+  // glowing windows + door on the wall face nearest the camera (project onto the front)
+  const fp=project3D(cx,wallH*0.55,cz), w=p.wPx, h=p.hPx;
+  if(fp){ const glow=0.7+0.3*Math.sin(time*0.06);
+    ctx.fillStyle='rgba(255,210,110,'+glow+')';
+    ctx.fillRect(fp.x-w*0.34, fp.y-h*0.06, w*0.16, h*0.16); ctx.fillRect(fp.x+w*0.18, fp.y-h*0.06, w*0.16, h*0.16);
+    const dp=project3D(cx,0,cz); if(dp){ ctx.fillStyle='#2a1a0e'; ctx.fillRect(dp.x-w*0.1, dp.y-h*0.34, w*0.2, h*0.34); ctx.fillStyle='#caa050'; ctx.beginPath(); ctx.arc(dp.x+w*0.05,dp.y-h*0.16,w*0.02,0,7); ctx.fill(); } }
 }
 function drawPyramid(o,p){ const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx;
   ctx.fillStyle='#c79a4e'; ctx.beginPath(); ctx.moveTo(x,base-h); ctx.lineTo(x-w*0.55,base); ctx.lineTo(x+w*0.55,base); ctx.closePath(); ctx.fill();   // sand body
