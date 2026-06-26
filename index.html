@@ -958,7 +958,9 @@ const MONSTER_TYPES=[
     {n:'Plague Brute', c:'#5e8a3a',hp:175,dmg:30,spd:0.07, h:2.6,w:2.4, always:true},  // 29 poison
     {n:'Mad Scientist',c:'#d8f0a0',hp:90, dmg:26,spd:0.12, h:1.9,w:1.5, always:true},  // 30 poison
     {n:'Shark',        c:'#7891a0',hp:85, dmg:22,spd:0.11, h:1.4,w:2.6, always:true},  // 31 lake
-  ];
+];
+function makeMonster(x,z,tier){
+  const T=MONSTER_TYPES;
   const t=T[Math.min(tier,T.length-1)], d=DIFF[difficulty];
   const hp=Math.round(t.hp*d.hp);
   return {type:'monster',x,z,height:t.h,width:t.w,hp,maxHp:hp,dmg:Math.max(1,Math.round(t.dmg*d.dmg)),spd:t.spd*d.spd,
