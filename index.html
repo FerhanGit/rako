@@ -2592,6 +2592,9 @@ function update(){
     al.roamT--; moveTo(al.roamX, al.roamZ, 0.075);
   }
 
+  // field teammates (the thousands not rendered) rack up REAL kills over the match, paced by their skill
+  if(fieldBots.length && time%24===0){ for(const fb of fieldBots){ if(Math.random()<fb.skill*0.12) fb.kills++; } }
+
   // bunnies — flee the player, otherwise hop around
   for(const b of objects){ if(b.type!=='bunny') continue;
     if(b.flash>0)b.flash--;
