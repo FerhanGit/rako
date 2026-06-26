@@ -1032,6 +1032,14 @@ const FOODS=[
 ];
 function food(x,z,kind){ const fk=kind||FOODS[Math.floor(Math.random()*FOODS.length)].k;
   return {type:'food',x,z,height:0.8,width:0.8,bob:Math.random()*6,kind:fk}; }
+function toggleRide(){
+  if(state!=='play'||scene!=='forest') return;
+  const w=objects.find(o=>o.type==='wolf' && o.tamed);
+  if(!w){ flash('🐺 Tame a wolf first (kill a bunny for meat, feed it, press P), then press O to ride!'); return; }
+  cam.riding=!cam.riding;
+  if(cam.riding){ cam.ridingWolf=w; flash('🐺 Mounted! You ride your wolf — faster movement. Press O to dismount.'); SFX.eat&&SFX.eat(); }
+  else { cam.riding=false; flash('Dismounted.'); }
+}
 function placeBush(){
   if(state!=='play'||scene!=='forest') return;
   if(!cam.hasBush){ flash(cam.bushUsed?'Your camping bush is already placed.':'No camping bush — find one in a Golden Chest.'); return; }
