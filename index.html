@@ -3370,7 +3370,8 @@ function groundPt(wx,wz){
   if(depth<=0.4) return null;
   const side=rx*Math.cos(cam.yaw)-rz*Math.sin(cam.yaw);
   const scale=FOCAL/depth;
-  return {x:W/2+side*scale, y:H/2+(cam.eyeH+(cam.jumpY||0))*scale, depth};
+  const ty=(scene==='forest')?terrainH(wx,wz):0;
+  return {x:W/2+side*scale, y:H/2+(_camGY+cam.eyeH+(cam.jumpY||0)-ty)*scale, depth};
 }
 // ---- TRUE 3D: project a world point (x, height y, z) to screen; structures use this so they DON'T billboard ----
 function project3D(wx,wy,wz){
