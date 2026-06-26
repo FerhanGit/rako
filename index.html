@@ -703,8 +703,9 @@ function questEvent(type,n){
   let changed=false;
   for(const q of all){ if(q.claimed||q.type!==type) continue; q.prog=Math.min(q.need,q.prog+n); changed=true;
     if(q.prog>=q.need){ q.claimed=true; account.gems=(account.gems||0)+q.reward; SFX.win&&SFX.win();
+      if(q===account.quests.weekly){ account.weeklyDone=(account.weeklyDone||0)+1; checkAchievements(); }   // weekly quest done
       flash('✅ Quest complete: '+q.text+'  (+'+q.reward+' 💎)'); } }
-  if(changed) saveAccount();
+  if(changed){ saveAccount(); netSyncStats&&netSyncStats(); }
 }
 // character outfits bought with gems in the lobby Shop. `colorize` parts use your chosen SKIN color.
 const CHAR_SKINS=[
