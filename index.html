@@ -1840,7 +1840,7 @@ function nearestEnemy(x,z,maxD){
   return t;
 }
 function jump(){
-  if(state!=='play' || scene!=='forest' || cam.flyTime>0) return;
+  if(state!=='play' || scene!=='forest' || cam.flyTime>0 || cam.swimming) return;   // in the lake, SPACE swims up instead
   if((cam.jumpY||0)<=0.02) cam.vy=0.34;
 }
 function firePistol(){
