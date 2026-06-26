@@ -2632,6 +2632,8 @@ function update(){
         if(wasChamp){ account.gems=(account.gems||0)+25; gainXP(40); addPassXP(20); account.champKills=(account.champKills||0)+1; flash('👑 You slew the '+champNm+'! +25 💎, +40 XP'); }
         checkAchievements(); saveAccount(); }
     } else if(o.type==='bunny' && o.hp<=0){
+      if(o.gold){ const g=40+Math.floor(Math.random()*40); account.gems=(account.gems||0)+g; saveAccount(); netSyncStats();
+        burst(o.x,o.z,'#ffd21a',30); SFX.crystal&&SFX.crystal(); flash('🐰✨ GOLDEN BUNNY caught! +'+g+' 💎'); objects.splice(i,1); gainXP(15); continue; }
       burst(o.x,o.z,'#ffffff',8); SFX.kill(); cam.meat=(cam.meat||0)+1; objects.splice(i,1); questEvent('bunny'); gainXP(1);
       flash("Meat +1 (total "+cam.meat+") — feed a wolf (P) to tame it");
     } else if(o.type==='entity' && o.hp<=0){
