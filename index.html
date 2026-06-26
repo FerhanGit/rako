@@ -1264,7 +1264,6 @@ addEventListener('keydown',e=>{
   if(state==='play' && (scene==='snake'||scene==='gdash'||scene==='blast'||scene==='brawl'||scene==='mine'||scene==='amongus'||scene==='darkroom'||scene==='flappy'||scene==='rivals'||scene==='rakoin')){
     if(k===' '||k==='arrowup'||k==='arrowdown'||k==='arrowleft'||k==='arrowright') e.preventDefault(); mgKey(k); return; }
   if(state==='play' && k==='enter'){ openChat(); return; }   // chat anywhere
-  if(k==='i'){ toggleInventory(); return; }
   if(k==='m'){ toggleMap(); return; }
   if(k===' '){ e.preventDefault(); jump(); }
   if(k==='e') interact();
