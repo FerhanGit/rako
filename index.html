@@ -2557,10 +2557,12 @@ function update(){
       }
       continue;
     }
-    // 2) nearest unopened chest within reach — go open it for the team
+    // 2) nearest unopened chest within reach — go open it for the team (big parties scan less often)
     let ch=null, cd2=1e9;
-    for(const o of objects){ if(o.type==='chest' && !o.opened){
-      const d=Math.hypot(o.x-al.x,o.z-al.z); if(d<cd2){ cd2=d; ch=o; } } }
+    if(!bigParty || (time+idx)%8===0){
+      for(const o of objects){ if(o.type==='chest' && !o.opened){
+        const d=Math.hypot(o.x-al.x,o.z-al.z); if(d<cd2){ cd2=d; ch=o; } } }
+    }
     if(ch && cd2<40){
       if(cd2>2.2) moveTo(ch.x,ch.z,0.1);
       else grantChest(ch, al.name);
