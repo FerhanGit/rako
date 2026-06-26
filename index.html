@@ -4812,8 +4812,8 @@ async function openClubDetail(cid){
   h+='<div class="hint" style="font-size:12px">'+members.length+'/'+cl.max_members+' members · need '+cl.min_wins+' wins to join · '+(cl._wins||0)+' total club wins</div>';
   h+='<div style="font-weight:bold;color:#8fe070;margin:10px 0 4px">Members <span style="font-size:11px;color:#9ab09a;font-weight:normal">— tap a name for their account</span></div>';
   if(!members.length) h+='<div class="hint" style="font-size:13px">No members.</div>';
-  members.forEach(m=>{ const isOwner=m.id===cl.owner_id;
-    h+='<div class="friendRow"><span>'+pn(m.name,{wins:m.wins,charSkin:m.char_skin,skin:m.skin})+(isOwner?' <span style="color:#ffd070">(owner)</span>':'')+' · '+(m.wins||0)+' wins</span></div>'; });
+  members.forEach(m=>{ const isOwner=m.id===cl.owner_id, on=isOnline(m.last_seen);
+    h+='<div class="friendRow"><span>'+(on?'🟢 ':'🔴 ')+pn(m.name,{wins:m.wins,charSkin:m.char_skin,skin:m.skin})+(isOwner?' <span style="color:#ffd070">(owner)</span>':'')+' · '+(m.wins||0)+' wins</span></div>'; });
   if(!account.club){ const full=members.length>=cl.max_members, can=(account.wins||0)>=cl.min_wins&&!full;
     h+='<button id="detailJoin"'+(can?'':' disabled')+' style="margin-top:14px">'+(full?'Club is full':(can?'🏰 Join this club':'Need '+cl.min_wins+' wins to join'))+'</button>'; }
   else if(account.club.id===cl.id) h+='<div class="hint" style="margin-top:12px;color:#8fe070">⭐ This is your club.</div>';
