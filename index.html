@@ -1388,7 +1388,7 @@ function attack(){
   let best=null, bestDepth=1e9;
   for(const o of objects){
     const hittable = o.type==='monster' || (o.type==='boss'&&o.alive) || o.type==='bunny'
-                  || o.type==='entity' || (o.type==='wolf' && !o.tamed) || o.type==='rock';
+                  || o.type==='entity' || (o.type==='wolf' && !o.tamed) || o.type==='rock' || o.type==='tree';
     if(!hittable) continue;
     if(o.type==='monster' && !night && !alwaysHostile(o)) continue;   // can only strike visible foes
     const rx=o.x-cam.x, rz=o.z-cam.z;
@@ -1396,7 +1396,17 @@ function attack(){
     const side =rx*Math.cos(cam.yaw)-rz*Math.sin(cam.yaw);
     if(depth<=0) continue;
     const aim=Math.abs(side)/depth;            // 0 = dead ahead
-    if(depth<6.5 && aim<0.55 && depth<bestDepth){ best=o; bestDepth=depth; }
+    const maxd=(o.type==='tree')?3.4:6.5, ed=depth+(o.type==='tree'?100:0);   // trees only when nothing else is in front
+    if(depth<maxd && aim<0.6 && ed<bestDepth){ best=o; bestDepth=ed; }
+  }
+  if(best && best.type==='tree'){
+    if(best.hp==null) best.hp=best.golden?70:22;
+    best.hp-=cam.dmg; burst(best.x,best.z, best.golden?'#ffd24a':'#3a8a3a', 8); SFX.hit&&SFX.hit();
+    if(best.hp<=0){
+      if(best.golden){ cam.food['goldapple']=(cam.food['goldapple']||0)+1; SFX.win&&SFX.win(); flash('🍎✨ You broke the GOLDEN tree — got a Golden Apple! Press X to eat (huge heal).'); }
+      else { const wd=2+Math.floor(Math.random()*2); cam.mats.wood+=wd; flash('🪓 Chopped a tree: +'+wd+' wood'); }
+      objects.splice(objects.indexOf(best),1); }
+    return;
   }
   if(best && best.type==='rock'){
     best.flash=6; best.hp-=cam.dmg; burst(best.x,best.z,'#9aa',8); SFX.hit&&SFX.hit(); shake=Math.max(shake,4);
