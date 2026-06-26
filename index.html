@@ -5613,7 +5613,7 @@ function buildMatch(won){
   lastMatch.sort((a,b)=>b.kills-a.kills);
   // record REAL results (teammates only; the player is tracked via account)
   const secs=Math.floor(matchFrames/60), w=won?1:0;
-  for(const a of allies) recAdd(a.name, w, secs, a.kills);
+  for(const a of allies.slice(0,20)) recAdd(a.name, w, secs, a.kills);   // cap records for huge parties
   saveRecords();
 }
 function scoreboardHTML(){
