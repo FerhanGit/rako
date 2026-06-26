@@ -2801,6 +2801,7 @@ function draw(){
 
   drawMotes();        // drifting fireflies
   drawWeather();      // rain / fog / thunder
+  if(cam.swimming) drawUnderwater();   // full underwater scene when in the lake
   drawVignette();     // darkened edges for mood
   ctx.restore();      // end screen-shake transform (HUD stays steady)
 
