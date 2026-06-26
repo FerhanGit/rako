@@ -1316,7 +1316,10 @@ function reset(){
     let nm, isReal=false;
     if(realPool.length){ nm=realPool.shift(); isReal=true; }
     else if(account.friends[i] && !usedNames.has(account.friends[i])) nm=account.friends[i];
-    if(!nm || usedNames.has(nm)){ do { nm=NAMES[Math.floor(Math.random()*NAMES.length)]; } while(usedNames.has(nm)); isReal=false; }
+    if(!nm || usedNames.has(nm)){ isReal=false;
+      let tries=0; do { nm=NAMES[Math.floor(Math.random()*NAMES.length)]; tries++; } while(usedNames.has(nm) && tries<30);
+      if(usedNames.has(nm)) nm=nm+(i+1);   // names run out past 24 — add a number instead of looping forever
+    }
     usedNames.add(nm);
     const col='hsl('+Math.floor(Math.random()*360)+','+(55+Math.floor(Math.random()*30))+'%,58%)';   // random color
     const gx=(i%cols)-(cols-1)/2, gz=Math.floor(i/cols);
