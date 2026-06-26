@@ -4842,7 +4842,7 @@ async function renderClubs(){
         if(myRole==='owner'){ manage='<button class="cRole" data-id="'+m.id+'" data-role="'+(role==='officer'?'member':'officer')+'" style="font-size:11px;padding:2px 6px">'+(role==='officer'?'Demote':'Officer')+'</button> <button class="cKick" data-id="'+m.id+'" style="font-size:11px;padding:2px 6px;background:#5a2a2a">Kick</button>'; }
         else if(myRole==='officer' && role==='member'){ manage='<button class="cKick" data-id="'+m.id+'" style="font-size:11px;padding:2px 6px;background:#5a2a2a">Kick</button>'; }
       }
-      h+='<div class="friendRow"><span>'+esc(m.name)+(you?' (you)':'')+badge+' · '+(m.wins||0)+' wins</span><span>'+manage+'</span></div>'; });
+      h+='<div class="friendRow"><span>'+dot+esc(m.name)+(you?' (you)':'')+badge+' · '+(m.wins||0)+' wins</span><span>'+manage+'</span></div>'; });
     const others=members.filter(m=>m.id!==NET.uid);
     if(others.length){
       h+='<div style="font-weight:bold;color:#8fe070;margin:12px 0 4px">Trade / Gift a member</div>';
