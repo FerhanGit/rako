@@ -1334,6 +1334,11 @@ function reset(){
     al.real=isReal; al.roamX=cam.x; al.roamZ=cam.z; al.roamT=0;
     allies.push(al); objects.push(al);
   }
+  // field teammates beyond the 40 rendered — not drawn, but they accumulate REAL kills over the match
+  fieldBots=[];
+  const extraBots=Math.max(0, partySize - allies.length), usedB=new Set(allies.map(a=>a.name));
+  for(let i=0;i<extraBots;i++){ let nm=NAMES[Math.floor(Math.random()*NAMES.length)]; if(usedB.has(nm)) nm=nm+(Math.floor(Math.random()*9000)+100); usedB.add(nm);
+    fieldBots.push({name:nm, kills:0, skill:0.3+Math.random()*1.6}); }   // skill = how fast they rack up kills
   // reset fog-of-war (start blind; reveal around home)
   explored=new Uint8Array(MAP*MAP); markExplored(cam.x,cam.z); markExplored(HOME.x,HOME.z);
 
