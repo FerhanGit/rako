@@ -3396,6 +3396,24 @@ function box3D(cx,cz,hw,hd,hgt,baseCol,topCol,yoff){
   if(t.every(q=>q)) poly(t, topCol||baseCol);
   return {g,t};
 }
+// full underwater scene while you're in the lake — blue water, seaweed, blocky bottom, fish, bubbles
+function drawUnderwater(){
+  const d=Math.max(0.1, cam.dive||0);
+  ctx.fillStyle='rgba('+Math.round(34-18*d)+','+Math.round(115-55*d)+','+Math.round(170-70*d)+','+(0.42+0.45*d)+')'; ctx.fillRect(0,0,W,H);
+  // blocky stone bottom (Minecraft-style), appears as you sink
+  if(d>0.3){ const a=Math.min(0.85,(d-0.3)*2); const bs=Math.max(34,W*0.05);
+    for(let r=0;r<2;r++) for(let bx=-((time)%bs); bx<W; bx+=bs){ const by=H-bs*(r+1)+bs*0.3; ctx.fillStyle='rgba('+(90-r*15)+','+(100-r*15)+','+(110-r*15)+','+a+')'; ctx.fillRect(bx,by,bs-2,bs-2); } }
+  // seaweed swaying up from the floor
+  ctx.strokeStyle='rgba(70,185,95,'+(0.55+0.3*d)+')'; ctx.lineWidth=Math.max(4,W*0.008); ctx.lineCap='round';
+  for(let i=0;i<14;i++){ const sx=(i*83+25)%W; ctx.beginPath(); ctx.moveTo(sx,H); let yy=H; for(let s=0;s<5;s++){ yy-=H*0.05; ctx.lineTo(sx+Math.sin(time*0.05+i+s*0.6)*12, yy); } ctx.stroke(); }
+  // fish drifting by
+  for(let i=0;i<5;i++){ const fx=(i*200+time*1.4)%(W+80)-40, fy=H*0.28+i*44+Math.sin(time*0.04+i)*12;
+    ctx.fillStyle='rgba(235,150,80,0.85)'; ctx.beginPath(); ctx.ellipse(fx,fy,11,5,0,0,7); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(fx-10,fy); ctx.lineTo(fx-17,fy-5); ctx.lineTo(fx-17,fy+5); ctx.closePath(); ctx.fill(); }
+  // rising bubbles
+  ctx.fillStyle='rgba(220,240,255,0.45)'; for(let i=0;i<26;i++){ const bx=(i*61+Math.sin(time*0.03+i)*8)%W, by=H-((i*47+time*3)%H); ctx.beginPath(); ctx.arc(bx,by,2+(i%3),0,7); ctx.fill(); }
+  ctx.fillStyle='#bfe8ff'; ctx.font='bold 15px sans-serif'; ctx.textAlign='center'; ctx.fillText('▼ Depth '+Math.round(d*100)+'%  ·  hold SPACE to surface', W/2, 38); ctx.textAlign='left';
+}
 // lakes are painted INTO the ground as flat perspective polygons (blue water + earthy rim)
 function drawLakes(){
   for(const o of objects){ if(o.type!=='lake') continue;
