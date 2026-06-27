@@ -2475,6 +2475,10 @@ function update(){
     if(wc && !wc.opened) promptTxt=((cam.dive||0)<0.55)?"Sink deeper to reach the Water Chest…":"Press E to open the Water Chest (50% Water Sword)";
   }
   if(!promptTxt){
+    const pl=objects.find(o=>o.type==='portal' && dist(o)<4);
+    if(pl) promptTxt = "Press E to enter the VERNU UNIVERSE — face the King!";
+  }
+  if(!promptTxt){
     const cv=objects.find(o=>o.type==='cave' && dist(o)<3.6);
     if(cv) promptTxt = cv.water ? ((cam.dive||0)<0.55 ? "Dive deeper to reach the cave hole" : "Press E to enter the underwater cave") : "Press E to enter the cave";
   }
