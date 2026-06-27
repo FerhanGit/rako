@@ -4537,6 +4537,10 @@ function skinBody(x,y,r){ const s=(account&&account.skin)||'green';
   return {fill:SKIN_HEX[s]||'#3a8a3a', alpha:1}; }
 function skinCSS(name){
   if(name==='gradient') return 'linear-gradient(135deg,#5a7bff,#9b5fff,#ff5fa8)';
+  if(name==='sunset') return 'linear-gradient(160deg,#ffd24a,#ff7a3a,#ff3a8a)';
+  if(name==='frost') return 'linear-gradient(160deg,#eafcff,#9fd8ff,#5aa0e0)';
+  if(name==='royalgold') return 'linear-gradient(135deg,#fff2a0,#e8b923,#9a6a10)';
+  if(name==='electric') return 'linear-gradient(135deg,#caffd0,#3aff5a,#0a9a3a)';
   if(name==='ghost') return 'rgba(220,235,255,0.55)';
   if(name==='gold') return 'linear-gradient(135deg,#ffe680,#b8860b)';
   if(name==='silver') return 'linear-gradient(135deg,#f4f4fa,#9a9aa5)';
