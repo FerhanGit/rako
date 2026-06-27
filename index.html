@@ -6452,7 +6452,7 @@ document.getElementById('btnNews').onclick=()=>document.getElementById('newsPane
 document.getElementById('newsClose').onclick=()=>document.getElementById('newsPanel').classList.add('hidden');
 document.getElementById('btnBestiary').onclick=()=>{ renderBestiary(); document.getElementById('bestPanel').classList.remove('hidden'); };
 document.getElementById('bestClose').onclick=()=>document.getElementById('bestPanel').classList.add('hidden');
-function bestiaryBiome(i){ if(i>=27&&i<=30) return 'Swamp'; if(i>=24&&i<=26) return 'Desert'; if(i===31) return 'Lake'; if(i>=20&&i<=22) return 'Celeb'; if([7,14,15,16,34].includes(i)) return 'Snow'; if([8,17,18].includes(i)) return 'Lava'; if([9,19].includes(i)) return 'Space'; return 'Forest'; }
+function bestiaryBiome(i){ if(i>=27&&i<=30) return 'Swamp'; if(i>=24&&i<=26) return 'Desert'; if(i===31) return 'Lake'; if(i>=20&&i<=22) return 'Celeb'; if([7,14,15,16,34,39].includes(i)) return 'Snow'; if([8,17,18].includes(i)) return 'Lava'; if([9,19].includes(i)) return 'Space'; return 'Forest'; }
 const BEST_SPECIALS=[
   {n:'Bunny', c:'#ffffff', sub:'Passive critter', found:'Forest', hp:'8', dmg:'0 (harmless)', note:'Kill it with your sword for 🥩 meat (used to tame wolves).'},
   {n:'Golden Bunny ✨', c:'#ffd21a', sub:'RARE — 1 per game', found:'Forest', hp:'18', dmg:'0 (harmless)', note:'Glows gold and flees fast & far. Catch it for a big reward: +40–80 💎!'},
