@@ -775,12 +775,15 @@ function randomName(){ return NAMES[Math.floor(Math.random()*NAMES.length)]+Math
 // pick a believable player name. tries to be unique; if the pool runs out it adds a natural gamertag flair
 // (no bare numbers) and finally just allows a duplicate — real lobbies have repeated names anyway.
 const NAME_TAGS=['_','x','xX','YT','TTV','yt','og','xd','HD','pro','gg','TV','zz','_og','itz'];
+function numTag(){ return ''+(Math.random()<0.5 ? Math.floor(Math.random()*99) : Math.floor(Math.random()*1000)); }
 function pickName(used){
-  let nm=NAMES[Math.floor(Math.random()*NAMES.length)];
-  if(!used || !used.has(nm)) return nm;
-  for(let t=0;t<25;t++){ nm=NAMES[Math.floor(Math.random()*NAMES.length)]; if(!used.has(nm)) return nm; }
-  const base=NAMES[Math.floor(Math.random()*NAMES.length)], tag=NAME_TAGS[Math.floor(Math.random()*NAME_TAGS.length)];
-  return Math.random()<0.5 ? base+tag : tag+base;
+  let nm=NAMES[Math.floor(Math.random()*NAMES.length)], unique=true;
+  if(used && used.has(nm)){ unique=false;
+    for(let t=0;t<25;t++){ nm=NAMES[Math.floor(Math.random()*NAMES.length)]; if(!used.has(nm)){ unique=true; break; } }
+    if(!unique){ const tag=NAME_TAGS[Math.floor(Math.random()*NAME_TAGS.length)]; nm = Math.random()<0.5 ? nm+tag : tag+nm; }
+  }
+  if(Math.random()<0.25) nm += numTag();   // ~1/4 of players have a number in their name, like real usernames
+  return nm;
 }
 // fog-of-war map grid
 const MAP=50, MCELL=WORLD/MAP;     // 50x50 cells
