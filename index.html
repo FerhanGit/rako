@@ -2386,6 +2386,7 @@ function update(){
   cam.z=Math.max(1,Math.min(WORLD-1,nz));
   markExplored(cam.x, cam.z);
   { const bush=objects.find(o=>o.type==='bush'); cam.hidden = !!(bush && !cam.flyTime && Math.hypot(cam.x-bush.x,cam.z-bush.z)<2.4); }
+  if(!portalUp && kills>=100 && scene==='forest'){ portalUp=true; objects.push({type:'portal', x:HOME.x+5, z:HOME.z+6, height:3.4, width:2.8}); flash('🌀 100 KILLS! A portal to the VERNU UNIVERSE opened by your house — go face the King!'); SFX.crystal&&SFX.crystal(); }
   if(cam.riding){ const w=cam.ridingWolf; if(!w||!w.tamed||w.hp<=0||objects.indexOf(w)<0){ cam.riding=false; if(w)w.ridden=false; } else { w.x=cam.x; w.z=cam.z; w.ridden=true; w.aggro=false; } }
   { const lake=objects.find(o=>o.type==='lake' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r);
     if(lake && !cam.flyTime){
