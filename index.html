@@ -1252,6 +1252,8 @@ function reset(){
   for(let i=0;i<7;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34); if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,23)); }
   for(let i=0;i<9;i++){ const x=Math.random()*WORLD, z=24+Math.random()*(WORLD-34); if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+8) continue; objects.push(makeMonster(x,z,32)); }
   for(let i=0;i<5;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-40); if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+12) continue; objects.push(makeMonster(x,z,33)); }
+  for(let i=0;i<6;i++){ const x=Math.random()*WORLD, z=26+Math.random()*(WORLD-36); if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,36)); }   // Bone Creatures
+  for(let i=0;i<8;i++){ const x=Math.random()*WORLD, z=22+Math.random()*(WORLD-32); if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+8) continue; objects.push(makeMonster(x,z,37)); }   // Spider Crabs
   // Night Stalkers (tier 6) — only dangerous at night; freeze when you look at them
   for(let i=0;i<10;i++){ const x=Math.random()*WORLD, z=30+Math.random()*(WORLD-40);
     if(Math.hypot(x-HOME.x,z-HOME.z)<HOME.r+10) continue; objects.push(makeMonster(x,z,6)); }
