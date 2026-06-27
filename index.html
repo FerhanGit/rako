@@ -6437,7 +6437,7 @@ function drawBestPreview(cv){
     else if(kind==='champion'){ o.champion=true; o.bossName='Champion'; p.hPx=ch*0.78; p.wPx=cw*0.5; drawMonster(o,p); }
     else { if(kind==='flymon') o.fly=true; drawMonster(o,p); }
   }catch(e){}
-  ctx=saved;
+  ctx=saved; cam=savedCam; time=savedTime;
 }
 function renderBestiary(){
   const B=document.getElementById('bestBody'); if(!B) return;
