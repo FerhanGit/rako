@@ -2394,6 +2394,8 @@ function update(){
   markExplored(cam.x, cam.z);
   { const bush=objects.find(o=>o.type==='bush'); cam.hidden = !!(bush && !cam.flyTime && Math.hypot(cam.x-bush.x,cam.z-bush.z)<2.4); }
   if(!portalUp && kills>=100 && scene==='forest'){ portalUp=true; objects.push({type:'portal', x:HOME.x+5, z:HOME.z+6, height:3.4, width:2.8}); flash('🌀 100 KILLS! A portal to the VERNU UNIVERSE opened by your house — go face the King!'); SFX.crystal&&SFX.crystal(); }
+  { const nN=isNight(); if(nN&&!_wasNight) _nightKills=kills;   // Pacifist Dawn: survive a whole night with 0 kills
+    else if(!nN&&_wasNight && kills===_nightKills && !account.pacifistDawn){ account.pacifistDawn=true; saveAccount(); checkAchievements(); flash('☮ PACIFIST DAWN — you survived the night without a single kill!'); } _wasNight=nN; }
   if(cam.riding){ const w=cam.ridingWolf; if(!w||!w.tamed||w.hp<=0||objects.indexOf(w)<0){ cam.riding=false; if(w)w.ridden=false; } else { w.x=cam.x; w.z=cam.z; w.ridden=true; w.aggro=false; } }
   { const lake=objects.find(o=>o.type==='lake' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r);
     if(lake && !cam.flyTime){
