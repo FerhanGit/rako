@@ -2846,6 +2846,8 @@ function project(o){
 
 // ---------- render ----------
 function draw(){
+  ctx=cvs.getContext('2d');          // always draw to the game canvas (defensive — bestiary/previews can redirect ctx)
+  ctx.setTransform(1,0,0,1,0,0);     // reset any leftover transform from a prior frame that errored before its restore (fixes 'backgrounds vanish')
   if(!cam){ ctx.fillStyle="#0b1410"; ctx.fillRect(0,0,W,H); return; }
   if(scene==='interior'){ drawInterior(); drawHUD(); return; }
   if(scene==='room'){ drawRoom(); drawHUD(); return; }
