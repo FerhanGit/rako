@@ -1335,7 +1335,7 @@ function reset(){
   allies=[];
   const usedNames=new Set();
   const realPool=(onlineNames||[]).slice();          // real people who are online right now
-  const spawnN=Math.min(partySize, 150);             // up to 150 real teammates spawn THROUGHOUT the world; the rest fight off-screen
+  const spawnN=Math.min(partySize, 60);              // up to 60 real teammates spawn THROUGHOUT the world; the rest fight off-screen (perf)
   for(let i=0;i<spawnN;i++){
     let nm, isReal=false;
     if(realPool.length){ nm=realPool.shift(); isReal=true; }
