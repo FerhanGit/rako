@@ -583,7 +583,7 @@
 </div>
 
 <script>
-const cvs=document.getElementById('game'), ctx=cvs.getContext('2d');
+const cvs=document.getElementById('game'); let ctx=cvs.getContext('2d');   // `let` so the Bestiary can briefly redirect drawing to mini-canvases
 const W=cvs.width, H=cvs.height;
 const FOV=Math.PI/2.4, FOCAL=(W/2)/Math.tan(FOV/2);
 const WORLD=320;                 // world is WORLD x WORLD units (bigger map)
