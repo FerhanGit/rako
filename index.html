@@ -1059,7 +1059,7 @@ function champAbility(o,d){
     burst(o.x,o.z,'#b15cff',20);
     o.x=cam.x-Math.cos(a)*4; o.z=cam.z-Math.sin(a)*4;   // blink to just beside you
     burst(o.x,o.z,'#b15cff',20); shake=Math.max(shake,10);
-    if(d<30){ cam.hp-=12; hurtFlash=Math.min(1,(hurtFlash||0)+0.5); flash('🌌 Void Sovereign blinks to you!'); SFX.hurt&&SFX.hurt(); }
+    if(d<30){ cam.hp-=12; cam.lastHitName='the Void Sovereign'; hurtFlash=Math.min(1,(hurtFlash||0)+0.5); flash('🌌 Void Sovereign blinks to you!'); SFX.hurt&&SFX.hurt(); }
   }
 }
 let playerSlowT=0;   // frames of movement-slow from a Frost Titan hit
