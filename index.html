@@ -4310,6 +4310,8 @@ function drawEntity(o,p){
     ctx.fillStyle='#a040ff'; ctx.fillRect(x-bw,base-h-4,bw*2*(o.hp/o.maxHp),3); }
 }
 function drawMonster(o,p){
+  if(o.name==='Spider Crab'){ drawSpiderCrab(o,p); return; }
+  if(o.name==='Bone Creature'){ drawBoneCreature(o,p); return; }
   const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, frozen=cam.freeze>0;
   const seedT=time*0.12 + (o.x+o.z);
   const lurch=Math.sin(seedT)*h*0.03;                 // breathing/lurching
