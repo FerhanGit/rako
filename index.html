@@ -5099,8 +5099,9 @@ function renderSkins(){
   const G=document.getElementById('skinGrid');
   const gm=document.getElementById('skinGems'); if(gm) gm.textContent=(account.gems||0)+' 💎';
   G.innerHTML = SKIN_ORDER.map(s=>{ const lk=colorLocked(s);
+    const tag = !lk ? '' : (COLOR_TIER[s] ? (' 🔒T'+COLOR_TIER[s]) : (SPECIAL_COLOR_PRICE[s] ? (' 🔒'+SPECIAL_COLOR_PRICE[s]+'💎') : ' 🔒'));
     return '<button class="swatch'+(account.skin===s?' sel':'')+'" data-s="'+s+'" '+(lk?'data-lock="1" ':'')+
-      'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.6':'')+'">'+T(s)+(lk?' 🔒':'')+'</button>'; }).join('');
+      'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.7':'')+'">'+T(s)+tag+'</button>'; }).join('');
   G.querySelectorAll('button[data-s]').forEach(b=> b.onclick=()=>{
     const id=b.dataset.s;
     if(b.dataset.lock){
