@@ -2375,7 +2375,7 @@ function update(){
   cam.z=Math.max(1,Math.min(WORLD-1,nz));
   markExplored(cam.x, cam.z);
   { const bush=objects.find(o=>o.type==='bush'); cam.hidden = !!(bush && !cam.flyTime && Math.hypot(cam.x-bush.x,cam.z-bush.z)<2.4); }
-  if(cam.riding){ const w=cam.ridingWolf; if(!w||!w.tamed||w.hp<=0||objects.indexOf(w)<0){ cam.riding=false; } else { w.x=cam.x+Math.sin(cam.yaw)*0.6; w.z=cam.z+Math.cos(cam.yaw)*0.6; w.aggro=false; } }
+  if(cam.riding){ const w=cam.ridingWolf; if(!w||!w.tamed||w.hp<=0||objects.indexOf(w)<0){ cam.riding=false; if(w)w.ridden=false; } else { w.x=cam.x; w.z=cam.z; w.ridden=true; w.aggro=false; } }
   { const lake=objects.find(o=>o.type==='lake' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r);
     if(lake && !cam.flyTime){
       if(!cam.swimming){ cam.swimming=true; flash('💧 Diving! Sink to the bottom for the chest — hold SPACE to swim up.'); SFX.eat&&SFX.eat(); }
