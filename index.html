@@ -2999,7 +2999,7 @@ function drawWeather(){
   if(weather==='rain' && Math.random()<0.0035){ thunderFlash=1; SFX.boss&&SFX.boss(); }
   // rain: a VERY small chance a lightning bolt strikes you dead (only when exposed outside)
   if(weather==='rain' && scene==='forest' && !inHome() && cam && Math.random()<0.00018){
-    thunderFlash=1; shake=Math.max(shake,24); SFX.boss&&SFX.boss(); flash('⚡ A lightning bolt strikes you down!'); cam.hp=0; lose(); }
+    thunderFlash=1; shake=Math.max(shake,24); SFX.boss&&SFX.boss(); flash('⚡ A lightning bolt strikes you down!'); cam.lastHitName='a lightning bolt'; cam.hp=0; lose(); }
   // diamond rain: win a gem every minute it lasts
   if(weather==='diamond'){ _diamondT=(_diamondT||0)+1; if(_diamondT>=3600){ _diamondT=0; account.gems=(account.gems||0)+1; saveAccount(); flash('💎 +1 gem from the diamond rain!'); } } else _diamondT=0;
   if(thunderFlash>0) thunderFlash=Math.max(0,thunderFlash-0.05);
