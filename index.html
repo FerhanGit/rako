@@ -2412,7 +2412,7 @@ function update(){
   // fall into a hole (unless flying or jumping over it)
   if(!flying && cam.jumpY<0.6 && cam.invuln<=0){
     for(const o of objects){ if(o.type==='hole' && Math.hypot(cam.x-o.x,cam.z-o.z)<o.r-0.2){
-      cam.hp-=12; let a=Math.atan2(cam.z-o.z,cam.x-o.x); if(!isFinite(a))a=0;
+      cam.hp-=12; cam.lastHitName='a fall into a hole'; let a=Math.atan2(cam.z-o.z,cam.x-o.x); if(!isFinite(a))a=0;
       cam.x=o.x+Math.cos(a)*(o.r+1); cam.z=o.z+Math.sin(a)*(o.r+1);
       burst(cam.x,cam.z,'#100805',10); shake=Math.max(shake,13); hurtFlash=Math.min(1,hurtFlash+0.5);
       SFX.hurt(); flash("You fell into a hole! (-12) — jump (Space) over them!"); break; } }
