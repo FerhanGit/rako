@@ -5088,7 +5088,13 @@ function pn(name,data){
   const tag = data.clubName ? '<span style="color:'+(data.clubColor||'#7fe0ff')+'">['+esc(data.clubName)+']</span> ' : '';
   return tag+'<span class="pn" data-pname="'+esc(name)+'" data-info="'+info+'" style="cursor:pointer">'+esc(name)+'</span>';
 }
-function colorLocked(s){ return SPECIAL_COLORS.includes(s) && !(account.pass && account.pass.colors && account.pass.colors.includes(s)); }
+function colorLocked(s){
+  if(!SPECIAL_COLORS.includes(s)) return false;
+  if(account.pass && account.pass.colors && account.pass.colors.includes(s)) return false;   // unlocked via the Pass
+  if(account.ownedColors && account.ownedColors.includes(s)) return false;                    // bought with gems
+  if(COLOR_TIER[s] && passLevel()>=COLOR_TIER[s]) return false;                               // reached the required Pass tier
+  return true;
+}
 function renderSkins(){
   const G=document.getElementById('skinGrid');
   const gm=document.getElementById('skinGems'); if(gm) gm.textContent=(account.gems||0)+' 💎';
