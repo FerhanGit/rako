@@ -4387,6 +4387,21 @@ function drawMonster(o,p){
   const g=ctx.createRadialGradient(x,cy,3,x,cy,h*0.7);
   g.addColorStop(0,'#00000055'); g.addColorStop(1,'#00000000');
   ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,cy,h*0.7,0,7); ctx.fill();
+  // flapping bat-wings for flying monsters (drawn behind the body)
+  if(o.fly){
+    const flap=Math.sin(time*0.5+(o.flyPh||0))*0.65;
+    const wcol=o.flash>0?'#fff':shade(o.col,0.72), wln=o.flash>0?'#fff':shade(o.col,0.45);
+    for(const s of [-1,1]){
+      ctx.save(); ctx.translate(x+s*w*0.28, cy-h*0.06); ctx.rotate(s*(0.45+flap));
+      ctx.fillStyle=wcol; ctx.beginPath(); ctx.moveTo(0,0);
+      ctx.quadraticCurveTo(s*w*0.75,-h*0.4, s*w*1.15,-h*0.02);
+      ctx.quadraticCurveTo(s*w*0.92,h*0.06, s*w*0.66,h*0.16);
+      ctx.quadraticCurveTo(s*w*0.5,h*0.06, 0,0); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle=wln; ctx.lineWidth=Math.max(1,w*0.04);
+      for(let k=1;k<=3;k++){ ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(s*w*(0.42+k*0.22),-h*0.16+k*h*0.07); ctx.stroke(); }
+      ctx.restore();
+    }
+  }
   // hunched, lumpy body
   ctx.fillStyle=body;
   ctx.beginPath();
