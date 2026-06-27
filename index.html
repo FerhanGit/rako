@@ -2660,7 +2660,7 @@ function update(){
       if(dp<14) w.aggro=true;
       if(w.aggro && !safe){
         if(dp>1.4){ w.x+=(cam.x-w.x)/dp*w.spd; w.z+=(cam.z-w.z)/dp*w.spd; }
-        if(dp<2.2 && w.cd<=0 && !flying && cam.invuln<=0){ cam.hp-=pdmg(w.dmg); w.cd=52; burst(cam.x,cam.z,'#ff3030',5); SFX.hurt();
+        if(dp<2.2 && w.cd<=0 && !flying && cam.invuln<=0){ cam.hp-=pdmg(w.dmg); cam.lastHitName='a wild Wolf'; w.cd=52; burst(cam.x,cam.z,'#ff3030',5); SFX.hurt();
           shake=Math.max(shake,9); hurtFlash=Math.min(1,hurtFlash+0.45);
           flash("A wild wolf bites you! Give it meat (P) to tame it (-"+w.dmg+")"); }
       } else if(!w.aggro){
