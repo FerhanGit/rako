@@ -1052,7 +1052,7 @@ function champAbility(o,d){
       playerSlowT=Math.max(playerSlowT||0,150); flash('❄ Frost Titan freezes you!'); SFX.hurt&&SFX.hurt(); }
   } else if(o.bossName==='Inferno Colossus'){   // FIRE BREATH — scorches the ground in front of you
     burst(cam.x,cam.z,'#ff5a1a',26); burst(o.x,o.z,'#ffae40',16);
-    if(d<24){ cam.hp-=16; hurtFlash=Math.min(1,(hurtFlash||0)+0.6); shake=Math.max(shake,12);
+    if(d<24){ cam.hp-=16; cam.lastHitName='the Inferno Colossus'; hurtFlash=Math.min(1,(hurtFlash||0)+0.6); shake=Math.max(shake,12);
       flash('🔥 Inferno Colossus burns you!'); SFX.hurt&&SFX.hurt(); }
   } else if(o.bossName==='Void Sovereign'){     // VOID BLINK — teleports onto you and strikes
     const a=Math.atan2(cam.z-o.z, cam.x-o.x);
