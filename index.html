@@ -6408,11 +6408,40 @@ const BEST_SPECIALS=[
   {n:'Biome Champions 👑', c:'#ffd24a', sub:'Mini-bosses', found:'Snow · Lava · Space · Desert · Swamp (one each)', hp:'~600–900', dmg:'~45–55', note:'Frost Titan, Inferno Colossus, Void Sovereign, Dune Pharaoh & Plague Lord — each with a unique attack. Big gem rewards.'},
   {n:'God of the End', c:'#ff20a0', sub:'FINAL BOSS', found:'Nightmare City (deep south)', hp:'colossal (regenerates!)', dmg:'34', note:'Heals if you stop hitting it. Slay it to WIN the game.'},
 ];
+function bestKind(name){
+  if(name==='Bunny') return 'bunny';
+  if(name.indexOf('Golden Bunny')===0) return 'goldbunny';
+  if(name==='Wolf') return 'wolf';
+  if(name==='Void Entity') return 'entity';
+  if(name==='Sky Wraith') return 'flymon';
+  if(name.indexOf('Biome Champions')===0) return 'champion';
+  if(name==='God of the End') return 'boss';
+  return 'mon';
+}
+// draw a live mini-portrait of a creature onto its bestiary canvas (temporarily redirects the global ctx)
+function drawBestPreview(cv){
+  const g=cv.getContext('2d'), cw=cv.width, ch=cv.height; g.clearRect(0,0,cw,ch);
+  const name=cv.dataset.name, col=cv.dataset.col, fly=cv.dataset.fly==='1', kind=cv.dataset.kind;
+  const saved=ctx; ctx=g;
+  try{
+    const o={type:'monster', name, col, x:3, z:8, hp:10, maxHp:10, flash:0, fly, flyPh:0, champion:false, bossName:'', tamed:false, bob:0, gold:false, alive:true, dir:0, hop:0};
+    const p={sx:cw/2, groundY:ch-4, hPx:ch*0.6, wPx:cw*0.42};
+    if(kind==='bunny') drawBunny(o,p);
+    else if(kind==='goldbunny'){ o.gold=true; drawBunny(o,p); }
+    else if(kind==='wolf') drawWolf(o,p);
+    else if(kind==='entity') drawEntity(o,p);
+    else if(kind==='boss'){ o.type='boss'; o.height=26; p.hPx=ch*0.82; p.wPx=cw*0.5; drawBoss(o,p); }
+    else if(kind==='champion'){ o.champion=true; o.bossName='Champion'; p.hPx=ch*0.78; p.wPx=cw*0.5; drawMonster(o,p); }
+    else { if(kind==='flymon') o.fly=true; drawMonster(o,p); }
+  }catch(e){}
+  ctx=saved;
+}
 function renderBestiary(){
   const B=document.getElementById('bestBody'); if(!B) return;
+  const cvTag=(name,col,fly,kind)=>'<canvas class="bestCv" width="46" height="46" data-name="'+esc(name)+'" data-col="'+col+'" data-fly="'+(fly?1:0)+'" data-kind="'+kind+'" style="flex:none;width:46px;height:46px;background:#0a140c;border:1px solid #234;border-radius:7px"></canvas>';
   let h='<div style="font-weight:bold;color:#ff8a6a;margin:2px 0 4px">⭐ BOSSES &amp; SPECIAL CREATURES</div>';
   h+=BEST_SPECIALS.map(s=>'<div style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid #2a3a2a">'+
-      '<div style="width:22px;height:22px;border-radius:5px;background:'+s.c+';flex:none;border:1px solid #0006"></div>'+
+      cvTag(s.n, s.c, s.n==='Sky Wraith', bestKind(s.n))+
       '<div style="flex:1"><b>'+s.n+'</b> <span style="font-size:11px;color:#7fb0e0">['+s.sub+']</span><br>'+
       '<span style="font-size:11px;color:#cfe0cf">❤ '+s.hp+' HP · ⚔ '+s.dmg+' dmg · 📍 '+s.found+'</span><br>'+
       '<span style="font-size:11px;color:#9ab09a">'+s.note+'</span></div></div>').join('');
@@ -6420,11 +6449,12 @@ function renderBestiary(){
   h+=MONSTER_TYPES.map((m,i)=>{
     const tag = m.always?'<span style="color:#ff8a6a">day &amp; night</span>' : (m.stalker?'<span style="color:#b08aff">night stalker</span>' : '<span style="color:#9ab09a">night only</span>');
     return '<div style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid #2a3a2a">'+
-      '<div style="width:22px;height:22px;border-radius:5px;background:'+m.c+';flex:none;border:1px solid #0006"></div>'+
+      cvTag(m.n, m.c, m.fly, m.fly?'flymon':'mon')+
       '<div style="flex:1"><b>'+m.n+'</b><br>'+
       '<span style="font-size:11px;color:#cfe0cf">❤ '+m.hp+' HP · ⚔ '+m.dmg+' dmg · 📍 '+bestiaryBiome(i)+'</span><br>'+
       '<span style="font-size:11px;color:#9ab09a">'+(m.fly?'🪽 flying · ':'')+tag+'</span></div></div>'; }).join('');
   B.innerHTML=h;
+  B.querySelectorAll('canvas.bestCv').forEach(drawBestPreview);   // paint each creature portrait
 }
 document.getElementById('lottoSpin').onclick=()=>spinLottery();
 document.getElementById('lottoBack').onclick=()=>showScreen('lobby');
