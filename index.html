@@ -3603,13 +3603,8 @@ function roundRect(x,y,w,h,r){ ctx.beginPath();
 // ---------- atmosphere helpers ----------
 function drawNightSky(k){
   k=k===undefined?1:k;
-  // blood moon (cursed forest)
-  const mx=W*0.74, my=H*0.16, mr=34;
   ctx.globalAlpha=k;
-  const mg=ctx.createRadialGradient(mx,my,2,mx,my,mr*2.2);
-  mg.addColorStop(0,'#ffb0a0'); mg.addColorStop(0.4,'#c0504080'); mg.addColorStop(1,'#c0504000');
-  ctx.fillStyle=mg; ctx.beginPath(); ctx.arc(mx,my,mr*2.2,0,7); ctx.fill();
-  ctx.fillStyle='#e8786a'; ctx.beginPath(); ctx.arc(mx,my,mr,0,7); ctx.fill();
+  // (the red blood-moon is drawn world-anchored in drawSunMoon so it no longer follows the camera)
   // stars (twinkling)
   for(const s of stars){
     ctx.globalAlpha=k*(0.3+0.7*Math.abs(Math.sin(time*0.03+s.ph)));
