@@ -2538,7 +2538,7 @@ function update(){
       flash("⚠ THE GOD OF THE END HAS LEFT THE FINAL CITY — IT HUNTS YOU NOW!"); SFX.boss(); }
     boss.spd=0.05+(1-boss.hp/boss.maxHp)*0.085;
     // slowly regenerates unless you keep the pressure on
-    if(boss.flash<=0 && boss.hp<boss.maxHp) boss.hp=Math.min(boss.maxHp, boss.hp+0.05);
+    if(boss.flash<=0 && boss.hp>0 && boss.hp<boss.maxHp) boss.hp=Math.min(boss.maxHp, boss.hp+0.05);   // never regenerate from dead
     const wounded=boss.hp<boss.maxHp*0.6;
     if(!frozen && cam.invuln<=0 && wounded && time%55===0 && dist(boss)<36 && !inHome()){
       const dm=14; cam.hp-=pdmg(dm); burst(cam.x,cam.z,'#aa00ff',10); SFX.boss();
