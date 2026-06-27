@@ -1033,7 +1033,7 @@ function makeMonster(x,z,tier){
   const t=T[Math.min(tier,T.length-1)], d=DIFF[difficulty];
   const hp=Math.round(t.hp*d.hp);
   return {type:'monster',x,z,height:t.h,width:t.w,hp,maxHp:hp,dmg:Math.max(1,Math.round(t.dmg*d.dmg)),spd:t.spd*d.spd,
-          col:t.c,name:t.n,flash:0,aggro:false,cd:0, fly:!!t.fly, stalker:!!t.stalker, always:!!t.always, slowHit:!!t.slowHit, split:!!t.split, gen:0, flyPh:Math.random()*6};
+          col:t.c,name:t.n,flash:0,aggro:false,cd:0, fly:!!t.fly, stalker:!!t.stalker, always:!!t.always, slowHit:!!t.slowHit, split:!!t.split, breaker:!!t.breaker, climber:!!t.climber, gen:0, flyPh:Math.random()*6};
 }
 // a biome champion — a big, tough mini-boss that rules its region
 function makeBiomeBoss(x,z,tier,name,col){
