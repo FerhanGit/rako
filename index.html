@@ -4372,7 +4372,7 @@ function drawBoneCreature(o,p){
   ctx.fillStyle=sh; ctx.beginPath(); ctx.moveTo(skx,sky+sr*0.2); ctx.lineTo(skx-sr*0.12,sky+sr*0.5); ctx.lineTo(skx+sr*0.12,sky+sr*0.5); ctx.closePath(); ctx.fill();   // nose
   // teeth
   ctx.strokeStyle=sh; ctx.lineWidth=Math.max(1,w*0.03); ctx.beginPath(); for(let t=-2;t<=2;t++){ ctx.moveTo(skx+t*sr*0.2,sky+sr*0.6); ctx.lineTo(skx+t*sr*0.2,sky+sr*1.0); } ctx.stroke();
-  if(o.maxHp) hpBar(o,x,base-h*1.12,w);
+  if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*1.05,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*1.05,bw*2*(o.hp/o.maxHp),4); }
 }
 function drawMonster(o,p){
   if(o.name==='Spider Crab'){ drawSpiderCrab(o,p); return; }
