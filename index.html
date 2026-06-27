@@ -759,6 +759,7 @@ const SKIN_HEX={black:'#222222',red:'#d03030',orange:'#e07820',green:'#3a8a3a',y
   brown:'#7a4a20',pink:'#ff80b0',purple:'#9040d0',ghost:'#dfeaff',gold:'#ffd040',silver:'#c8c8d2',
   rainbow:'#ff4040',white:'#f0f0f0',chess:'#cccccc',zebra:'#e8e8e8',rainbowzebra:'#ff4040',gradient:'#5a7bff'};
 let allies=[], partySize=0, lastMatch=[], ptAccum=0, fieldBots=[];
+let portalUp=false, inVernu=false;   // Vernu-Universe portal (spawns near home after 100 kills)
 // shared-world seeding: both co-op players seed from the same session id -> identical map
 let coopSeed=null, pendingCoopSeed=null;
 function hashSeed(str){ str=String(str); let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
