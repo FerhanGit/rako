@@ -6422,7 +6422,10 @@ function bestKind(name){
 function drawBestPreview(cv){
   const g=cv.getContext('2d'), cw=cv.width, ch=cv.height; g.clearRect(0,0,cw,ch);
   const name=cv.dataset.name, col=cv.dataset.col, fly=cv.dataset.fly==='1', kind=cv.dataset.kind;
-  const saved=ctx; ctx=g;
+  const saved=ctx, savedCam=cam, savedTime=time;
+  if(!cam) cam={freeze:0,x:0,z:0,yaw:0,invuln:0};   // bestiary can be opened before any match (cam/time not yet set)
+  if(time===undefined||time===null) time=20;
+  ctx=g;
   try{
     const o={type:'monster', name, col, x:3, z:8, hp:10, maxHp:10, flash:0, fly, flyPh:0, champion:false, bossName:'', tamed:false, bob:0, gold:false, alive:true, dir:0, hop:0};
     const p={sx:cw/2, groundY:ch-4, hPx:ch*0.6, wPx:cw*0.42};
