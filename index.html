@@ -82,6 +82,10 @@
   #lobbyGrid button.tile span{font-size:12px;font-weight:700;letter-spacing:1px;color:#cfe8cf;}
   #lobbyGrid button.tile:hover{border-color:#5fd06a;transform:translateY(-2px);box-shadow:0 6px 0 #0e2413;}
   #lobbyGrid button.tile:active{transform:translateY(3px);box-shadow:0 1px 0 #0e2413;}
+  @media (max-width:760px){
+    #lobbyGrid button.tile{flex:1 1 82px;min-width:82px;max-width:108px;padding:9px 5px;font-size:18px;border-radius:11px;gap:3px;}
+    #lobbyGrid button.tile span{font-size:9.5px;letter-spacing:.5px;}
+  }
   #btnPlay{min-width:260px;}
   #acctChip{position:fixed;top:14px;left:14px;display:flex;align-items:center;gap:8px;
     background:#14241aee;border:1px solid #4a7;border-radius:30px;padding:6px 16px 6px 8px;
