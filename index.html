@@ -5102,6 +5102,9 @@ const ACHIEVEMENTS=[
   { id:'neonquests', icon:'🟦', name:'Quest Master',   desc:'Complete 5 weekly quests → unlock the NEON skin.', reward:120, rewardSkin:'neon', cur:()=>account.weeklyDone||0, max:5 },
   { id:'reaperkills',icon:'☠️', name:'Soul Harvest',   desc:'Slay 750 monsters → unlock the REAPER skin.', reward:120, rewardSkin:'reaper', cur:()=>account.kills||0, max:750 },
   { id:'hogridah',   icon:'🐺', name:'Hog Ridah',      desc:'Ride a tamed wolf (press O).',       reward:10,  cur:()=>(account.rodeWolf?1:0), max:1 },
+  { id:'goldrush',   icon:'🐰', name:'Gold Rush',      desc:'Catch 5 Golden Bunnies.',           reward:75,  cur:()=>account.goldBunnies||0, max:5 },
+  { id:'tamer',      icon:'🐾', name:'Tamer',          desc:'Tame 3 wolves in a single game.',   reward:40,  cur:()=>(account.tamer3?1:0), max:1 },
+  { id:'pacifist',   icon:'☮️', name:'Pacifist Dawn',  desc:'Survive a full night without a single kill.', reward:60, cur:()=>(account.pacifistDawn?1:0), max:1 },
   // ---- SECRET achievements: hidden until you discover them. We don't tell you how. ----
   { id:'secretlib',  icon:'🔮', name:'The Reader',    desc:'You rewrote the end with your own eyes.', reward:250, rewardSkin:'rune', secret:true, cur:()=>account.secretLibWin?1:0, max:1 },
   { id:'secretimp',  icon:'🔥', name:'Untouchable',   desc:'You bested the God of the End at its cruelest.', reward:300, secret:true, cur:()=>account.impWin?1:0, max:1 },
