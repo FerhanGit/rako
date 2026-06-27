@@ -2798,7 +2798,7 @@ function updateHouseMobs(){
     const a=Math.atan2(housePos.y-m.y, housePos.x-m.x);
     m.x+=Math.cos(a)*(m.sp||1.6); m.y+=Math.sin(a)*(m.sp||1.6);
     if(Math.hypot(housePos.x-m.x,housePos.y-m.y)<22 && m.cd<=0){
-      m.cd=42; cam.hp-=pdmg(10); hurtFlash=0.5; SFX.hurt();
+      m.cd=42; cam.hp-=pdmg(10); cam.lastHitName='a monster raiding your cabin'; hurtFlash=0.5; SFX.hurt();
       if(cam.hp<=0){ cam.hp=0; lose(); }
     }
   }
