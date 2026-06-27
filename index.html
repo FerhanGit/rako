@@ -1747,9 +1747,9 @@ function caveInteract(){
   else flash("Walk down to the cave mouth (bottom) and press E to leave.");
 }
 function openLegendary(){
-  caveChestOpened=true; cam.hasPistol=true; cam.hasPoison=true;
-  SFX.rako();
-  flash("LEGENDARY CHEST! You gain the PISTOL (B: shoot enemies from afar) and the INVISIBLE POISON (C: vanish and poison nearby foes).");
+  caveChestOpened=true; SFX.rako();
+  if(Math.random()<0.5){ cam.hasPistol=true; flash("LEGENDARY CHEST! You got the 🔫 PISTOL (B: shoot enemies from afar)!"); }
+  else { cam.hasPoison=true; flash("LEGENDARY CHEST! You got the 🧪 INVISIBLE POISON (C: vanish and poison nearby foes)!"); }
 }
 function mineRock(rc){
   if(rc.opened){ flash("The stone chest is empty."); return; }
