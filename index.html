@@ -4338,7 +4338,7 @@ function drawSpiderCrab(o,p){
     ctx.beginPath(); ctx.moveTo(x+s*w*0.12,cy-h*0.32); ctx.lineTo(ex,ey); ctx.stroke();
     ctx.fillStyle='#ffe24a'; ctx.beginPath(); ctx.arc(ex,ey,Math.max(2,w*0.09),0,7); ctx.fill();
     ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(ex,ey,Math.max(1,w*0.04),0,7); ctx.fill(); }
-  if(o.maxHp) hpBar(o,x,base-h*1.05,w);
+  if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*0.95,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*0.95,bw*2*(o.hp/o.maxHp),4); }
 }
 // 💀 BONE CREATURE — a towering skeletal horror: skull, ribcage, claws, glowing eyes
 function drawBoneCreature(o,p){
