@@ -1954,6 +1954,7 @@ function petWolf(){
   if(!w) return;
   if((cam.meat||0)<=0){ flash("No meat! Kill bunnies with your sword to get meat to tame wolves."); return; }
   cam.meat--; w.tamed=true; w.hp=w.maxHp; w.aggro=false;
+  matchTames++; if(matchTames>=3 && !account.tamer3){ account.tamer3=true; saveAccount(); checkAchievements(); }   // Tamer: 3 wolves in one game
   burst(w.x,w.z,'#cfcfff',18); SFX.eat();
   flash("You fed and tamed a wolf! It now hunts the Entities and protects you.");
 }
