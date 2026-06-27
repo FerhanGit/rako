@@ -2678,7 +2678,7 @@ function update(){
     if(dp<22) e.aggro=true;
     if(e.aggro && !safe){
       if(dp>1.4){ e.x+=(cam.x-e.x)/dp*e.spd; e.z+=(cam.z-e.z)/dp*e.spd; }
-      if(dp<2.2 && e.cd<=0 && !flying && cam.invuln<=0){ cam.hp-=pdmg(e.dmg); e.cd=46; burst(cam.x,cam.z,'#7020c0',6); SFX.hurt();
+      if(dp<2.2 && e.cd<=0 && !flying && cam.invuln<=0){ cam.hp-=pdmg(e.dmg); cam.lastHitName='a Void Entity'; e.cd=46; burst(cam.x,cam.z,'#7020c0',6); SFX.hurt();
         shake=Math.max(shake,12); hurtFlash=Math.min(1,hurtFlash+0.5); flash("The Entity strikes you! (-"+e.dmg+")"); }
     }
   }
