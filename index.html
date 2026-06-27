@@ -3081,16 +3081,10 @@ function drawHUD(){
     v.addColorStop(0,'rgba(180,0,0,0)'); v.addColorStop(1,'rgba(180,0,0,'+(hurtFlash*0.55).toFixed(3)+')');
     ctx.fillStyle=v; ctx.fillRect(0,0,W,H);
   }
-  // ambient atmospheric haze — faint depth fog thickest near the horizon (realism)
+  // cinematic vignette — very subtle edge darkening for depth (toned down)
   if(scene==='forest'){
-    const hz=ctx.createLinearGradient(0,H*0.30,0,H*0.62);
-    hz.addColorStop(0,'rgba(186,200,205,0)'); hz.addColorStop(0.6,'rgba(186,200,205,0.10)'); hz.addColorStop(1,'rgba(186,200,205,0)');
-    ctx.fillStyle=hz; ctx.fillRect(0,H*0.30,W,H*0.32);
-  }
-  // cinematic vignette — subtly darkens the screen edges for depth & realism
-  if(scene==='forest'){
-    const vg=ctx.createRadialGradient(W/2,H*0.46,H*0.34,W/2,H*0.5,H*0.92);
-    vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(0.7,'rgba(0,0,0,0.06)'); vg.addColorStop(1,'rgba(0,0,0,0.34)');
+    const vg=ctx.createRadialGradient(W/2,H*0.46,H*0.42,W/2,H*0.5,H*1.0);
+    vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.18)');
     ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
   }
   if(state==='map') drawMap();
