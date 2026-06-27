@@ -2446,7 +2446,7 @@ function update(){
 
   // hunger drain (sprinting burns more)
   cam.hunger -= moved?(sprinting?0.06:0.03):0.018;
-  if(cam.hunger<=0){ cam.hunger=0; if(time%30===0){ cam.hp-=2; flash("Starving! Eat food."); } }
+  if(cam.hunger<=0){ cam.hunger=0; if(time%30===0){ cam.hp-=2; cam.lastHitName='Starvation (you ran out of food)'; flash("Starving! Eat food."); } }
 
   // nearest chest / cabin prompt
   promptTxt='';
