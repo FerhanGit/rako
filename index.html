@@ -2060,7 +2060,7 @@ const ADMIN_ACTIONS=[
   {nm:'Spawn Trade table',fn(){ const f=frontPos(4); objects.push(tradeTable(f.x,f.z)); flash('Trade Table spawned'); }},
   {nm:'Spawn food',   fn(){ const f=frontPos(3); objects.push(food(f.x,f.z)); flash('Food spawned'); }},
   {nm:'Spawn King',   fn(){ if(objects.find(o=>o.type==='boss'&&o.alive)){ flash('King already alive'); return; } objects.push(makeBoss()); flash('King spawned at the heart of the forest'); }},
-  {nm:'Kill the King', fn(){ const b=objects.find(o=>o.type==='boss'&&o.alive); if(b){ b.hp=0; flash('King slain'); } else flash('No King'); }},
+  {nm:'Kill the King', fn(){ const b=objects.find(o=>o.type==='boss'); if(b){ b.alive=true; b.flash=0; b.hp=0; flash('King slain'); } else { win(); } }},
   {nm:'Ban all monsters',fn(){ let n=0; for(let i=objects.length-1;i>=0;i--){ if(objects[i].type==='monster'){ objects.splice(i,1); n++; } } flash('Banned '+n+' monsters from the realm'); }},
   // ---- economy / progression powers ----
   {nm:'+1000 gems',  fn(){ account.gems=(account.gems||0)+1000; saveAccount(); refreshChip(); netSyncStats(); flash('+1000 💎'); }},
