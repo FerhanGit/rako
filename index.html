@@ -1312,8 +1312,7 @@ function reset(){
   for(let i=0;i<26;i++){ const x=8+Math.random()*(WORLD-16), z=8+Math.random()*(WORLD-16);
     if(inCity(x,z)) continue; objects.push(coin(x,z)); }
   objects.push(buyTable(HOME.x+5, HOME.z-3));
-  // the boss, deep in the heart of the city
-  objects.push(makeBoss());
+  // the King is NOT in this world — he lives in the Vernu Universe (reach him via the portal after 100 kills)
 
   // bunnies (meat), wild wolves, and the Entities
   for(let i=0;i<18;i++){ const x=Math.random()*WORLD, z=12+Math.random()*(WORLD-24);
