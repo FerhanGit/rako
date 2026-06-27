@@ -4379,6 +4379,52 @@ function drawBoneCreature(o,p){
   ctx.strokeStyle=sh; ctx.lineWidth=Math.max(1,w*0.03); ctx.beginPath(); for(let t=-2;t<=2;t++){ ctx.moveTo(skx+t*sr*0.2,sky+sr*0.6); ctx.lineTo(skx+t*sr*0.2,sky+sr*1.0); } ctx.stroke();
   if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*1.05,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*1.05,bw*2*(o.hp/o.maxHp),4); }
 }
+// 🎁😈 MIMIC — a treasure chest with a fanged mouth & hungry eyes
+function drawMimic(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, frozen=cam.freeze>0;
+  const gnash=Math.abs(Math.sin(time*0.4+o.x));               // chomping
+  const wood=o.flash>0?'#fff':(frozen?'#7fd0e6':o.col), dk=o.flash>0?'#fff':shade(o.col,0.55), gold='#caa030';
+  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(x,base,w*0.55,h*0.09,0,0,7); ctx.fill();
+  // little legs
+  ctx.fillStyle=dk; ctx.fillRect(x-w*0.34,base-h*0.12,w*0.12,h*0.12); ctx.fillRect(x+w*0.22,base-h*0.12,w*0.12,h*0.12);
+  // chest base
+  ctx.fillStyle=wood; ctx.fillRect(x-w*0.45,base-h*0.5,w*0.9,h*0.42);
+  ctx.fillStyle=gold; ctx.fillRect(x-w*0.45,base-h*0.32,w*0.9,h*0.06); ctx.fillRect(x-w*0.06,base-h*0.5,w*0.12,h*0.42);
+  // gaping fanged mouth (lid hinged open by gnash)
+  const open=h*0.18+gnash*h*0.16;
+  ctx.fillStyle='#400a0a'; ctx.fillRect(x-w*0.42,base-h*0.5-open,w*0.84,open);   // red maw
+  ctx.fillStyle='#fff';  // teeth
+  for(let i=-3;i<=3;i++){ const tx=x+i*w*0.12; ctx.beginPath(); ctx.moveTo(tx-w*0.05,base-h*0.5); ctx.lineTo(tx,base-h*0.5+h*0.08); ctx.lineTo(tx+w*0.05,base-h*0.5); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(tx-w*0.05,base-h*0.5-open); ctx.lineTo(tx,base-h*0.5-open-h*0.07); ctx.lineTo(tx+w*0.05,base-h*0.5-open); ctx.closePath(); ctx.fill(); }
+  // curved lid + hungry eyes
+  ctx.fillStyle=dk; ctx.beginPath(); ctx.moveTo(x-w*0.45,base-h*0.5-open); ctx.quadraticCurveTo(x,base-h*0.5-open-h*0.28,x+w*0.45,base-h*0.5-open); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#ffe24a'; for(const s of [-1,1]){ ctx.beginPath(); ctx.arc(x+s*w*0.2,base-h*0.5-open-h*0.12,Math.max(2,w*0.08),0,7); ctx.fill(); }
+  ctx.fillStyle='#000'; for(const s of [-1,1]){ ctx.beginPath(); ctx.arc(x+s*w*0.2,base-h*0.5-open-h*0.12,Math.max(1,w*0.035),0,7); ctx.fill(); }
+  if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*0.95,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*0.95,bw*2*(o.hp/o.maxHp),4); }
+}
+// ❄️👻 FROST WISP — a glowing blue spirit that drifts with a trailing tail
+function drawFrostWisp(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, frozen=cam.freeze>0;
+  const fl=Math.sin(time*0.25+o.x)*h*0.12, cy=base-h*0.5+fl;
+  const c=o.flash>0?'#fff':(frozen?'#dffcff':o.col);
+  // glow
+  const gl=ctx.createRadialGradient(x,cy,2,x,cy,w*1.3); gl.addColorStop(0,'rgba(140,220,255,0.55)'); gl.addColorStop(1,'rgba(140,220,255,0)');
+  ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(x,cy,w*1.3,0,7); ctx.fill();
+  // wispy trailing tail
+  ctx.fillStyle=c; ctx.globalAlpha*=0.5;
+  ctx.beginPath(); ctx.moveTo(x-w*0.3,cy); ctx.quadraticCurveTo(x-w*0.1,cy+h*0.5, x,base);
+  ctx.quadraticCurveTo(x+w*0.1,cy+h*0.5, x+w*0.3,cy); ctx.closePath(); ctx.fill();
+  ctx.globalAlpha/=0.5;
+  // glowing body
+  ctx.fillStyle=c; ctx.beginPath(); ctx.ellipse(x,cy,w*0.42,h*0.4,0,0,7); ctx.fill();
+  ctx.fillStyle='#eafcff'; ctx.beginPath(); ctx.ellipse(x-w*0.1,cy-h*0.1,w*0.16,h*0.14,0,0,7); ctx.fill();   // inner shine
+  // icy eyes
+  ctx.fillStyle='#1a4a7a'; for(const s of [-1,1]){ ctx.beginPath(); ctx.ellipse(x+s*w*0.14,cy-h*0.02,w*0.06,h*0.1,0,0,7); ctx.fill(); }
+  // frost spikes
+  ctx.strokeStyle='#dffcff'; ctx.lineWidth=Math.max(1,w*0.04);
+  for(let i=0;i<3;i++){ const a=-1+i; ctx.beginPath(); ctx.moveTo(x+a*w*0.2,cy-h*0.36); ctx.lineTo(x+a*w*0.2,cy-h*0.52); ctx.stroke(); }
+  if(o.hp<o.maxHp){ const bw=w*0.5; ctx.fillStyle='#000'; ctx.fillRect(x-bw,base-h*0.98,bw*2,4); ctx.fillStyle='#9ad06a'; ctx.fillRect(x-bw,base-h*0.98,bw*2*(o.hp/o.maxHp),4); }
+}
 function drawMonster(o,p){
   if(o.name==='Spider Crab'){ drawSpiderCrab(o,p); return; }
   if(o.name==='Bone Creature'){ drawBoneCreature(o,p); return; }
