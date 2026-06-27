@@ -1722,6 +1722,7 @@ function interact(){
   if(bd){ enterBuilding(bd); return; }
   const pl=objects.find(o=>o.type==='portal' && dist(o)<4);
   if(pl){ cam.x=BOSS.x; cam.z=BOSS.z-13; cam.yaw=0; cam.invuln=Math.max(cam.invuln||0,200); inVernu=true;
+    if(!objects.find(o=>o.type==='boss')) objects.push(makeBoss());   // the King appears in his universe
     burst(cam.x,cam.z,'#b15cff',30); SFX.crystal&&SFX.crystal(); flash('🌀 You step into the VERNU UNIVERSE — the King of the End awaits!'); return; }
   const cv=objects.find(o=>o.type==='cave' && dist(o)<3.6);
   if(cv){ if(cv.water && (cam.dive||0)<0.55){ flash('💧 Dive deeper to reach the underwater cave hole!'); return; } enterCave(); return; }
