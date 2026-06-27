@@ -2544,6 +2544,7 @@ function update(){
         }
         if(canHit && d<2.0 && o.cd<=0 && !flying && cam.invuln<=0){   // airborne or untouchable = safe
           cam.hp-=pdmg(o.dmg); o.cd=(o.type==='boss')?40:48;
+          cam.lastHitName = (o.type==='boss') ? 'the King of the End' : (o.champion?('the '+o.name):('a '+o.name));
           if(o.slowHit){ playerSlowT=Math.max(playerSlowT||0,120); }   // Frost Lurker chills you
           burst(cam.x,cam.z,'#ff3030',6); SFX.hurt();
           shake=Math.max(shake,o.type==='boss'?16:10); hurtFlash=Math.min(1,hurtFlash+0.6);
