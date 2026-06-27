@@ -4377,7 +4377,9 @@ function drawBoneCreature(o,p){
 function drawMonster(o,p){
   if(o.name==='Spider Crab'){ drawSpiderCrab(o,p); return; }
   if(o.name==='Bone Creature'){ drawBoneCreature(o,p); return; }
-  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, frozen=cam.freeze>0;
+  const x=p.sx, h=p.hPx, w=p.wPx, frozen=cam.freeze>0;
+  const hover = o.fly ? Math.sin(time*0.22+(o.flyPh||0))*h*0.16 : 0;   // flying monsters bob up & down
+  const base=p.groundY - hover;
   const seedT=time*0.12 + (o.x+o.z);
   const lurch=Math.sin(seedT)*h*0.03;                 // breathing/lurching
   const body = o.flash>0 ? "#fff" : (frozen ? "#7fd0e6" : o.col);
