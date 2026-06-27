@@ -5103,7 +5103,16 @@ function renderSkins(){
       'style="background:'+skinCSS(s)+';position:relative;'+(lk?'opacity:.6':'')+'">'+T(s)+(lk?' 🔒':'')+'</button>'; }).join('');
   G.querySelectorAll('button[data-s]').forEach(b=> b.onclick=()=>{
     const id=b.dataset.s;
-    if(b.dataset.lock){ flash('🔒 '+id+' is a premium colour — unlock it in the RAKO Pass.'); SFX.hurt&&SFX.hurt(); return; }   // colours are pass-only, not buyable
+    if(b.dataset.lock){
+      if(COLOR_TIER[id]){ flash('🔒 '+T(id)+' unlocks at RAKO Pass tier '+COLOR_TIER[id]+' (you are tier '+passLevel()+').'); SFX.hurt&&SFX.hurt(); return; }
+      const price=SPECIAL_COLOR_PRICE[id];
+      if(price){   // buy the colour with gems
+        if((account.gems||0)>=price){ account.gems-=price; account.ownedColors=account.ownedColors||[]; account.ownedColors.push(id);
+          account.skin=id; saveAccount(); refreshChip(); SFX.chest&&SFX.chest(); renderSkins(); renderShop(); netSyncStats(); flash('🎨 Unlocked the '+T(id)+' colour! (−'+price+' 💎)'); return; }
+        flash('Need '+price+' 💎 for the '+T(id)+' colour.'); SFX.hurt&&SFX.hurt(); return;
+      }
+      flash('🔒 '+T(id)+' is a premium colour — unlock it in the RAKO Pass.'); SFX.hurt&&SFX.hurt(); return;
+    }
     account.skin=id; saveAccount(); refreshChip(); renderSkins(); renderShop(); netSyncStats(); });
 }
 function openQuests(){ refreshQuests(); renderQuests('questBody'); showScreen('quests'); }
