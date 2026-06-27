@@ -4038,6 +4038,18 @@ function drawCaveMouth(p){
   ctx.fillStyle='#7a8a7a'; ctx.font='bold '+Math.max(8,h*0.16)+'px sans-serif'; ctx.textAlign='center';
   ctx.fillText('CAVE', x, base-h*0.7);
 }
+function drawPortal(o,p){
+  const x=p.sx, base=p.groundY, h=p.hPx, w=p.wPx, cy=base-h*0.55;
+  const glow=ctx.createRadialGradient(x,cy,2,x,cy,w*1.2); glow.addColorStop(0,'rgba(177,92,255,0.5)'); glow.addColorStop(1,'rgba(177,92,255,0)');
+  ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(x,cy,w*1.2,0,7); ctx.fill();
+  // stone ring
+  ctx.strokeStyle='#5a3a7a'; ctx.lineWidth=Math.max(3,w*0.18); ctx.beginPath(); ctx.ellipse(x,cy,w*0.5,h*0.55,0,0,7); ctx.stroke();
+  // swirling void
+  for(let i=0;i<4;i++){ const t=time*0.05+i*1.57; ctx.fillStyle='hsla('+((time*2+i*40)%360)+',80%,'+(45-i*6)+'%,'+(0.7-i*0.13)+')';
+    ctx.beginPath(); ctx.ellipse(x,cy,w*0.42*(1-i*0.2),h*0.48*(1-i*0.2),t,0,7); ctx.fill(); }
+  ctx.fillStyle='#e8d0ff'; ctx.font='bold '+Math.max(9,h*0.13)+'px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('VERNU', x, base-h*1.18);
+}
 function drawBullet(p){
   const x=p.sx, base=p.groundY, h=p.hPx;
   ctx.fillStyle='#ffe060'; ctx.beginPath(); ctx.arc(x, base-h*0.5, Math.max(2,p.wPx*0.5), 0, 7); ctx.fill();
