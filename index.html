@@ -1048,7 +1048,7 @@ function makeBiomeBoss(x,z,tier,name,col){
 function champAbility(o,d){
   if(o.bossName==='Frost Titan'){          // FROST NOVA — chills & damages, briefly slows you
     burst(cam.x,cam.z,'#bfe8ff',24);
-    if(d<26){ cam.hp-=10; hurtFlash=Math.min(1,(hurtFlash||0)+0.5); shake=Math.max(shake,10);
+    if(d<26){ cam.hp-=10; cam.lastHitName='the Frost Titan'; hurtFlash=Math.min(1,(hurtFlash||0)+0.5); shake=Math.max(shake,10);
       playerSlowT=Math.max(playerSlowT||0,150); flash('❄ Frost Titan freezes you!'); SFX.hurt&&SFX.hurt(); }
   } else if(o.bossName==='Inferno Colossus'){   // FIRE BREATH — scorches the ground in front of you
     burst(cam.x,cam.z,'#ff5a1a',26); burst(o.x,o.z,'#ffae40',16);
